@@ -9,50 +9,63 @@ import jakarta.persistence.Id;
 public class BookEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String bookName;
     private String authorName;
+    private Double bookPrice;
+    private int stockQuantity;
+
 
 
     public BookEntity() {
-        System.out.println("Empty Constructor EntitiesBook");
     }
 
-    public BookEntity(int id, String bookName, String authorName) {
-        System.out.println("All Constructor EntitiesBook");
+    public BookEntity(int id, String bookName, String authorName, Double bookPrice, int stockQuantity) {
         this.id = id;
         this.bookName = bookName;
         this.authorName = authorName;
+        this.bookPrice = bookPrice;
+        this.stockQuantity = stockQuantity;
     }
 
     public int getId() {
-        System.out.println("\n Getting Id EntitiesBook...");
         return id;
     }
 
     public void setId(int id) {
-        System.out.println("\n Setting Id EntitiesBook...");
         this.id = id;
     }
 
     public String getBookName() {
-        System.out.println("\n Getting Book Name EntitiesBook...");
         return bookName;
     }
 
     public void setBookName(String bookName) {
-        System.out.println("\n Setting Book Name EntitiesBook...");
         this.bookName = bookName;
     }
 
     public String getAuthorName() {
-        System.out.println("\n Getting Author Name EntitiesBook...");
         return authorName;
     }
 
     public void setAuthorName(String authorName) {
-        System.out.println("\n Setting Author Name EntitiesBook...");
         this.authorName = authorName;
+    }
+
+    public Double getBookPrice() {
+        return bookPrice;
+    }
+
+    public void setBookPrice(Double bookPrice) {
+        this.bookPrice = bookPrice;
+    }
+
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 }
