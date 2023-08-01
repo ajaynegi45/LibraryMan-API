@@ -45,15 +45,107 @@ The project consists of several components, each serving a specific purpose:
 4. Set up the MySQL database and update the database configurations in the `application.properties` file (not provided in the code).
 5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
 <br>
+<br>
 
-## API Endpoints 👨🏻‍💻
+## API Endpoints
 
-1. **GET /book:** Returns information about a single book (hardcoded book data).
-2. **GET /getbooks:** Returns a list of all books available in the database.
-3. **GET /book/{id}:** Returns information about a specific book with the given ID.
-4. **POST /postbook:** Adds a new book to the database.
-5. **DELETE /deletebook/{id}:** Deletes a book from the database with the given ID.
-6. **PUT /updatebook/{bookid}:** Updates the details of a book with the given ID.
+### Add Book
+
+Add a new book to the database.
+
+- **URL:** POST `/addBook`
+- **Request Body:**
+  ```json
+  {
+    "bookName": "Book Title",
+    "authorName": "Author Name",
+    "bookPrice": 29.99,
+    "stockQuantity": 50
+  }
+  ```
+- **Response:**
+  - 201 Created: Book added successfully
+  - 409 Conflict: Book already exists
+
+### Update Book
+
+Update an existing book's details by providing the book ID.
+
+- **URL:** PUT `/updatebook/{bookid}`
+- **Request Body:**
+  ```json
+  {
+    "bookName": "Updated Title",
+    "authorName": "Updated Author",
+    "bookPrice": 39.99,
+    "stockQuantity": 100
+  }
+  ```
+- **Response:**
+  - 202 Accepted: Book updated successfully
+  - 404 Not Found: Book with the given ID not found
+
+### Delete Book by ID
+
+Delete a book from the database using its ID.
+
+- **URL:** DELETE `/deleteBookById/{id}`
+- **Response:**
+  - 202 Accepted: Book deleted successfully
+  - 404 Not Found: Book with the given ID not found
+
+### Delete Book by Name
+
+Delete all books with the given specified book name.
+
+- **URL:** DELETE `/deleteBookByName/{bookName}`
+- **Response:**
+  - 202 Accepted: Books deleted successfully
+  - 404 Not Found: No books found with the given name
+
+### Delete Books by Author
+
+Delete all books with the given specified author name.
+
+- **URL:** DELETE `/deleteAllByAuthor/{authorName}`
+- **Response:**
+  - 202 Accepted: Books deleted successfully
+  - 404 Not Found: No books found with the given author name
+
+### Get All Books
+
+Get a list of all books present in the database.
+
+- **URL:** GET `/getAllBooks`
+- **Response:** List of BookEntity objects
+
+### Get Book by ID
+
+Get a book by its ID.
+
+- **URL:** GET `/getBookById/{id}`
+- **Response:** BookEntity object
+
+### Get Books by Name Starting With
+
+Get a list of books whose names start with the given specified prefix.
+
+- **URL:** GET `/bookNameStartWith/{bookName}`
+- **Response:** List of BookEntity objects
+
+### Get Books by Name Ending With
+
+Get a list of books whose names end with the given specified suffix.
+
+- **URL:** GET `/bookNameEndWith/{bookName}`
+- **Response:** List of BookEntity objects
+
+### Get Books by Name Containing
+
+Get a list of books whose names contain the given specified book name or character.
+
+- **URL:** GET `/bookNameContain/{bookName}`
+- **Response:** List of BookEntity objects
 <br>
 
 ## ‼️ Important Note ‼️
