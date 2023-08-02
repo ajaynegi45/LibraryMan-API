@@ -22,6 +22,7 @@ The Book-API project is a simple Spring Boot RESTful API that allows users to ma
 - JSON
 - MySQL
 - PostMan (For testing APIs)
+- Mavin
 <br>
 
 ## Project Structure 📂
