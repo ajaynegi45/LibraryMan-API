@@ -1,56 +1,42 @@
-# Book-API Project 📕
+# Library-API Project 📚
 
-The Book-API project is a simple Spring Boot RESTful API that allows users to manage a collection of books. Users can perform various CRUD (Create, Read, Update, Delete) operations on books using this API. The API stores book information such as book name and author name in a database.
+This project is a simple Spring Boot application that provides a RESTful API for managing books. It allows users to perform CRUD (Create, Read, Update, Delete) operations on books using the API. It adding new books, updating existing ones, searching for books, and deleting books.
+<br>
 <br>
 
-## Features ✨
 
-- **Get a Single Book:** Retrieve information about a specific book by its ID.
+
+<!--## Features ✨
+
+- **Add a Book:** Add a new book to the database.
+
 - **Get All Books:** Retrieve a list of all books available in the database.
 - **Add a Book:** Add a new book to the database.
 - **Update a Book:** Update the details of an existing book.
-- **Delete a Book:** Remove a book from the database by its ID.
-<br>
-
-## Technologies Used 🌐
-
-- Java
-- Spring Boot
-- Spring Data JPA
-- Hibernate
-- RESTful API
-- JSON
-- MySQL
-- PostMan (For testing APIs)
-- Mavin
-<br>
+- **Delete a Book:** Remove a book from the database by its ID.-->
 
 ## Project Structure 📂
 
 The project consists of several components, each serving a specific purpose:
 
-1. **BookController:** Defines the RESTful endpoints for handling book-related requests. It interacts with the BookService to perform various operations.
+1. **Controller:** Defines the RESTful endpoints for handling book-related requests. It interacts with the Service to perform various operations.
 
-2. **BookService:** Contains the business logic for book-related operations. It interacts with the BookRepository to access the database.
+2. **Service:** Contains the business logic for book-related operations. It interacts with the DAO to access the database.
 
-3. **BookRepository:** Provides access to the database using Spring Data JPA. It extends the JpaRepository interface to enable CRUD operations.
+3. **DAO:** Provides access to the database using Spring Data JPA. It extends the JpaRepository interface to enable CRUD operations.
 
-4. **BookEntity:** Represents the entity (model) for a book. It is annotated with `@Entity` to indicate it's a JPA entity and corresponds to a database table.
+4. **Entities:** Represents the entity (model) for a book. It is annotated with `@Entity` to indicate it's a JPA entity and corresponds to a database table.
 <br>
 
-## How to Run the Project 💨
 
-1. Ensure you have Java and MySQL installed on your system.
-2. Clone or download the project from the repository.
-3. Import the project into your preferred IDE (e.g., Eclipse, IntelliJ).
-4. Set up the MySQL database and update the database configurations in the `application.properties` file (not provided in the code).
-5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
-<br>
+
+
+
+## API Endpoints 🔗
+
 <br>
 
-## API Endpoints
-
-### Add Book
+### Add Book 📗
 
 Add a new book to the database.
 
@@ -66,9 +52,12 @@ Add a new book to the database.
   ```
 - **Response:**
   - 201 Created: Book added successfully
-  - 409 Conflict: Book already exists
+  - 409 CONFLICT: if there is a conflict (e.g., book not able to store ).
+  - 500 INTERNAL_SERVER_ERROR: if there is an internal server error.
 
-### Update Book
+<br>
+
+### Update Book 📘
 
 Update an existing book's details by providing the book ID.
 
@@ -76,15 +65,72 @@ Update an existing book's details by providing the book ID.
 - **Request Body:**
   ```json
   {
-    "bookName": "Updated Title",
-    "authorName": "Updated Author",
-    "bookPrice": 39.99,
-    "stockQuantity": 100
+    "bookName": "Updated Book Name",
+    "authorName": "Updated Author Name",
+    "bookPrice": "Updated Book Price",
+    "stockQuantity": "Updated Stock Quantity"
   }
   ```
 - **Response:**
   - 202 Accepted: Book updated successfully
   - 404 Not Found: Book with the given ID not found
+
+
+
+<br>
+<br>
+
+### GET Book 📔
+
+| Endpoint                        | Method     | URL                                | Request Parameter         | Response                   |
+|---------------------------------|------------|------------------------------------|---------------------------|----------------------------|
+| Get All Books                   | **GET**    | [/getAllBooks]()                   | None                      | List of BookEntity objects |
+| Get Book by ID                  | **GET**    | [/getBookById/](){id}              | id (Path parameter)       | BookEntity object          |
+| Get Books by Name Starting With | **GET**    | [/bookNameStartWith/](){bookName}  | bookName (Path parameter) | List of BookEntity objects |
+| Get Books by Name Ending With   | **GET**    | [/bookNameEndWith/](){bookName}    | bookName (Path parameter) | List of BookEntity objects |
+| Get Books by Name Containing    | **GET**    | [/bookNameContain/](){bookName}    | bookName (Path parameter) | List of BookEntity objects |
+
+<br>
+<br>
+
+### DELETE Book 📕
+
+| Endpoint                | Method     | URL                                  | Request Parameter            | Response                                                                                                                    |
+|-------------------------|------------|--------------------------------------|------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| Delete Book by ID       | **DELETE** | [/deleteBookById/](){id}             | id (Path parameter)          | [202 Accepted]() : Book deleted successfully    <p align="center" >OR</p>   [404 Not Found]() : Book with the given ID not found           |
+| Delete Book by Name     | **DELETE** | [/deleteBookByName/](){bookName}     | bookName (Path parameter)    | [202 Accepted]() : Books deleted successfully   <p align="center" >OR</p>   [404 Not Found]() : No books found with the given name         |
+| Delete Books by Author  | **DELETE** | [/deleteAllByAuthor/](){authorName}  | authorName (Path parameter)  | [202 Accepted]() : Books deleted successfully   <p align="center" >OR</p>   [404 Not Found]() : No books found with the given author name  |
+
+<br>
+
+## How to Run the Project 💨
+
+1. Ensure you have Java and MySQL installed on your system.
+2. Clone or download the project from the repository.
+3. Import the project into your preferred IDE (e.g., Eclipse, IntelliJ).
+4. Set up the MySQL database and update the database configurations in the `application.properties` file (not provided in the code).
+5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
+<br>
+
+
+
+## Technologies Used 🌐
+
+- Java
+- Spring Boot
+- Spring Data JPA
+- Hibernate
+- RESTful API
+- JSON
+- MySQL
+- PostMan (For testing APIs)
+- Mavin
+<br>
+
+
+
+<!---
+
 
 ### Delete Book by ID
 
@@ -147,11 +193,15 @@ Get a list of books whose names contain the given specified book name or charact
 
 - **URL:** GET `/bookNameContain/{bookName}`
 - **Response:** List of BookEntity objects
+
+-->
+
+
+
 <br>
 
 ## ‼️ Important Note ‼️
 
-- The code provided is not fully complete and might not work as expected without certain dependencies and configurations.
 - You need to set up the database and make sure the application properties are correctly configured to run the project successfully.
 <br>
 
@@ -166,23 +216,24 @@ Feel free to explore and use these project. If you encounter any issues or have 
 
 Contributions are always welcome! ✨
 
-See [`contributing.md`](https://github.com/ajaynegi45/Book-API/blob/main/contributing.md) for ways to get started.
+See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/contributing.md) for ways to get started.
 
-Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Book-API/blob/main/code_of_conduct.md).
-<br>
+Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
+<br><br>
 
 ## Contact Information 📧
 
 If you have any questions or would like to connect, please don't hesitate to reach out. I'd be more than happy to chat and learn from your experiences too.
 <br>
 <br>
-**Email:** contact@ajaynegi.co
+**Email:** [contact me](mailto:contact@ajaynegi.co)
+<br>
 <br>
 
 ## Thankyou ❤️
 Thank you for taking the time to explore my project. I hope you find them informative and useful in your journey to learn Java and enhance your programming skills. Your support and contributions are highly appreciated. 
 Happy coding! ✨
-<br>
+<br><br>
 
 ## Authors
 
