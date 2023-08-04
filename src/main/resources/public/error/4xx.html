@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404: Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #FFF;
+            display: flex;
+        }
+        h2 {
+            color: #CF6679;
+        }
+        #content {
+            width: 100%;
+            text-align: center;
+        }
+        #url-parent {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        #url1 {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        #url2 {
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        .request {
+            text-align: left;
+            width: fit-content;
+            margin: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 15px;
+            border: solid #FFF 2px;
+            background-color: #3d3d3d;
+        }
+        #table1 {
+            padding-top: 25px;
+        }
+
+        #table2 {
+            padding-top: 25px;
+            padding-bottom: 50px;
+        }
+
+        table {
+            width: 50%;
+            margin: auto;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 15px;
+            border: solid #FFF 2px;
+            background-color: #3d3d3d;
+        }
+    </style>
+</head>
+
+<body>
+<div id="content">
+    <h2>Something went wrong! Only the following endpoints are allowed:</h2>
+
+    <div id="url-parent">
+        <div id="url1">
+            <h3>ADD</h3>
+            <p>URL: POST `/addBook`</p>
+            <div class="request">
+                <p>Request Body:<br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"bookName": "Book Title",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"authorName": "Author Name",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"bookPrice": 29.99,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"stockQuantity": 50<br>
+                    }<br><br>
+                    <b>{Response} 202: Accepted / 404: Not Found</b>
+                </p>
+            </div>
+        </div>
+        <div id="url2">
+            <h3>UPDATE</h3>
+            <p>URL: PUT `/updatebook/{bookid}`</p>
+            <div class="request">
+                <p>Request Body:<br>
+                    {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"bookName": "Updated Book Name",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"authorName": "Updated Author Name",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"bookPrice": "Updated 29.99",<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"stockQuantity": "Updated Stock Quantity"<br>
+                    }<br><br>
+                    <b>{Response} 202: Accepted / 404: Not Found</b>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="table-parent">
+        <div id="table1">
+            <h3>GET</h3>
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Request Parameter</th>
+                    <th>Response</th>
+                </tr>
+                <tr>
+                    <td>Get All Books</td>
+                    <td>GET</td>
+                    <td>/getAllBooks</td>
+                    <td>None</td>
+                    <td>List of BookEntity objects</td>
+                </tr>
+                <tr>
+                    <td>Get Book by ID</td>
+                    <td>GET</td>
+                    <td>/getAllBooksById/{id}</td>
+                    <td>id (Path parameter)</td>
+                    <td>BookEntity object</td>
+                </tr>
+                <tr>
+                    <td>Get Books by Name Starting With</td>
+                    <td>GET</td>
+                    <td>/bookNameStartWith/{bookName}</td>
+                    <td>bookName (Path parameter)</td>
+                    <td>List of BookEntity objects</td>
+                </tr>
+                <tr>
+                    <td>Get Books by Name Ending With</td>
+                    <td>GET</td>
+                    <td>/bookNameEndWith/{bookName}</td>
+                    <td>bookName (Path parameter)</td>
+                    <td>List of BookEntity objects</td>
+                </tr>
+                <tr>
+                    <td>Get Books by Name Containing</td>
+                    <td>GET</td>
+                    <td>/bookNameContain/{bookName}</td>
+                    <td>bookName (Path parameter)</td>
+                    <td>List of BookEntity objects</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="table2">
+            <h3>DELETE</h3>
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Request Parameter</th>
+                    <th>Response</th>
+                </tr>
+                <tr>
+                    <td>Delete Book by ID</td>
+                    <td>DELETE</td>
+                    <td>/deleteBookById/{id}</td>
+                    <td>id (Path parameter)</td>
+                    <td>202: Accepted / 404: Not Found</td>
+                </tr>
+                <tr>
+                    <td>Delete Book by Name</td>
+                    <td>DELETE</td>
+                    <td>/deleteBookByName/{bookName}</td>
+                    <td>bookName (Path parameter)</td>
+                    <td>202: Accepted / 404: Not Found</td>
+                </tr>
+                <tr>
+                    <td>Delete Books by Author</td>
+                    <td>DELETE</td>
+                    <td>/deleteAllByAuthor/{authorName}</td>
+                    <td>authorName (Path parameter)</td>
+                    <td>202: Accepted / 404: Not Found</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
