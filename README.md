@@ -33,7 +33,7 @@ The project consists of several components, each serving a specific purpose:
 
 
 ## API Endpoints 🔗
-
+[API Collection Documentation on Postman](https://documenter.getpostman.com/view/28691426/2s9XxwxEsr) for testing API
 <br>
 
 ### Add Book 📗
@@ -121,7 +121,7 @@ Update an existing book's details by providing the book ID.
 - RESTful API
 - JSON
 - MySQL
-- PostMan (For testing APIs)
+- PostMan ([API Collection Documentation on Postman](https://documenter.getpostman.com/view/28691426/2s9XxwxEsr) for testing API)
 - Mavin
 <br>
 
