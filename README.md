@@ -112,8 +112,6 @@ Update an existing book's details by providing the book ID.
 5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
 <br>
 
-
-
 ## Technologies Used 🌐
 
 - Java
@@ -195,20 +193,16 @@ Get a list of books whose names contain the given specified book name or charact
 - **Response:** List of BookEntity objects
 
 -->
-
-
-
 <br>
 
 ## ‼️ Important Note ‼️
 
 - You need to set up the database and make sure the application properties are correctly configured to run the project successfully.
-<br>
+<br><br>
 
 ## Upcoming Update
 Adding more features, error handling, authentication, and security measures.
-<br>
-<br>
+<br><br>
 
 ## Contributing 🤗
 
@@ -224,11 +218,9 @@ Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajayne
 ## Contact Information 📧
 
 If you have any questions or would like to connect, please don't hesitate to reach out. I'd be more than happy to chat and learn from your experiences too.
-<br>
-<br>
+<br><br>
 **Email:** [contact me](mailto:contact@ajaynegi.co)
-<br>
-<br>
+<br><br>
 
 ## Thankyou ❤️
 Thank you for taking the time to explore my project. I hope you find them informative and useful in your journey to learn Java and enhance your programming skills. Your support and contributions are highly appreciated. 
@@ -238,3 +230,8 @@ Happy coding! ✨
 ## Authors
 
 - 🙍🏻‍♂️ [@ajaynegi45](https://github.com/ajaynegi45)
+<br><br>
+
+## Contributors
+
+- 🙍🏻‍♂️ [@LewisRye](https://github.com/lewisrye)
