@@ -21,11 +21,11 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(int id, String bookName, String authorName, Double bookPrice, int stockQuantity) {
+    public BookEntity(int id, String name, String author, Double price, int stockQuantity) {
         this.id = id;
-        this.bookName = bookName;
-        this.authorName = authorName;
-        this.bookPrice = bookPrice;
+        this.bookName = name;
+        this.authorName = author;
+        this.bookPrice = price;
         this.stockQuantity = stockQuantity;
     }
 
