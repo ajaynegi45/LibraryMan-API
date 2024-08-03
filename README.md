@@ -108,7 +108,7 @@ Update an existing book's details by providing the book ID.
 1. Ensure you have Java and MySQL installed on your system.
 2. Clone or download the project from the repository.
 3. Import the project into your preferred IDE (e.g., Eclipse, IntelliJ).
-4. Set up the MySQL database and update the database configurations in the `application.properties` file (not provided in the code).
+4. Set up the MySQL database and update the database configurations in the `application-development.properties` file.
 5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
 <br>
 
