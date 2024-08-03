@@ -62,17 +62,22 @@
             border: solid #FFF 2px;
             background-color: #3d3d3d;
         }
+
+        .url{
+            color: #669F64;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
 <div id="content">
-    <h2>Something went wrong!<br><br>Only the following endpoints are allowed</h2>
+    <h2><br><br>Only the following endpoints are allowed</h2>
 
     <div id="url-parent">
         <div id="url1">
             <h3>ADD</h3>
-            <p>URL: POST `/addBook`</p>
+            <p><span class="url">URL</span>: POST  `/addBook`</p>
             <div class="request">
                 <p>Request Body:<br>
                     {<br>
@@ -87,7 +92,7 @@
         </div>
         <div id="url2">
             <h3>UPDATE</h3>
-            <p>URL: PUT `/updatebook/{bookid}`</p>
+            <p><span class="url">URL</span>: PUT  `/updatebook/{bookid}`</p>
             <div class="request">
                 <p>Request Body:<br>
                     {<br>
@@ -109,7 +114,7 @@
                 <tr>
                     <th>Endpoint</th>
                     <th>Method</th>
-                    <th>URL</th>
+                    <th><span class="url">URL</span></th>
                     <th>Request Parameter</th>
                     <th>Response</th>
                 </tr>
@@ -157,7 +162,7 @@
                 <tr>
                     <th>Endpoint</th>
                     <th>Method</th>
-                    <th>URL</th>
+                    <th><span class="url">URL</span></th>
                     <th>Request Parameter</th>
                     <th>Response</th>
                 </tr>
