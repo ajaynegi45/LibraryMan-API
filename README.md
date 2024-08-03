@@ -1,6 +1,6 @@
-# LibMan: Library Management Simplified 📚
+# LibraryMan: Library Management Simplified 📚
 
-LibMan is a user-friendly software solution for schools, companies, and libraries to efficiently manage book collections, track borrowing, and monitor due dates. It streamlines operations, reduces errors, and enhances the lending experience, making it easy to maintain a well-organized library.
+LibraryMan is a user-friendly software solution for schools, companies, and libraries to efficiently manage book collections, track borrowing, and monitor due dates. It streamlines operations, reduces errors, and enhances the lending experience, making it easy to maintain a well-organized library.
 
 It allows users to perform CRUD (Create, Read, Update, Delete) operations on books using the API. It adding new books, updating existing ones, searching for books, and deleting books.
 <br>
