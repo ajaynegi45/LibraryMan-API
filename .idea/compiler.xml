@@ -9,6 +9,9 @@
         <module name="Spring-Boot" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Library-API" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
