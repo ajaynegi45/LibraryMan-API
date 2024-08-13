@@ -32,7 +32,182 @@ The project consists of several components, each serving a specific purpose:
 
 
 
+``` mermaid
+%% Architecture Diagram
+graph TD
+    A[Presentation Layer] --> B[Business Logic Layer]
+    B --> C[Data Access Layer]
+    C --> D[(Database)]
 
+%% Modules Diagram
+subgraph Modules
+    UM[User Management Module] --> A
+    BM[Book Management Module] --> B
+    BRM[Borrowing & Returning Module] --> B
+    NM[Notification Module] --> B
+    RM[Reporting Module] --> B
+end
+```
+``` mermaid
+
+%% User Management Module Class Diagram
+classDiagram
+    class User {
+        int userId
+        String name
+        String email
+        String password
+        String role
+        String status
+        + register()
+        + login()
+        + logout()
+        + changePassword()
+    }
+    class Librarian {
+        + addBook()
+        + removeBook()
+        + issueBook()
+        + returnBook()
+    }
+    class Member {
+        + searchBook()
+        + requestBook()
+        + viewIssuedBooks()
+    }
+    Librarian --|> User
+    Member --|> User
+
+%% Book Management Module Class Diagram
+    class Book {
+        int bookId
+        String title
+        String author
+        String ISBN
+        String publisher
+        int publicationYear
+        String genre
+        int copiesAvailable
+        +addBook()
+        +removeBook()
+        +updateBook()
+        +searchBook()
+    }
+    class BookInventory {
+        List<Book> inventoryList
+        +addBookToInventory()
+        +removeBookFromInventory()
+        +updateInventory()
+    }
+
+%% Borrowing & Returning Module Class Diagram
+    class Transaction {
+        int transactionId
+        Book book
+        User user
+        Date transactionDate
+        Date dueDate
+        Date returnDate
+        String status
+        +createTransaction()
+        +closeTransaction()
+        +extendDueDate()
+    }
+    class BorrowingService {
+        +issueBook()
+        +calculateDueDate()
+        +checkAvailability()
+    }
+    class ReturningService {
+        +returnBook()
+        +calculateLateFees()
+        +updateBookStatus()
+    }
+
+%% Notification Module Class Diagram
+    class Notification {
+        int notificationId
+        User user
+        String message
+        String notificationType
+        Date sentDate
+        Boolean readStatus
+        +sendNotification()
+        +markAsRead()
+    }
+    class NotificationService {
+        +sendDueDateReminder()
+        +sendOverdueAlert()
+        +sendGeneralNotification()
+    }
+
+%% Reporting Module Class Diagram
+    class Report {
+        int reportId
+        String reportType
+        Date generatedDate
+        String content
+        +generateReport()
+        +viewReport()
+        +exportReport()
+    }
+    class ReportService {
+        +generateBorrowingReport()
+        +generateInventoryReport()
+        +generateUserActivityReport()
+    }
+```
+
+``` mermaid
+%% Database Design (ER Diagram)
+erDiagram
+    USERS {
+        int userId PK
+        String name
+        String email
+        String password
+        String role
+        String status
+    }
+    BOOKS {
+        int bookId PK
+        String title
+        String author
+        String ISBN
+        String publisher
+        int publicationYear
+        String genre
+        int copiesAvailable
+    }
+    TRANSACTIONS {
+        int transactionId PK
+        int userId FK
+        int bookId FK
+        Date transactionDate
+        Date dueDate
+        Date returnDate
+        String status
+    }
+    NOTIFICATIONS {
+        int notificationId PK
+        int userId FK
+        String message
+        String notificationType
+        Date sentDate
+        Boolean readStatus
+    }
+    REPORTS {
+        int reportId PK
+        String reportType
+        Date generatedDate
+        String content
+    }
+
+    USERS ||--o{ TRANSACTIONS : "has"
+    BOOKS ||--o{ TRANSACTIONS : "is part of"
+    USERS ||--o{ NOTIFICATIONS : "receives"
+
+```
 
 ## API Endpoints 🔗
 [API Collection Documentation on Postman](https://documenter.getpostman.com/view/28691426/2s9XxwxEsr) for testing API
