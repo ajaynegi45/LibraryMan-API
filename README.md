@@ -58,6 +58,19 @@ If you have any questions or would like to connect, please don't hesitate to rea
   <img src = "https://contrib.rocks/image?repo=ajaynegi45/LibraryMan-API"/>
 </a>
 
+### Stargazers
+
+<p align="center">
+  <i>If you like LibraryMan Project, please <a href="https://github.com/ajaynegi45/LibraryMan-API/stargazers">★</a> star this repository to show your support! 🤩</i>
+ <br/>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ajaynegi45/LibraryMan-API&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ajaynegi45/LibraryMan-API&type=Date" />
+      <img align="center" alt="Star History Chart" src="https://api.star-history.com/svg?repos=ajaynegi45/LibraryMan-API&type=Date" />
+    </picture>
+</p>
+
+
 ## Thankyou ❤️
 Thank you for taking the time to explore my project. I hope you find them informative and useful in your journey to learn Java and enhance your programming skills. Your support and contributions are highly appreciated.
 Happy coding! ✨
