@@ -38,17 +38,13 @@ jobs:
             </dependency>' pom.xml
         shell: bash
 
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+        shell: bash
+
       - name: Validate POM file
         run: xmllint --noout pom.xml
         shell: bash
-
-      - name: Add PostgreSQL dependency for testing
-        run: |
-          echo '<dependency>' >> pom.xml
-          echo '  <groupId>org.postgresql</groupId>' >> pom.xml
-          echo '  <artifactId>postgresql</artifactId>' >> pom.xml
-          echo '  <scope>test</scope>' >> pom.xml
-          echo '</dependency>' >> pom.xml
 
       - name: Install dependencies
         run: mvn install -DskipTests
@@ -58,3 +54,4 @@ jobs:
 
       - name: Verify application runs (optional step)
         run: mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8080 &
+        shell: bash
