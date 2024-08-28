@@ -28,6 +28,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Add PostgreSQL dependency for testing
+        run: |
+          echo '<dependency>' >> pom.xml
+          echo '  <groupId>org.postgresql</groupId>' >> pom.xml
+          echo '  <artifactId>postgresql</artifactId>' >> pom.xml
+          echo '  <scope>test</scope>' >> pom.xml
+          echo '</dependency>' >> pom.xml
+
       - name: Install dependencies
         run: mvn install -DskipTests
 
