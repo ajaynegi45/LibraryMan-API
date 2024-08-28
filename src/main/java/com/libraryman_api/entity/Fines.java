@@ -15,15 +15,6 @@ public class Fines {
     @Column(name = "fine_id")
     private int fineId;
 
-    @OneToOne
-    @JoinColumn(name = "borrowing_id", unique = true, nullable = false)
-    private Borrowings borrowing;
-
-
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Members member;
-
 /**
  * precision = 10 means the total number of digits (including decimal places) is 10.
  * scale = 2 means the number of decimal places is 2.
@@ -38,22 +29,11 @@ public class Fines {
     public Fines() {
     }
 
-    public Fines(Borrowings borrowing, BigDecimal amount, boolean paid) {
-        this.borrowing = borrowing;
+
+    public Fines( BigDecimal amount, boolean paid) {
+
         this.amount = amount;
         this.paid = paid;
-    }
-
-    public int getFineId() {
-        return fineId;
-    }
-
-    public Borrowings getBorrowing() {
-        return borrowing;
-    }
-
-    public void setBorrowing(Borrowings borrowing) {
-        this.borrowing = borrowing;
     }
 
     public BigDecimal getAmount() {
@@ -70,5 +50,9 @@ public class Fines {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+    public int getFineId() {
+        return fineId;
     }
 }

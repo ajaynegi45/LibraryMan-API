@@ -10,8 +10,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/borrowings")
 public class BorrowingController {
-    @Autowired
-    private BorrowingService borrowingService;
+
+    private final BorrowingService borrowingService;
+    public BorrowingController(BorrowingService borrowingService) {
+        this.borrowingService = borrowingService;
+    }
 
     @GetMapping
     public List<Borrowings> getAllBorrowings() {
@@ -26,5 +29,11 @@ public class BorrowingController {
     @PutMapping("/{id}/return")
     public void returnBook(@PathVariable int id) {
         borrowingService.returnBook(id);
+    }
+
+    @PutMapping("/{id}/pay")
+    public String payFine(@PathVariable int id) {
+        System.out.println("Pay Fine Id: " + id);
+        return borrowingService.payFine(id);
     }
 }
