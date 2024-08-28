@@ -20,6 +20,7 @@ jobs:
           echo "DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}"
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
           echo "DATABASE_DRIVER_CLASS_NAME=${{ secrets.DATABASE_DRIVER_CLASS_NAME }}"
+          echo "ENV=${{ secrets.ENV }}"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
