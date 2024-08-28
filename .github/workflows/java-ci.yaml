@@ -49,3 +49,4 @@ jobs:
       - name: Verify application runs
         run: mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8080 &
         shell: bash
+
