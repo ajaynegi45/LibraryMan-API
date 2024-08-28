@@ -7,7 +7,11 @@ import java.math.BigDecimal;
 @Entity
 public class Fines {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "fine_id_generator")
+    @SequenceGenerator(name = "fine_id_generator",
+            sequenceName = "fine_id_sequence",
+            allocationSize = 1)
     @Column(name = "fine_id")
     private int fineId;
 

@@ -1,14 +1,6 @@
 package com.libraryman_api.entity;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 
 import java.sql.Timestamp;
@@ -17,7 +9,11 @@ import java.sql.Timestamp;
 @Entity
 public class Notifications {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "notification_id_generator")
+    @SequenceGenerator(name = "notification_id_generator",
+            sequenceName = "notification_id_sequence",
+            allocationSize = 1)
     @Column(name = "notification_id")
     private int notificationId;
 

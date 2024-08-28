@@ -1,16 +1,17 @@
 package com.libraryman_api.entity;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 
 @Entity
 public class Books {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "book_id_generator")
+    @SequenceGenerator(name = "book_id_generator",
+            sequenceName = "book_id_sequence",
+            allocationSize = 1)
     @Column(name = "book_id")
     private int bookId;
 

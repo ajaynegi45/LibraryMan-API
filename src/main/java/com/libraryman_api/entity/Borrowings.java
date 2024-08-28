@@ -7,7 +7,11 @@ import java.util.Date;
 @Entity
 public class Borrowings {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "borrowing_id_generator")
+    @SequenceGenerator(name = "borrowing_id_generator",
+            sequenceName = "borrowing_id_sequence",
+            allocationSize = 1)
     @Column(name = "borrowing_id")
     private int borrowingId;
 

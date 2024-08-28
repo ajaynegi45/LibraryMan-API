@@ -1,12 +1,7 @@
 package com.libraryman_api.entity;
 
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 
@@ -14,7 +9,11 @@ import java.util.Date;
 public class Members {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "member_id_generator")
+    @SequenceGenerator(name = "member_id_generator",
+            sequenceName = "member_id_sequence",
+            allocationSize = 1)
     @Column(name = "member_id")
     private int memberId;
 
