@@ -28,26 +28,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Validate POM file
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libxml2-utils
-          xmllint --noout pom.xml
-
       - name: Add PostgreSQL dependency
         run: |
-          if ! grep -q '<artifactId>postgresql</artifactId>' pom.xml; then
-            sed -i '/<\/dependencies>/ i\
-              <dependency>\n\
-                <groupId>org.postgresql</groupId>\n\
-                <artifactId>postgresql</artifactId>\n\
-                <scope>test</scope>\n\
-              </dependency>' pom.xml
-          fi
+          mvn versions:use-releases
+          sed -i '/<\/dependencies>/ i\
+            <dependency>\n\
+              <groupId>org.postgresql</groupId>\n\
+              <artifactId>postgresql</artifactId>\n\
+              <version>42.6.0</version>\n\
+              <scope>runtime</scope>\n\
+            </dependency>' pom.xml
         shell: bash
 
-      - name: Install dependencies
-        run: mvn install -DskipTests
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+        shell: bash
+
+      - name: Validate POM file
+        run: xmllint --noout pom.xml
+        shell: bash
 
       - name: Build with Maven
         env:
@@ -55,7 +54,7 @@ jobs:
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_DRIVER_CLASS_NAME: ${{ secrets.DATABASE_DRIVER_CLASS_NAME }}
-        run: mvn clean install
+        run: mvn clean install -X
 
       - name: Run tests
         run: mvn test
