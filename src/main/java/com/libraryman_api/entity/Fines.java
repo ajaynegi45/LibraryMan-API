@@ -12,12 +12,12 @@ public class Fines {
     private int fineId;
 
     @OneToOne
-    @JoinColumn(name = "borrowingId", unique = true, nullable = false)
+    @JoinColumn(name = "borrowing_id", unique = true, nullable = false)
     private Borrowings borrowing;
 
 
     @ManyToOne
-    @JoinColumn(name = "memberId", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     private Members member;
 
 /**
