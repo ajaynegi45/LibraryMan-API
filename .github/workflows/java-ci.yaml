@@ -28,6 +28,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Add PostgreSQL dependency
+        run: |
+          sed -i '/<\/dependencies>/ i\
+            <dependency>\n\
+              <groupId>org.postgresql</groupId>\n\
+              <artifactId>postgresql</artifactId>\n\
+              <scope>test</scope>\n\
+            </dependency>' pom.xml
+        shell: bash
+
+      - name: Validate POM file
+        run: xmllint --noout pom.xml
+        shell: bash
+
       - name: Add PostgreSQL dependency for testing
         run: |
           echo '<dependency>' >> pom.xml
