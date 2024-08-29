@@ -3,12 +3,12 @@ package com.libraryman_api.service;
 import com.libraryman_api.entity.Books;
 import com.libraryman_api.entity.Borrowings;
 import com.libraryman_api.entity.Fines;
-import com.libraryman_api.entity.Members;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.repository.BorrowingRepository;
 import com.libraryman_api.repository.FineRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -135,7 +135,7 @@ public class BorrowingService {
 
     private Date calculateDueDate() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 14); // Adjust lending period as needed
+        calendar.add(Calendar.DAY_OF_YEAR, 15);
         return calendar.getTime();
     }
 
@@ -143,6 +143,13 @@ public class BorrowingService {
         long overdueDays = ChronoUnit.DAYS.between(
                 borrowing.getDueDate().toInstant(),
                 new Date().toInstant());
-        return BigDecimal.valueOf(overdueDays * 10); // 10 currency units per day
+        System.out.println("Over Due Days" + overdueDays);
+        System.out.println("Fine Amount" + (overdueDays*10));
+        return BigDecimal.valueOf(overdueDays * 10); // 10 rupees per day fine
+    }
+
+
+    public List<Borrowings> getAllBorrowingsOfMember(int memberId) {
+        return borrowingRepository.findByMember_memberId(memberId).orElseThrow(() -> new ResourceNotFoundException("Member didn't borrow any book"));
     }
 }

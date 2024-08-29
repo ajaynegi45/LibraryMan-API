@@ -1,11 +1,12 @@
 package com.libraryman_api.controller;
 
 import com.libraryman_api.entity.Borrowings;
+import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.service.BorrowingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/borrowings")
@@ -35,5 +36,16 @@ public class BorrowingController {
     public String payFine(@PathVariable int id) {
         System.out.println("Pay Fine Id: " + id);
         return borrowingService.payFine(id);
+    }
+
+    @GetMapping("member/{memberId}")
+    public List<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId) {
+        return borrowingService.getAllBorrowingsOfMember(memberId);
+    }
+
+
+    @GetMapping("{borrowingId}")
+    public Borrowings getBorrowingById(@PathVariable int borrowingId) {
+        return borrowingService.getBorrowingById(borrowingId).orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
     }
 }

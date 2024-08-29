@@ -1,7 +1,9 @@
 package com.libraryman_api.controller;
 
+import com.libraryman_api.entity.Borrowings;
 import com.libraryman_api.entity.Members;
 import com.libraryman_api.exception.ResourceNotFoundException;
+import com.libraryman_api.service.BorrowingService;
 import com.libraryman_api.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
-    @Autowired
-    private MemberService memberService;
+
+    private final MemberService memberService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
+
+
 
     @GetMapping
     public List<Members> getAllMembers() {
