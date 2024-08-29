@@ -2,16 +2,22 @@
 
 LibraryMan is a user-friendly software solution for schools, companies, and libraries to efficiently manage book collections, track borrowing, and monitor due dates. It streamlines operations, reduces errors, and enhances the lending experience, making it easy to maintain a well-organized library.
 
+<br>
+
 ## Project Structure 📂
 Checkout [Project Structure](https://github.com/ajaynegi45/LibraryMan-API/blob/main/ProjectStructure.md) Diagram
 
-
-
-## API Endpoints 🔗
-Checkout all [API Endpoints](https://documenter.getpostman.com/view/28691426/2sAXjJ6D7L)
 <br>
 
+## API Endpoints 🔗
 
+#### Learn More
+Want to know more about our API endpoints? Check out our [API Documentation](https://github.com/ajaynegi45/LibraryMan-API/tree/main/api-docs) for detailed information.
+
+#### Test Endpoints
+Ready to try out our API endpoints? Use [Postman Documentation](https://documenter.getpostman.com/view/28691426/2sAXjJ6D7L) to test and explore our APIs.
+
+<br>
 
 ## How to Run the Project 💨
 
@@ -20,19 +26,19 @@ Checkout all [API Endpoints](https://documenter.getpostman.com/view/28691426/2sA
 3. Import the project into your preferred IDE (e.g., Eclipse, IntelliJ).
 4. Set up the MySQL database and update the database configurations in the `application-development.properties` file.
 5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
-   <br>
 
+<br>
 
 ## ‼️ Important Note ‼️
 
 - You need to set up the database and make sure the application properties are correctly configured to run the project successfully.
-  <br><br>
 
+<br>
 
-  
 ## Upcoming Update
 Adding more features, error handling, authentication, and security measures.
-<br><br>
+
+<br>
 
 ## Contributing 🤗
 
@@ -43,7 +49,8 @@ Contributions are always welcome! ✨
 See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/contributing.md) for ways to get started.
 
 Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
-<br><br>
+
+<br>
 
 ## Contact Information 📧
 
