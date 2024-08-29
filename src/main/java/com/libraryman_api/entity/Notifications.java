@@ -21,7 +21,7 @@ public class Notifications {
     @JoinColumn(name = "member_id", nullable = false)
     private Members member;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String message;
 
     @Enumerated(EnumType.STRING)
@@ -31,19 +31,20 @@ public class Notifications {
     @Column(name = "sent_date", nullable = false)
     private Timestamp sentDate;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private NotificationStatus notificationStatus;
 
 
 
     public Notifications() {
     }
 
-    public Notifications( Members member, String message, NotificationType notificationType, Timestamp sentDate, String status) {
+    public Notifications(Members member, String message, NotificationType notificationType, Timestamp sentDate, NotificationStatus notificationStatus) {
         this.member = member;
         this.message = message;
         this.notificationType = notificationType;
         this.sentDate = sentDate;
-        this.status = status;
+        this.notificationStatus = notificationStatus;
     }
 
     public int getNotificationId() {
@@ -82,11 +83,11 @@ public class Notifications {
         this.sentDate = sentDate;
     }
 
-    public String getStatus() {
-        return status;
+    public NotificationStatus getNotificationStatus() {
+        return notificationStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setNotificationStatus(NotificationStatus notificationStatus) {
+        this.notificationStatus = notificationStatus;
     }
 }

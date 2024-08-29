@@ -4,9 +4,7 @@ import com.libraryman_api.entity.Borrowings;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.service.BorrowingService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/borrowings")

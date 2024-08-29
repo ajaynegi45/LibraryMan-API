@@ -64,7 +64,7 @@ http://localhost:8080/api
 
 **Error Responses:**
 - **Code:** `404 NOT FOUND`
-    - **Message:** `Book not found` or `Not enough copies available`
+  - **Message:** `Book not found` or `Not enough copies available`
 - **Content:**
   ```json
   {
@@ -122,7 +122,7 @@ http://localhost:8080/api
 
 **Error Responses:**
 - **Code:** `404 NOT FOUND`
-    - **Message:** `Borrowing not found`, `Book has already been returned`, `Due date passed. Fine imposed, pay fine first to return the book`, or `Outstanding fine, please pay before returning the book`
+  - **Message:** `Borrowing not found`, `Book has already been returned`, `Due date passed. Fine imposed, pay fine first to return the book`, or `Outstanding fine, please pay before returning the book`
 - **Content:**
   ```json
   {
@@ -149,7 +149,7 @@ http://localhost:8080/api
 
 **Error Responses:**
 - **Code:** `404 NOT FOUND`
-    - **Message:** `Borrowing not found`, `No outstanding fine found or fine already paid`
+  - **Message:** `Borrowing not found`, `No outstanding fine found or fine already paid`
 - **Content:**
   ```json
   {

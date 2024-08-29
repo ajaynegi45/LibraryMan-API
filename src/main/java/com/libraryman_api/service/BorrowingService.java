@@ -8,8 +8,6 @@ import com.libraryman_api.repository.BorrowingRepository;
 import com.libraryman_api.repository.FineRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -24,7 +22,6 @@ public class BorrowingService {
     private final FineRepository fineRepository;
     private final NotificationService notificationService;
     private final BookService bookService;
-
     public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService) {
         this.borrowingRepository = borrowingRepository;
         this.fineRepository = fineRepository;
@@ -51,9 +48,11 @@ public class BorrowingService {
                 updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
                 borrowing.setBorrowDate(new Date());
                 borrowing.setDueDate(calculateDueDate());
+
                 Borrowings savedBorrowing = borrowingRepository.save(borrowing);
 
-                notificationService.sendReminderNotification(savedBorrowing);
+                notificationService.borrowBookNotification(savedBorrowing); // Null Book problem
+                notificationService.reminderNotification(savedBorrowing); // send this notification two days before the due date // Null Book problem
                 return savedBorrowing;
             } else {
                 throw new ResourceNotFoundException("Not enough copies available");
@@ -71,19 +70,21 @@ public class BorrowingService {
         if (borrowing.getReturnDate() != null) {
             throw new ResourceNotFoundException("Book has already been returned");
         }
-
         if (borrowing.getDueDate().before(new Date())) {
             if (borrowing.getFine() == null) {
                 borrowing.setFine(imposeFine(borrowing));
                 borrowingRepository.save(borrowing);
+                notificationService.fineImposedNotification(borrowing);
                 throw new ResourceNotFoundException("Due date passed. Fine imposed, pay fine first to return the book");
             } else if (!borrowing.getFine().isPaid()) {
+                notificationService.fineImposedNotification(borrowing);
                 throw new ResourceNotFoundException("Outstanding fine, please pay before returning the book");
             }
         }
 
         borrowing.setReturnDate(new Date());
         updateBookCopies(borrowing.getBook().getBookId(), "ADD", 1);
+        notificationService.bookReturnedNotification(borrowing);
         borrowingRepository.save(borrowing);
     }
 
@@ -91,7 +92,6 @@ public class BorrowingService {
         Fines fine = new Fines();
 //        fine.setAmount(BigDecimal.valueOf(10)); // Hard Coding fine for testing purpose
         fine.setAmount(calculateFineAmount(borrowing));
-        notificationService.sendFineNotification(borrowing.getMember());
         return fineRepository.save(fine);
     }
 
@@ -104,12 +104,12 @@ public class BorrowingService {
 
         if (fine != null && !fine.isPaid()) {
             fine.setPaid(true);
+            notificationService.finePaidNotification(borrowing);
             fineRepository.save(fine);  // Save the updated fine
             borrowingRepository.save(borrowing);  // Save borrowing with updated fine
         } else {
             throw new ResourceNotFoundException("No outstanding fine found or fine already paid");
         }
-
         return "PAID";
     }
 
