@@ -1,11 +1,11 @@
 # Library Management System API Documentation
 
----
+<br/>
 
 #### Base URL
 
 ```
-/api
+http://localhost:8080/api
 ```
 
 ---
@@ -219,7 +219,3 @@ None
 <br/>
 <br/>
 <br/>
-
-
-
-

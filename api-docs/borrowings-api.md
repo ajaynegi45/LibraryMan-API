@@ -1,6 +1,17 @@
+# Library Management System API Documentation
 
+<br/>
 
-#### 6. **Borrow a Book**
+#### Base URL
+
+```
+http://localhost:8080/api
+```
+---
+
+# Borrowings API Endpoints
+
+### 1. **Borrow a Book**
 
 **Endpoint:** `/borrowings`  
 **Method:** `POST`  
@@ -65,7 +76,7 @@
 
 ---
 
-#### 7. **Return a Book**
+### 2. **Return a Book**
 
 **Endpoint:** `/borrowings/{id}/return`  
 **Method:** `PUT`  
@@ -123,7 +134,7 @@
 
 ---
 
-#### 8. **Pay Fine**
+### 3. **Pay Fine**
 
 **Endpoint:** `/borrowings/{id}/pay-fine`  
 **Method:** `PUT`  
@@ -150,7 +161,7 @@
 
 ---
 
-#### 9. **Get All Borrowings**
+### 4. **Get All Borrowings**
 
 **Endpoint:** `/borrowings`  
 **Method:** `GET`  
@@ -198,7 +209,7 @@ None
 
 ---
 
-#### 10. **Get All Borrowings of a Member**
+### 5. **Get All Borrowings of a Member**
 
 **Endpoint:** `/borrowings/member/{memberId}`  
 **Method:** `GET`  
@@ -257,26 +268,8 @@ None
   ```
 
 
----
-
-### Global Error Handling
-
-All endpoints will return a standardized error response in case of exceptions:
-
-**Error Response Structure:**
-```json
-{
-    "timestamp": "2024-08-29T10:00:00Z",
-    "message": "Error Message",
-    "details": "Request Path"
-}
-```
-
-### Common Error Codes
-
-- **404 NOT FOUND:** The requested resource was not found.
-- **400 BAD REQUEST:** The request was invalid or cannot be otherwise served.
-
----
-
-This documentation provides a clear and concise guide to the available API endpoints, including their respective methods, success responses, and potential error responses.
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
