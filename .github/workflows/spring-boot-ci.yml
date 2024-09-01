@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
 
       - name: Install dependencies
-        run: mvn clean install -d
+        run: mvn clean install
 
       - name: Output environment variables
         run: |
