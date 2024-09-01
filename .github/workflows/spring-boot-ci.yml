@@ -23,7 +23,23 @@ jobs:
           java-version: '17'
 
       - name: Install dependencies
-        run: mvn clean install
+        run: mvn clean install -d
+
+      - name: Output environment variables
+        run: |
+          echo "ENV=$ENV"
+          echo "DATABASE_URL=$DATABASE_URL"
+          echo "DATABASE_USERNAME=$DATABASE_USERNAME"
+          echo "DATABASE_PASSWORD=$DATABASE_PASSWORD"
+          echo "DATABASE_DRIVER_CLASS_NAME=$DATABASE_DRIVER_CLASS_NAME"
+          echo "MAIL_SERVICE_HOST=$MAIL_SERVICE_HOST"
+          echo "MAIL_SERVICE_PORT=$MAIL_SERVICE_PORT"
+          echo "MAIL_SERVICE_USERNAME=$MAIL_SERVICE_USERNAME"
+          echo "MAIL_SERVICE_PASSWORD=$MAIL_SERVICE_PASSWORD"
+          echo "MAIL_SERVICE_SMTP=$MAIL_SERVICE_SMTP"
+          echo "MAIL_SERVICE_STARTTLS=$MAIL_SERVICE_STARTTLS"
+          echo "MAIL_SERVICE_DOMAIN_NAME=$MAIL_SERVICE_DOMAIN_NAME"
+
 
       - name: Run Spring Boot Application
         run: mvn spring-boot:run
