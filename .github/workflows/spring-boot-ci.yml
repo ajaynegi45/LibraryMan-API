@@ -41,8 +41,25 @@ jobs:
           echo "MAIL_SERVICE_DOMAIN_NAME=$MAIL_SERVICE_DOMAIN_NAME"
 
 
-      - name: Run Spring Boot Application
-        run: mvn spring-boot:run
+#      - name: Run Spring Boot Application
+#        run: mvn spring-boot:run
+#        env:
+#          ENV: production
+#          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+#          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+#          DATABASE_DRIVER_CLASS_NAME: ${{ secrets.DATABASE_DRIVER_CLASS_NAME }}
+#
+#          MAIL_SERVICE_HOST: ${{ secrets.MAIL_SERVICE_HOST }}
+#          MAIL_SERVICE_PORT: ${{ secrets.MAIL_SERVICE_PORT }}
+#          MAIL_SERVICE_USERNAME: ${{ secrets.MAIL_SERVICE_USERNAME }}
+#          MAIL_SERVICE_PASSWORD: ${{ secrets.MAIL_SERVICE_PASSWORD }}
+#          MAIL_SERVICE_SMTP: ${{ secrets.MAIL_SERVICE_SMTP }}
+#          MAIL_SERVICE_STARTTLS: ${{ secrets.MAIL_SERVICE_STARTTLS }}
+#          MAIL_SERVICE_DOMAIN_NAME: ${{ secrets.MAIL_SERVICE_DOMAIN_NAME }}
+
+      - name: Run Tests
+        run: mvn test
         env:
           ENV: production
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -57,6 +74,3 @@ jobs:
           MAIL_SERVICE_SMTP: ${{ secrets.MAIL_SERVICE_SMTP }}
           MAIL_SERVICE_STARTTLS: ${{ secrets.MAIL_SERVICE_STARTTLS }}
           MAIL_SERVICE_DOMAIN_NAME: ${{ secrets.MAIL_SERVICE_DOMAIN_NAME }}
-
-      - name: Run Tests
-        run: mvn test
