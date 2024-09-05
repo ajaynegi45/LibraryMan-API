@@ -1,19 +1,14 @@
 package com.libraryman_api.entity;
 
 import jakarta.persistence.*;
-
-
 import java.sql.Timestamp;
-
 
 @Entity
 public class Notifications {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "notification_id_generator")
-    @SequenceGenerator(name = "notification_id_generator",
-            sequenceName = "notification_id_sequence",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notification_id_generator")
+    @SequenceGenerator(name = "notification_id_generator", sequenceName = "notification_id_sequence", allocationSize = 1)
     @Column(name = "notification_id")
     private int notificationId;
 
