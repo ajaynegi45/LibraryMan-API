@@ -1,11 +1,8 @@
-package com.libraryman_api.repository;
+package com.libraryman_api.member;
 
-import com.libraryman_api.entity.Borrowings;
-import com.libraryman_api.entity.Members;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

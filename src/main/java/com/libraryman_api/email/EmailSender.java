@@ -1,6 +1,6 @@
 package com.libraryman_api.email;
 
-import com.libraryman_api.entity.Notifications;
+import com.libraryman_api.notification.Notifications;
 
 /**
  * Interface representing an email sending service for the Library Management System.

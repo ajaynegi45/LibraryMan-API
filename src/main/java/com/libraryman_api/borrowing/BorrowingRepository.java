@@ -1,6 +1,5 @@
-package com.libraryman_api.repository;
+package com.libraryman_api.borrowing;
 
-import com.libraryman_api.entity.Borrowings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

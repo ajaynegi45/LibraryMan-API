@@ -1,8 +1,6 @@
-package com.libraryman_api.controller;
+package com.libraryman_api.book;
 
-import com.libraryman_api.entity.Books;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +23,10 @@ public class BookController {
     /**
      * Retrieves a list of all books in the library.
      *
-     * @return a list of {@link Books} objects representing all the books in the library.
+     * @return a list of {@link Book} objects representing all the books in the library.
      */
     @GetMapping
-    public List<Books> getAllBooks() {
+    public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
 
@@ -36,11 +34,11 @@ public class BookController {
      * Retrieves a book by its ID.
      *
      * @param id the ID of the book to retrieve.
-     * @return a {@link ResponseEntity} containing the {@link Books} object, if found.
+     * @return a {@link ResponseEntity} containing the {@link Book} object, if found.
      * @throws ResourceNotFoundException if the book with the specified ID is not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Books> getBookById(@PathVariable int id) {
+    public ResponseEntity<Book> getBookById(@PathVariable int id) {
         return bookService.getBookById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
@@ -49,11 +47,11 @@ public class BookController {
     /**
      * Adds a new book to the library.
      *
-     * @param book the {@link Books} object representing the new book to add.
-     * @return the added {@link Books} object.
+     * @param book the {@link Book} object representing the new book to add.
+     * @return the added {@link Book} object.
      */
     @PostMapping
-    public Books addBook(@RequestBody Books book) {
+    public Book addBook(@RequestBody Book book) {
         return bookService.addBook(book);
     }
 
@@ -61,11 +59,11 @@ public class BookController {
      * Updates an existing book in the library.
      *
      * @param id          the ID of the book to update.
-     * @param bookDetails the {@link Books} object containing the updated book details.
-     * @return the updated {@link Books} object.
+     * @param bookDetails the {@link Book} object containing the updated book details.
+     * @return the updated {@link Book} object.
      */
     @PutMapping("/{id}")
-    public Books updateBook(@PathVariable int id, @RequestBody Books bookDetails) {
+    public Book updateBook(@PathVariable int id, @RequestBody Book bookDetails) {
         return bookService.updateBook(id, bookDetails);
     }
 

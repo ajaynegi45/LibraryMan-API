@@ -1,5 +1,8 @@
-package com.libraryman_api.entity;
+package com.libraryman_api.borrowing;
 
+import com.libraryman_api.book.Book;
+import com.libraryman_api.fine.Fines;
+import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -17,7 +20,7 @@ public class Borrowings {
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    private Books book;
+    private Book book;
 
     @OneToOne
     @JoinColumn(name = "fine_id")
@@ -40,7 +43,7 @@ public class Borrowings {
     public Borrowings() {
     }
 
-    public Borrowings(Books book, Members member, Date borrowDate, Date dueDate, Date returnDate) {
+    public Borrowings(Book book, Members member, Date borrowDate, Date dueDate, Date returnDate) {
         this.book = book;
         this.member = member;
         this.borrowDate = borrowDate;
@@ -60,11 +63,11 @@ public class Borrowings {
         return borrowingId;
     }
 
-    public Books getBook() {
+    public Book getBook() {
         return book;
     }
 
-    public void setBook(Books book) {
+    public void setBook(Book book) {
         this.book = book;
     }
 

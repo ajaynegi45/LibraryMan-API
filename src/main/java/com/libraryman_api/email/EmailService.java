@@ -1,8 +1,8 @@
 package com.libraryman_api.email;
 
-import com.libraryman_api.entity.NotificationStatus;
-import com.libraryman_api.entity.Notifications;
-import com.libraryman_api.repository.NotificationRepository;
+import com.libraryman_api.notification.NotificationStatus;
+import com.libraryman_api.notification.Notifications;
+import com.libraryman_api.notification.NotificationRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;

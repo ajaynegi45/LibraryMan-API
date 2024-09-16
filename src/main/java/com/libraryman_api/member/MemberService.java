@@ -1,8 +1,7 @@
-package com.libraryman_api.service;
+package com.libraryman_api.member;
 
-import com.libraryman_api.entity.Members;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.repository.MemberRepository;
+import com.libraryman_api.notification.NotificationService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;

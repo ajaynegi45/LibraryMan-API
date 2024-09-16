@@ -1,4 +1,4 @@
-package com.libraryman_api.entity;
+package com.libraryman_api.member;
 
 public enum Role {
     ADMIN,  LIBRARIAN, USER

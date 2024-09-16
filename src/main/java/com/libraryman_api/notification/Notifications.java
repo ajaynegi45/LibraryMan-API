@@ -1,5 +1,6 @@
-package com.libraryman_api.entity;
+package com.libraryman_api.notification;
 
+import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 

@@ -1,8 +1,6 @@
-package com.libraryman_api.controller;
+package com.libraryman_api.member;
 
-import com.libraryman_api.entity.Members;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
