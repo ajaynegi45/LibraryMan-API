@@ -1,4 +1,4 @@
-package com.libraryman_api.entity;
+package com.libraryman_api.fine;
 
 import jakarta.persistence.*;
 

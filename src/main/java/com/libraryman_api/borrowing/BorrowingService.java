@@ -1,11 +1,11 @@
-package com.libraryman_api.service;
+package com.libraryman_api.borrowing;
 
-import com.libraryman_api.entity.Books;
-import com.libraryman_api.entity.Borrowings;
-import com.libraryman_api.entity.Fines;
+import com.libraryman_api.book.BookService;
+import com.libraryman_api.book.Book;
+import com.libraryman_api.fine.Fines;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.repository.BorrowingRepository;
-import com.libraryman_api.repository.FineRepository;
+import com.libraryman_api.fine.FineRepository;
+import com.libraryman_api.notification.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -88,10 +88,10 @@ public class BorrowingService {
      */
     @Transactional
     public synchronized Borrowings borrowBook(Borrowings borrowing) {
-        Optional<Books> book = bookService.getBookById(borrowing.getBook().getBookId());
+        Optional<Book> book = bookService.getBookById(borrowing.getBook().getBookId());
 
         if (book.isPresent()) {
-            Books bookEntity = book.get();
+            Book bookEntity = book.get();
 
             if (bookEntity.getCopiesAvailable() > 0) {
                 updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
@@ -198,10 +198,10 @@ public class BorrowingService {
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies to remove
      */
     public void updateBookCopies(int bookId, String operation, int numberOfCopies) {
-        Optional<Books> book = bookService.getBookById(bookId);
+        Optional<Book> book = bookService.getBookById(bookId);
 
         if (book.isPresent()) {
-            Books bookEntity = book.get();
+            Book bookEntity = book.get();
             if (operation.equals("ADD")) {
                 bookEntity.setCopiesAvailable(bookEntity.getCopiesAvailable() + numberOfCopies);
             } else if (operation.equals("REMOVE")) {

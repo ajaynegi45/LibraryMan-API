@@ -1,8 +1,6 @@
-package com.libraryman_api.controller;
+package com.libraryman_api.borrowing;
 
-import com.libraryman_api.entity.Borrowings;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.service.BorrowingService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

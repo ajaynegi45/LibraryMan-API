@@ -1,7 +1,5 @@
-package com.libraryman_api.controller;
+package com.libraryman_api.exception;
 
-import com.libraryman_api.exception.ErrorDetails;
-import com.libraryman_api.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

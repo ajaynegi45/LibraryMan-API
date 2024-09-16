@@ -1,8 +1,6 @@
-package com.libraryman_api.service;
+package com.libraryman_api.book;
 
-import com.libraryman_api.entity.Books;
 import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +40,7 @@ public class BookService {
      *
      * @return a list of all books
      */
-    public List<Books> getAllBooks() {
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
@@ -52,7 +50,7 @@ public class BookService {
      * @param bookId the ID of the book to retrieve
      * @return an {@code Optional} containing the found book, or {@code Optional.empty()} if no book was found
      */
-    public Optional<Books> getBookById(int bookId) {
+    public Optional<Book> getBookById(int bookId) {
         return bookRepository.findById(bookId);
     }
 
@@ -62,7 +60,7 @@ public class BookService {
      * @param book the book to be added
      * @return the saved book
      */
-    public Books addBook(Books book) {
+    public Book addBook(Book book) {
         return bookRepository.save(book);
     }
 
@@ -74,8 +72,8 @@ public class BookService {
      * @return the updated book
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
-    public Books updateBook(int bookId, Books bookDetails) {
-        Books book = bookRepository.findById(bookId)
+    public Book updateBook(int bookId, Book bookDetails) {
+        Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         book.setTitle(bookDetails.getTitle());
         book.setAuthor(bookDetails.getAuthor());
@@ -94,7 +92,7 @@ public class BookService {
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
     public void deleteBook(int bookId) {
-        Books book = bookRepository.findById(bookId)
+        Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         bookRepository.delete(book);
     }

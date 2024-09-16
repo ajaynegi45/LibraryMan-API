@@ -1,10 +1,10 @@
-package com.libraryman_api.entity;
+package com.libraryman_api.book;
 
 import jakarta.persistence.*;
 
 
 @Entity
-public class Books {
+public class Book {
     @Id
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -33,10 +33,10 @@ public class Books {
     @Column(name = "copies_available", nullable = false)
     private int copiesAvailable;
 
-    public Books() {
+    public Book() {
     }
 
-    public Books(String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable) {
+    public Book(String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
