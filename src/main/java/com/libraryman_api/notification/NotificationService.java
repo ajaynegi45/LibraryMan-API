@@ -6,7 +6,12 @@ import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.member.MemberRepository;
 import com.libraryman_api.member.Members;
 import org.springframework.stereotype.Service;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * Service class responsible for managing notifications within the LibraryMan application.
@@ -75,9 +80,12 @@ public class NotificationService {
         notification.setMember(borrowing.getMember());
         notification.setMessage("Congratulations! 🎉 You have successfully borrowed '" +
                 borrowing.getBook().getTitle() + "' on " +
-                borrowing.getBorrowDate() +
+                LocalDateTime.ofInstant(borrowing.getBorrowDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+
+                +
                 ".<br><br>You now have 15 days to enjoy reading it. We kindly request that you return it to us on or before " +
-                borrowing.getDueDate() +
+                LocalDateTime.ofInstant(borrowing.getDueDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+                +
                 " to avoid any late fees 📆, which are ₹10 per day for late returns.<br><br>If you need to renew the book or have any questions, please don't hesitate to reach out to us.<br><br>Thank you for choosing our library!");
         notification.setNotificationType(NotificationType.BORROW);
         notification.setSentDate(new Timestamp(System.currentTimeMillis()));
@@ -96,7 +104,8 @@ public class NotificationService {
         notification.setMember(borrowing.getMember());
         notification.setMessage("This is a friendly reminder that the due date to return '" +
                 borrowing.getBook().getTitle() + "' is approaching. Please ensure that you return the book by " +
-                borrowing.getBorrowDate() +
+
+                LocalDateTime.ofInstant(borrowing.getDueDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")) +
                 " to avoid any late fees. 📅" +
                 "<br><br>If you need more time, consider renewing your book through our online portal or by contacting us." +
                 "<br><br>Thank you, and happy reading! 😊");
@@ -136,7 +145,7 @@ public class NotificationService {
         notification.setMessage("We hope you enjoyed reading '" +
                 borrowing.getBook().getTitle() +
                 "'. Unfortunately, our records show that the book was returned after the due date of " +
-                borrowing.getDueDate() +
+                LocalDateTime.ofInstant(borrowing.getDueDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")) +
                 ". As a result, a fine of ₹10 per day has been imposed for the late return.<br><br>The total fine amount for this overdue return is ₹" +
                 borrowing.getFine().getAmount() +
                 ".<br><br>If you have any questions or would like to discuss this matter further, please don't hesitate to contact us.<br><br>Thank you for your understanding and for being a valued member of our library.");
@@ -172,7 +181,7 @@ public class NotificationService {
     public void bookReturnedNotification(Borrowings borrowing) {
         Notifications notification = new Notifications();
         notification.setMember(borrowing.getMember());
-        notification.setMessage("Thank you for returning '" + borrowing.getBook().getTitle() + "' on " + borrowing.getReturnDate() + ". We hope you enjoyed the book!" +
+        notification.setMessage("Thank you for returning '" + borrowing.getBook().getTitle() + "' book on " + LocalDateTime.ofInstant(borrowing.getReturnDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")) + ". We hope you enjoyed the book!" +
                 "<br><br>Feel free to explore our collection for your next read. If you have any questions or need assistance, we’re here to help." +
                 "<br><br>Thank you for choosing LibraryMan!");
         notification.setNotificationType(NotificationType.RETURNED);
@@ -206,8 +215,8 @@ public class NotificationService {
     /**
      * Builds the email content based on the notification type, member name, and notification message.
      *
-     * @param notificationType   the type of notification.
-     * @param memberName         the name of the member.
+     * @param notificationType    the type of notification.
+     * @param memberName          the name of the member.
      * @param notificationMessage the notification message to include in the email.
      * @return the built email content.
      */
@@ -245,80 +254,77 @@ public class NotificationService {
     }
 
 
-    private String buildEmail(String notificationType,String memberName, String notificationMessage) {
+    private String buildEmail(String notificationType, String memberName, String notificationMessage) {
 
-        return """
-                <div style=\"font-family:Helvetica,Arial,sans-serif; font-size:16px; margin:0; color:#0b0c0c; background-color:#ffffff\">\n" +
-
-                <span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
-
-                  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
-                    <tbody><tr>\n" +
-                      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
-                        \n" +
-                        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
-                          <tbody><tr>\n" +
-                            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
-                                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                                  <tbody><tr>\n" +
-                                    <td style=\"padding-left:10px\">\n" +
-                                  \n" +
-                                    </td>\n" +
-                                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
-                                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">" +notificationType+
-                </span>\n" +
-                                    </td>\n" +
-                                  </tr>\n" +
-                                </tbody></table>\n" +
-                              </a>\n" +
-                            </td>\n" +
-                          </tr>\n" +
-                        </tbody></table>\n" +
-                        \n" +
-                      </td>\n" +
-                    </tr>\n" +
-                  </tbody></table>\n" +
-                  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                    <tbody><tr>\n" +
-                      <td width=\"10\" height=\"10\" valign=\"middle\"></td>\n" +
-                      <td>\n" +
-                        \n" +
-                                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                                  <tbody><tr>\n" +
-                                    <td bgcolor=\"#1D70B8\" width=\"100%\" height=\"10\"></td>\n" +
-                                  </tr>\n" +
-                                </tbody></table>\n" +
-                        \n" +
-                      </td>\n" +
-                      <td width=\"10\" valign=\"middle\" height=\"10\"></td>\n" +
-                    </tr>\n" +
-                  </tbody></table>\n" +
-                \n" +
-                \n" +
-                \n" +
-                  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                    <tbody><tr>\n" +
-                      <td height=\"30\"><br></td>\n" +
-                    </tr>\n" +
-                    <tr>\n" +
-                      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
-                        \n" +
-                            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + memberName + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">" + notificationMessage + "</p>" +
-                <p>Best regards,</p>" +
-                <p>LibraryMan</p>" +
-                        \n" +
-                      </td>\n" +
-                      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                    </tr>\n" +
-                    <tr>\n" +
-                      <td height=\"30\"><br></td>\n" +
-                    </tr>\n" +
-                  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
-                
-                </div></div>
-                """;
-
+        return "<div style=\"font-family:Helvetica,Arial,sans-serif; font-size:16px; margin:0; color:#0b0c0c; background-color:#ffffff\">\n" +
+                "\n" +
+                "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
+                "\n" +
+                "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                "    <tbody><tr>\n" +
+                "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
+                "        \n" +
+                "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
+                "          <tbody><tr>\n" +
+                "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
+                "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                "                  <tbody><tr>\n" +
+                "                    <td style=\"padding-left:10px\">\n" +
+                "                  \n" +
+                "                    </td>\n" +
+                "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
+                "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">" + notificationType +
+                "</span>\n" +
+                "                    </td>\n" +
+                "                  </tr>\n" +
+                "                </tbody></table>\n" +
+                "              </a>\n" +
+                "            </td>\n" +
+                "          </tr>\n" +
+                "        </tbody></table>\n" +
+                "        \n" +
+                "      </td>\n" +
+                "    </tr>\n" +
+                "  </tbody></table>\n" +
+                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
+                "    <tbody><tr>\n" +
+                "      <td width=\"10\" height=\"10\" valign=\"middle\"></td>\n" +
+                "      <td>\n" +
+                "        \n" +
+                "                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                "                  <tbody><tr>\n" +
+                "                    <td bgcolor=\"#1D70B8\" width=\"100%\" height=\"10\"></td>\n" +
+                "                  </tr>\n" +
+                "                </tbody></table>\n" +
+                "        \n" +
+                "      </td>\n" +
+                "      <td width=\"10\" valign=\"middle\" height=\"10\"></td>\n" +
+                "    </tr>\n" +
+                "  </tbody></table>\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
+                "    <tbody><tr>\n" +
+                "      <td height=\"30\"><br></td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
+                "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
+                "        \n" +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + memberName + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">" + notificationMessage + "</p>" +
+                "<p>Best regards,</p>" +
+                "<p>LibraryMan</p>" +
+                "        \n" +
+                "      </td>\n" +
+                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
+                "    </tr>\n" +
+                "    <tr>\n" +
+                "      <td height=\"30\"><br></td>\n" +
+                "    </tr>\n" +
+                "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
+                "\n" +
+                "</div></div>";
     }
 
 }
