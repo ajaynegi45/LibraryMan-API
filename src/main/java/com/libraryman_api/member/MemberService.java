@@ -3,6 +3,7 @@ package com.libraryman_api.member;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.notification.NotificationService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -52,9 +53,11 @@ public class MemberService {
      *
      * @param memberId the ID of the member to retrieve
      * @return an {@code Optional} containing the found member, or {@code Optional.empty()} if no member was found
+     * @throws ResourceNotFoundException if no member with the specified ID is found
      */
-    public Optional<Members> getMemberById(int memberId) {
-        return memberRepository.findById(memberId);
+    public Members getMemberById(int memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
     }
 
     /**
@@ -67,10 +70,9 @@ public class MemberService {
      * @return the saved member record
      */
     public Members addMember(Members member) {
-        Members currentMember = memberRepository.save(member);
-        notificationService.accountCreatedNotification(currentMember);
-
-        return currentMember;
+        Members savedMember = memberRepository.save(member);
+        notificationService.accountCreatedNotification(savedMember);
+        return savedMember;
     }
 
     /**
@@ -86,16 +88,11 @@ public class MemberService {
      * @throws ResourceNotFoundException if the member is not found
      */
     public Members updateMember(int memberId, Members memberDetails) {
-        Members member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-        member.setName(memberDetails.getName());
-        member.setEmail(memberDetails.getEmail());
-        member.setPassword(memberDetails.getPassword());
-        member.setRole(memberDetails.getRole());
-        member.setMembershipDate(memberDetails.getMembershipDate());
-        member = memberRepository.save(member);
-        notificationService.accountDetailsUpdateNotification(member);
-        return member;
+        Members existingMember = getMemberById(memberId);
+        updateMemberDetails(existingMember, memberDetails);
+        Members updatedMember = memberRepository.save(existingMember);
+        notificationService.accountDetailsUpdateNotification(updatedMember);
+        return updatedMember;
     }
 
     /**
@@ -109,13 +106,26 @@ public class MemberService {
      * @throws ResourceNotFoundException if the member is not found
      */
     public void deleteMember(int memberId) {
-        Members member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+        Members member = getMemberById(memberId);
 
         // TODO: Implement logic to check if the member has any outstanding fines or borrowed books.
         // If there are no pending obligations, delete all related notifications, borrowings, and fines.
 
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
+    }
+
+    /**
+     * Updates the details of an existing member.
+     *
+     * @param existingMember the member to update
+     * @param newDetails the new member details to apply
+     */
+    private void updateMemberDetails(Members existingMember, Members newDetails) {
+        existingMember.setName(newDetails.getName());
+        existingMember.setEmail(newDetails.getEmail());
+        existingMember.setPassword(newDetails.getPassword());
+        existingMember.setRole(newDetails.getRole());
+        existingMember.setMembershipDate(newDetails.getMembershipDate());
     }
 }
