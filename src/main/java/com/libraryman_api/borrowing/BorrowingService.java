@@ -5,6 +5,8 @@ import com.libraryman_api.book.Book;
 import com.libraryman_api.fine.Fines;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
+import com.libraryman_api.member.MemberService;
+import com.libraryman_api.member.Members;
 import com.libraryman_api.notification.NotificationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,7 @@ public class BorrowingService {
     private final FineRepository fineRepository;
     private final NotificationService notificationService;
     private final BookService bookService;
+    private final MemberService memberService;
 
     /**
      * Constructs a new {@code BorrowingService} with the specified repositories and services.
@@ -48,11 +51,12 @@ public class BorrowingService {
      * @param notificationService the service for sending notifications
      * @param bookService the service for managing book records
      */
-    public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService) {
+    public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService, MemberService memberService) {
         this.borrowingRepository = borrowingRepository;
         this.fineRepository = fineRepository;
         this.notificationService = notificationService;
         this.bookService = bookService;
+        this.memberService=memberService;
     }
 
     /**
@@ -89,13 +93,16 @@ public class BorrowingService {
     @Transactional
     public synchronized Borrowings borrowBook(Borrowings borrowing) {
         Optional<Book> book = bookService.getBookById(borrowing.getBook().getBookId());
-
-        if (book.isPresent()) {
+        Optional<Members> member = memberService.getMemberById(borrowing.getMember().getMemberId());
+        if (book.isPresent() && member.isPresent()) {
             Book bookEntity = book.get();
+            Members memberEntity = member.get();
 
             if (bookEntity.getCopiesAvailable() > 0) {
                 updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
                 borrowing.setBorrowDate(new Date());
+                borrowing.setBook(bookEntity);
+                borrowing.setMember(memberEntity);
                 borrowing.setDueDate(calculateDueDate());
 
                 Borrowings savedBorrowing = borrowingRepository.save(borrowing);
@@ -107,7 +114,10 @@ public class BorrowingService {
                 throw new ResourceNotFoundException("Not enough copies available");
             }
         } else {
-            throw new ResourceNotFoundException("Book not found");
+            if (book.isEmpty()) {
+                throw new ResourceNotFoundException("Book not found");
+            }
+            throw new ResourceNotFoundException("Member not found");
         }
     }
 
