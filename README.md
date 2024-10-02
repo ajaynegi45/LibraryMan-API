@@ -2,64 +2,88 @@
 
 LibraryMan is a user-friendly software solution for schools, companies, and libraries to efficiently manage book collections, track borrowing, and monitor due dates. It streamlines operations, reduces errors, and enhances the lending experience, making it easy to maintain a well-organized library.
 
-Checkout [Frontend](https://github.com/ajaynegi45/LibraryMan) Repository
+## Demo
 
-<br>
+Explore the frontend of the LibraryMan project [here](https://github.com/ajaynegi45/LibraryMan).
 
 ## Project Structure 📂
-Checkout [Project Structure](https://github.com/ajaynegi45/LibraryMan-API/tree/main/project-structure) Diagram
+```
+LibraryMan/
+│
+├── api-docs/
+├── notification-docs/
+├── project-structure/
+├── src/
+│   ├── main/
+│   └── test/
+│
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+│
+├── pom.xml
+└── README.md
+```
+Checkout related [Diagrams](https://github.com/ajaynegi45/LibraryMan-API/tree/main/project-structure)
 
-<br>
+### Key Modules
+- **src/main**: Contains the main application code.
+- **src/test**: Contains unit tests for the application.
+- **pom.xml**: Maven project file for dependency management.
 
 ## API Endpoints 🔗
 
-#### Learn More
 Want to know more about our API endpoints? Check out our [API Documentation](https://github.com/ajaynegi45/LibraryMan-API/tree/main/api-docs) for detailed information.
 
 #### Test Endpoints
-Ready to try out our API endpoints? Use [Postman Documentation](https://documenter.getpostman.com/view/28691426/2sAXjJ6D7L) to test and explore our APIs.
 
-<br>
+Ready to try out our API endpoints? Use [Postman Documentation](https://documenter.getpostman.com/view/28691426/2sAXjJ6D7L) to test and explore our APIs.
 
 ## How to Run the Project 💨
 
 1. Ensure you have Java and MySQL installed on your system.
 2. Clone or download the project from the repository.
+   
+    ```bash
+   git clone https://github.com/ajaynegi45/LibraryMan-API.git
+    
 3. Import the project into your preferred IDE (e.g., Eclipse, IntelliJ).
-4. Set up the MySQL database and update the database configurations in the `application-development.properties` file.
-5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
-
-<br>
+4. Set up the MySQL database:
+    ```bash
+   Create a new database named libraryman
+    ```
+    Update the database configurations in the `application-development.properties` file with your database configurations:
+    ```bash
+    spring.datasource.url=jdbc:mysql://localhost:3306/libraryman
+    spring.datasource.username=your-username
+    spring.datasource.password=your-password
+5. Build and run the project using the IDE or run the following command from the project root directory:
+    ```bash
+    mvn spring-boot:run
 
 ## ‼️ Important Note ‼️
 
 - You need to set up the database and make sure the application properties are correctly configured to run the project successfully.
 
-<br>
-
 ## Upcoming Update
 Adding more features, error handling, authentication, and security measures.
 
-<br>
-
 ## Contributing 🤗
+We welcome contributions to the LibraryMan project! To contribute:
 
-Feel free to explore and use these project. If you encounter any issues or have suggestions for improvements, please feel free to contribute or reach out for assistance.
+- Fork the repository.
+- Create a new branch for your feature/bug fix.
+- Ensure your code follows our coding standards.
+- Submit a pull request with a description of your changes.
+
+Please see [CONTRIBUTING.md](https://github.com/ajaynegi45/Library-API/blob/main/contributing.md) for more ways to get started, and adhere to our [CODE_OF_CONDUCT.md](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
 
 Contributions are always welcome! ✨
-
-See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/contributing.md) for ways to get started.
-
-Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
-
-<br>
 
 ## Contact Information 📧
 
 If you have any questions or would like to connect, please don't hesitate to reach out. I'd be more than happy to chat and learn from your experiences too.
 <br><br>
 **LinkedIn:** [Connect with me](https://www.linkedin.com/in/ajaynegi45/)
-<br><br>
 
 ## Contributors
 
@@ -79,10 +103,10 @@ If you have any questions or would like to connect, please don't hesitate to rea
     </picture>
 </p>
 
-
-## Thankyou ❤️
+## Acknowledgments
 Thank you for taking the time to explore my project. I hope you find them informative and useful in your journey to learn Java and enhance your programming skills. Your support and contributions are highly appreciated.
+<br>
 Happy coding! ✨
-<br><br>
 
-
+## License
+This project is licensed under the MIT License.
