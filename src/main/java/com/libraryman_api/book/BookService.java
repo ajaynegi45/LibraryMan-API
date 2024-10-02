@@ -38,9 +38,10 @@ public class BookService {
     }
 
     /**
-     * Retrieves all books from the database.
+     * Retrieves a paginated list of all books from the database.
      *
-     * @return a list of all books
+     * @param pageable the pagination information, including the page number and size
+     * @return a {@link Page} of {@link Book} representing all books
      */
     public Page<Book> getAllBooks(Pageable pageable) {
         return bookRepository.findAll(pageable);

@@ -1,10 +1,14 @@
 package com.libraryman_api.member;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * REST controller for managing library members.
@@ -26,13 +30,31 @@ public class MemberController {
     }
 
     /**
-     * Retrieves a list of all library members.
+     * Retrieves a paginated and sorted list of all library members.
      *
-     * @return a list of {@link Members} representing all members in the library
+     * @param pageable contains pagination information (page number, size, and sorting).
+     * @param sortBy (optional) the field by which to sort the results.
+     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @return a {@link Page} of {@link Members} representing all members in the library.
+     *         The results are sorted by name by default and limited to 5 members per page.
      */
     @GetMapping
-    public List<Members> getAllMembers() {
-        return memberService.getAllMembers();
+    public Page<Members> getAllMembers(@PageableDefault(page=0, size=5, sort="name") Pageable pageable,
+										@RequestParam(required = false) String sortBy,
+										@RequestParam(required = false) String sortDir) {
+    	
+    	// Adjust the pageable based on dynamic sorting parameters
+    	if(sortBy!=null && !sortBy.isEmpty()) {
+    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+    		
+    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
+    			direction = Sort.Direction.DESC;
+    		}
+
+    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
+    	}
+    	
+        return memberService.getAllMembers(pageable);
     }
 
     /**
