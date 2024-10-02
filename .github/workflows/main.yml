@@ -1,0 +1,22 @@
+name: Greetings
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet the user
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.issue;
+            const message = "Hi there! Thanks for opening this issue. We appreciate your contribution to this open-source project. We aim to respond or assign your issue as soon as possible.";
+            await github.issues.createComment({
+              ...issue,
+              body: message
+            });
