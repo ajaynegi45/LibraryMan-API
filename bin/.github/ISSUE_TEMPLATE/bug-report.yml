@@ -1,0 +1,75 @@
+name: Report a Bug 🐞
+description: Help us improve by reporting any issues you encounter.
+title: "[BUG] Brief description"
+labels: ["status: awaiting triage"]
+#assignees: ' '
+body:
+  - type: checkboxes
+    id: duplicates
+    attributes:
+      label: Is this a new issue?
+      description: Please confirm you've checked that this issue hasn't been reported before.
+      options:
+        - label: I have searched "open" and "closed" issues, and this is not a duplicate.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Please provide a clear description of the issue. You can explain it in your own way if preferred.
+      placeholder: |
+        Please describe the bug in detail. For example: 
+        - What happened?
+        - Where did it happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Outline the steps to reproduce the issue. If unsure, just provide any relevant details.
+      placeholder: |
+        If you know the steps, you can follow this format:
+        
+        1. Go to [page or feature]
+        2. [Describe action taken]
+        3. [Describe what went wrong]
+        
+        If unsure, you can explain what you were doing or what you expected to happen.
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Attach any screenshots that might help clarify the issue (if applicable).
+      placeholder: Upload or drag and drop images here.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: assignee
+    attributes:
+      label: Would you like to work on this issue?
+      options:
+        - "Yes"
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-plan
+    attributes:
+      label: Implementation Plan
+      description: If you selected "Yes" above, please describe how you would approach fixing this issue (Optional).
+      placeholder: Provide a brief plan or any initial thoughts on fixing the bug.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting this bug! Please ensure you've filled out all the required sections to help us address the issue as efficiently as possible.

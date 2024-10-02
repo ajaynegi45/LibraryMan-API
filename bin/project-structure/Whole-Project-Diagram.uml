@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/ajaynegi/Downloads/libraryman-api/src/main/java/com/libraryman_api</OriginalElement>
+  <nodes>
+    <node x="2004.75" y="2865.0">com.libraryman_api.member.MemberService</node>
+    <node x="1206.75" y="220.5">com.libraryman_api.notification.NotificationType</node>
+    <node x="1308.75" y="2241.5">com.libraryman_api.fine.FineRepository</node>
+    <node x="657.75" y="574.5">com.libraryman_api.book.Book</node>
+    <node x="166.75" y="1413.0">com.libraryman_api.exception.ResourceNotFoundException</node>
+    <node x="385.75" y="2865.0">com.libraryman_api.book.BookController</node>
+    <node x="895.75" y="3353.5">com.libraryman_api.borrowing.BorrowingController</node>
+    <node x="1640.25" y="1164.5">com.libraryman_api.notification.NotificationRepository</node>
+    <node x="-236.75" y="1389.0">com.libraryman_api.exception.ErrorDetails</node>
+    <node x="657.25" y="2527.5">com.libraryman_api.borrowing.BorrowingService</node>
+    <node x="1557.25" y="93.0">com.libraryman_api.member.Members</node>
+    <node x="2003.25" y="1424.5">com.libraryman_api.member.MemberRepository</node>
+    <node x="504.75" y="2165.0">com.libraryman_api.book.BookService</node>
+    <node x="1472.75" y="1424.5">com.libraryman_api.email.EmailSender</node>
+    <node x="-250.25" y="2212.0">com.libraryman_api.exception.GlobalExceptionHandler</node>
+    <node x="868.75" y="1250.0">com.libraryman_api.borrowing.Borrowings</node>
+    <node x="1621.75" y="-239.5">com.libraryman_api.member.Role</node>
+    <node x="1453.25" y="1785.5">com.libraryman_api.notification.NotificationService</node>
+    <node x="1929.75" y="2212.0">com.libraryman_api.email.EmailService</node>
+    <node x="1292.75" y="633.0">com.libraryman_api.notification.Notifications</node>
+    <node x="2050.75" y="3412.0">com.libraryman_api.LibrarymanApiApplication</node>
+    <node x="1824.75" y="3145.0">com.libraryman_api.member.MemberController</node>
+    <node x="2101.25" y="-39.5">com.libraryman_api.notification.NotificationStatus</node>
+    <node x="1045.75" y="702.0">com.libraryman_api.fine.Fines</node>
+    <node x="626.25" y="1441.5">com.libraryman_api.book.BookRepository</node>
+    <node x="875.25" y="2213.0">com.libraryman_api.borrowing.BorrowingRepository</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.libraryman_api.borrowing.BorrowingController" target="com.libraryman_api.borrowing.Borrowings" relationship="DEPENDENCY">
+      <point x="112.33333333333334" y="-102.5" />
+      <point x="1176.5833333333333" y="3316.0" />
+      <point x="1280.0" y="3316.0" />
+      <point x="1280.0" y="2176.0" />
+      <point x="1024.25" y="2176.0" />
+      <point x="0.0" y="206.0" />
+    </edge>
+    <edge source="com.libraryman_api.LibrarymanApiApplication" target="com.libraryman_api.LibrarymanApiApplication" relationship="DEPENDENCY">
+      <point x="-113.5" y="-0.0" />
+      <point x="2000.0" y="3455.5" />
+      <point x="2000.0" y="3536.0" />
+      <point x="2164.25" y="3536.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberService" target="com.libraryman_api.notification.NotificationService" relationship="TO_ONE">
+      <point x="0.0" y="-91.0" />
+      <point x="2184.25" y="2376.0" />
+      <point x="1860.0" y="2376.0" />
+      <point x="1860.0" y="1736.0" />
+      <point x="1771.5833333333333" y="1736.0" />
+      <point x="127.33333333333334" y="-170.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberService" target="com.libraryman_api.member.MemberRepository" relationship="TO_ONE">
+      <point x="0.0" y="-91.0" />
+      <point x="2184.25" y="2816.0" />
+      <point x="2300.0" y="2816.0" />
+      <point x="2300.0" y="2156.0" />
+      <point x="2144.25" y="2156.0" />
+      <point x="0.0" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingController" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-112.33333333333337" y="-102.5" />
+      <point x="951.9166666666666" y="3316.0" />
+      <point x="320.0" y="3316.0" />
+      <point x="320.0" y="2136.0" />
+      <point x="400.0" y="2136.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.exception.GlobalExceptionHandler" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="DEPENDENCY">
+      <point x="127.25" y="-44.0" />
+      <point x="131.5" y="2176.0" />
+      <point x="245.5" y="2176.0" />
+      <point x="-78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookController" target="com.libraryman_api.book.Book" relationship="DEPENDENCY">
+      <point x="-92.33333333333334" y="-91.0" />
+      <point x="431.91666666666663" y="2836.0" />
+      <point x="280.0" y="2836.0" />
+      <point x="280.0" y="2156.0" />
+      <point x="140.0" y="2156.0" />
+      <point x="140.0" y="1396.0" />
+      <point x="740.0" y="1396.0" />
+      <point x="740.0" y="1096.0" />
+      <point x="741.0" y="1096.0" />
+      <point x="-83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberController" target="com.libraryman_api.member.MemberService" relationship="TO_ONE">
+      <point x="0.0" y="-91.0" />
+      <point x="1984.25" y="2836.0" />
+      <point x="2184.25" y="2836.0" />
+      <point x="0.0" y="-91.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.member.Members" relationship="DEPENDENCY">
+      <point x="0.0" y="-170.5" />
+      <point x="1644.25" y="1736.0" />
+      <point x="1400.0" y="1736.0" />
+      <point x="1400.0" y="1676.0" />
+      <point x="1440.0" y="1676.0" />
+      <point x="1440.0" y="1136.0" />
+      <point x="1704.25" y="1136.0" />
+      <point x="0.0" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.fine.FineRepository" target="com.libraryman_api.fine.Fines" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.5" />
+      <point x="1384.25" y="1716.0" />
+      <point x="1280.0" y="1716.0" />
+      <point x="1280.0" y="1016.0" />
+      <point x="1209.9166666666667" y="1016.0" />
+      <point x="65.66666666666666" y="114.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.fine.Fines" relationship="CREATE">
+      <point x="-124.66666666666663" y="-148.5" />
+      <point x="719.5833333333334" y="2496.0" />
+      <point x="480.0" y="2496.0" />
+      <point x="480.0" y="2476.0" />
+      <point x="-280.0" y="2476.0" />
+      <point x="-280.0" y="2196.0" />
+      <point x="20.0" y="2196.0" />
+      <point x="20.0" y="1236.0" />
+      <point x="1078.5833333333333" y="1236.0" />
+      <point x="-65.66666666666666" y="114.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.borrowing.BorrowingService" relationship="DEPENDENCY">
+      <point x="-187.0" y="-0.0" />
+      <point x="620.0" y="2675.0" />
+      <point x="620.0" y="2856.0" />
+      <point x="844.25" y="2856.0" />
+      <point x="0.0" y="148.5" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookRepository" target="com.libraryman_api.book.Book" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.5" />
+      <point x="704.25" y="1396.0" />
+      <point x="740.0" y="1396.0" />
+      <point x="740.0" y="1096.0" />
+      <point x="741.0" y="1096.0" />
+      <point x="-83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.notification.NotificationService" relationship="TO_ONE">
+      <point x="124.66666666666666" y="-148.5" />
+      <point x="968.9166666666666" y="2496.0" />
+      <point x="1060.0" y="2496.0" />
+      <point x="1060.0" y="2436.0" />
+      <point x="1860.0" y="2436.0" />
+      <point x="1860.0" y="1736.0" />
+      <point x="1771.5833333333333" y="1736.0" />
+      <point x="127.33333333333334" y="-170.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberRepository" target="com.libraryman_api.member.Members" relationship="DEPENDENCY">
+      <point x="0.0" y="-31.5" />
+      <point x="2144.25" y="776.0" />
+      <point x="1704.25" y="776.0" />
+      <point x="0.0" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingController" target="com.libraryman_api.borrowing.BorrowingService" relationship="TO_ONE">
+      <point x="0.0" y="-102.5" />
+      <point x="1064.25" y="2476.0" />
+      <point x="968.9166666666666" y="2476.0" />
+      <point x="124.66666666666666" y="-148.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberService" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-119.66666666666663" y="-91.0" />
+      <point x="2064.5833333333335" y="2396.0" />
+      <point x="480.0" y="2396.0" />
+      <point x="480.0" y="2136.0" />
+      <point x="400.0" y="2136.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.book.BookService" relationship="TO_ONE">
+      <point x="124.66666666666666" y="-148.5" />
+      <point x="968.9166666666666" y="2496.0" />
+      <point x="1060.0" y="2496.0" />
+      <point x="1060.0" y="2456.0" />
+      <point x="760.0" y="2456.0" />
+      <point x="760.0" y="2136.0" />
+      <point x="703.9166666666666" y="2136.0" />
+      <point x="79.66666666666666" y="-91.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.notification.NotificationType" relationship="DEPENDENCY">
+      <point x="0.0" y="-170.5" />
+      <point x="1644.25" y="1736.0" />
+      <point x="1400.0" y="1736.0" />
+      <point x="1400.0" y="1416.0" />
+      <point x="1260.0" y="1416.0" />
+      <point x="1260.0" y="796.0" />
+      <point x="1265.5" y="796.0" />
+      <point x="-58.75" y="55.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.book.Book" relationship="DEPENDENCY">
+      <point x="0.0" y="-148.5" />
+      <point x="844.25" y="2496.0" />
+      <point x="800.0" y="2496.0" />
+      <point x="800.0" y="1396.0" />
+      <point x="740.0" y="1396.0" />
+      <point x="740.0" y="1096.0" />
+      <point x="741.0" y="1096.0" />
+      <point x="-83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.member.MemberRepository" relationship="TO_ONE">
+      <point x="127.33333333333334" y="-170.5" />
+      <point x="1771.5833333333333" y="1756.0" />
+      <point x="1700.0" y="1756.0" />
+      <point x="1700.0" y="1716.0" />
+      <point x="2144.25" y="1716.0" />
+      <point x="0.0" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailService" target="com.libraryman_api.notification.NotificationRepository" relationship="TO_ONE">
+      <point x="0.0" y="-44.0" />
+      <point x="2104.25" y="1556.0" />
+      <point x="1804.25" y="1556.0" />
+      <point x="0.0" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingRepository" target="com.libraryman_api.borrowing.Borrowings" relationship="DEPENDENCY">
+      <point x="0.0" y="-43.0" />
+      <point x="1064.25" y="2176.0" />
+      <point x="1024.25" y="2176.0" />
+      <point x="0.0" y="206.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.fine.Fines" relationship="DEPENDENCY">
+      <point x="0.0" y="-170.5" />
+      <point x="1644.25" y="1736.0" />
+      <point x="1400.0" y="1736.0" />
+      <point x="1400.0" y="1676.0" />
+      <point x="1320.0" y="1676.0" />
+      <point x="1320.0" y="1436.0" />
+      <point x="1280.0" y="1436.0" />
+      <point x="1280.0" y="1016.0" />
+      <point x="1209.9166666666667" y="1016.0" />
+      <point x="65.66666666666666" y="114.0" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailSender" target="com.libraryman_api.notification.Notifications" relationship="DEPENDENCY">
+      <point x="0.0" y="-31.5" />
+      <point x="1624.25" y="1036.0" />
+      <point x="1580.0" y="1036.0" />
+      <point x="95.75" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.exception.GlobalExceptionHandler" target="com.libraryman_api.exception.ErrorDetails" relationship="CREATE">
+      <point x="-127.25" y="-44.0" />
+      <point x="-123.0" y="2176.0" />
+      <point x="-115.75" y="2176.0" />
+      <point x="0.0" y="67.0" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberController" target="com.libraryman_api.member.Members" relationship="DEPENDENCY">
+      <point x="106.33333333333334" y="-91.0" />
+      <point x="2090.5833333333335" y="3116.0" />
+      <point x="2380.0" y="3116.0" />
+      <point x="2380.0" y="776.0" />
+      <point x="1704.25" y="776.0" />
+      <point x="0.0" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.borrowing.BorrowingRepository" relationship="TO_ONE">
+      <point x="124.66666666666666" y="-148.5" />
+      <point x="968.9166666666666" y="2496.0" />
+      <point x="1064.25" y="2496.0" />
+      <point x="0.0" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.borrowing.Borrowings" relationship="DEPENDENCY">
+      <point x="0.0" y="-170.5" />
+      <point x="1644.25" y="1736.0" />
+      <point x="1400.0" y="1736.0" />
+      <point x="1400.0" y="1696.0" />
+      <point x="1024.25" y="1696.0" />
+      <point x="0.0" y="206.0" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookService" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-79.66666666666666" y="-91.0" />
+      <point x="544.5833333333334" y="2136.0" />
+      <point x="400.0" y="2136.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.Notifications" target="com.libraryman_api.notification.NotificationType" relationship="TO_ONE">
+      <point x="0.0" y="-183.0" />
+      <point x="1484.25" y="476.0" />
+      <point x="1383.0" y="476.0" />
+      <point x="58.75" y="55.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.Notifications" target="com.libraryman_api.notification.NotificationStatus" relationship="TO_ONE">
+      <point x="0.0" y="-183.0" />
+      <point x="1484.25" y="476.0" />
+      <point x="2162.75" y="476.0" />
+      <point x="-61.5" y="55.5" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookController" target="com.libraryman_api.book.BookService" relationship="TO_ONE">
+      <point x="92.33333333333334" y="-91.0" />
+      <point x="616.5833333333334" y="2476.0" />
+      <point x="760.0" y="2476.0" />
+      <point x="760.0" y="2136.0" />
+      <point x="703.9166666666666" y="2136.0" />
+      <point x="79.66666666666666" y="-91.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.fine.FineRepository" relationship="TO_ONE">
+      <point x="124.66666666666666" y="-148.5" />
+      <point x="968.9166666666666" y="2496.0" />
+      <point x="1060.0" y="2496.0" />
+      <point x="1060.0" y="2416.0" />
+      <point x="1384.25" y="2416.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-127.33333333333337" y="-170.5" />
+      <point x="1516.9166666666665" y="1756.0" />
+      <point x="1360.0" y="1756.0" />
+      <point x="1360.0" y="1736.0" />
+      <point x="400.0" y="1736.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-124.66666666666663" y="-148.5" />
+      <point x="719.5833333333334" y="2496.0" />
+      <point x="480.0" y="2496.0" />
+      <point x="480.0" y="2476.0" />
+      <point x="440.0" y="2476.0" />
+      <point x="440.0" y="2136.0" />
+      <point x="400.0" y="2136.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.notification.NotificationService" relationship="DEPENDENCY">
+      <point x="-191.0" y="-0.0" />
+      <point x="1400.0" y="1955.5" />
+      <point x="1400.0" y="2176.0" />
+      <point x="1644.25" y="2176.0" />
+      <point x="0.0" y="170.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationRepository" target="com.libraryman_api.notification.Notifications" relationship="DEPENDENCY">
+      <point x="0.0" y="-31.5" />
+      <point x="1804.25" y="1116.0" />
+      <point x="1620.0" y="1116.0" />
+      <point x="1620.0" y="1036.0" />
+      <point x="1580.0" y="1036.0" />
+      <point x="95.75" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.Notifications" target="com.libraryman_api.member.Members" relationship="TO_ONE">
+      <point x="0.0" y="-183.0" />
+      <point x="1484.25" y="616.0" />
+      <point x="1440.0" y="616.0" />
+      <point x="1440.0" y="356.0" />
+      <point x="1460.0" y="356.0" />
+      <point x="1460.0" y="56.0" />
+      <point x="1704.25" y="56.0" />
+      <point x="0.0" y="-183.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.Borrowings" target="com.libraryman_api.fine.Fines" relationship="TO_ONE">
+      <point x="0.0" y="-206.0" />
+      <point x="1024.25" y="1096.0" />
+      <point x="1144.25" y="1096.0" />
+      <point x="0.0" y="114.0" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.BorrowingService" target="com.libraryman_api.borrowing.Borrowings" relationship="DEPENDENCY">
+      <point x="0.0" y="-148.5" />
+      <point x="844.25" y="2176.0" />
+      <point x="1024.25" y="2176.0" />
+      <point x="0.0" y="206.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.book.Book" relationship="DEPENDENCY">
+      <point x="0.0" y="-170.5" />
+      <point x="1644.25" y="1736.0" />
+      <point x="1400.0" y="1736.0" />
+      <point x="1400.0" y="1676.0" />
+      <point x="840.0" y="1676.0" />
+      <point x="840.0" y="1396.0" />
+      <point x="740.0" y="1396.0" />
+      <point x="740.0" y="1096.0" />
+      <point x="741.0" y="1096.0" />
+      <point x="-83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookService" target="com.libraryman_api.book.BookRepository" relationship="TO_ONE">
+      <point x="79.66666666666666" y="-91.0" />
+      <point x="703.9166666666666" y="2116.0" />
+      <point x="704.25" y="2116.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailService" target="com.libraryman_api.email.EmailService" relationship="DEPENDENCY">
+      <point x="-174.5" y="-0.0" />
+      <point x="1880.0" y="2255.5" />
+      <point x="1880.0" y="2336.0" />
+      <point x="2104.25" y="2336.0" />
+      <point x="0.0" y="44.0" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailService" target="com.libraryman_api.notification.Notifications" relationship="DEPENDENCY">
+      <point x="116.33333333333334" y="-44.0" />
+      <point x="2220.5833333333335" y="2176.0" />
+      <point x="2220.0" y="2176.0" />
+      <point x="2220.0" y="1516.0" />
+      <point x="1980.0" y="1516.0" />
+      <point x="1980.0" y="1116.0" />
+      <point x="1620.0" y="1116.0" />
+      <point x="1620.0" y="1036.0" />
+      <point x="1580.0" y="1036.0" />
+      <point x="95.75" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookService" target="com.libraryman_api.book.Book" relationship="DEPENDENCY">
+      <point x="0.0" y="-91.0" />
+      <point x="624.25" y="2136.0" />
+      <point x="600.0" y="2136.0" />
+      <point x="600.0" y="1396.0" />
+      <point x="740.0" y="1396.0" />
+      <point x="740.0" y="1096.0" />
+      <point x="741.0" y="1096.0" />
+      <point x="-83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.book.BookController" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="0.0" y="-91.0" />
+      <point x="524.25" y="2456.0" />
+      <point x="400.0" y="2456.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.email.EmailSender" relationship="TO_ONE">
+      <point x="127.33333333333334" y="-170.5" />
+      <point x="1771.5833333333333" y="1756.0" />
+      <point x="1700.0" y="1756.0" />
+      <point x="75.75" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.Borrowings" target="com.libraryman_api.book.Book" relationship="TO_ONE">
+      <point x="0.0" y="-206.0" />
+      <point x="1024.25" y="1096.0" />
+      <point x="907.5" y="1096.0" />
+      <point x="83.25" y="241.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.notification.NotificationRepository" relationship="TO_ONE">
+      <point x="127.33333333333334" y="-170.5" />
+      <point x="1771.5833333333333" y="1756.0" />
+      <point x="1700.0" y="1756.0" />
+      <point x="1700.0" y="1536.0" />
+      <point x="1804.25" y="1536.0" />
+      <point x="0.0" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.Members" target="com.libraryman_api.member.Role" relationship="TO_ONE">
+      <point x="0.0" y="-183.0" />
+      <point x="0.0" y="55.5" />
+    </edge>
+    <edge source="com.libraryman_api.notification.NotificationService" target="com.libraryman_api.notification.Notifications" relationship="CREATE">
+      <point x="-127.33333333333337" y="-170.5" />
+      <point x="1516.9166666666665" y="1756.0" />
+      <point x="1360.0" y="1756.0" />
+      <point x="1360.0" y="1436.0" />
+      <point x="1388.5" y="1436.0" />
+      <point x="-95.75" y="183.0" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailService" target="com.libraryman_api.email.EmailSender" relationship="REALIZATION">
+      <point x="-116.33333333333337" y="-44.0" />
+      <point x="1987.9166666666665" y="1696.0" />
+      <point x="1548.5" y="1696.0" />
+      <point x="-75.75" y="31.5" />
+    </edge>
+    <edge source="com.libraryman_api.borrowing.Borrowings" target="com.libraryman_api.member.Members" relationship="TO_ONE">
+      <point x="0.0" y="-206.0" />
+      <point x="1024.25" y="596.0" />
+      <point x="1440.0" y="596.0" />
+      <point x="1440.0" y="356.0" />
+      <point x="1460.0" y="356.0" />
+      <point x="1460.0" y="56.0" />
+      <point x="1704.25" y="56.0" />
+      <point x="0.0" y="-183.0" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberController" target="com.libraryman_api.exception.ResourceNotFoundException" relationship="CREATE">
+      <point x="-106.33333333333337" y="-91.0" />
+      <point x="1877.9166666666665" y="3116.0" />
+      <point x="360.0" y="3116.0" />
+      <point x="360.0" y="2136.0" />
+      <point x="400.0" y="2136.0" />
+      <point x="400.0" y="1536.0" />
+      <point x="403.0" y="1536.0" />
+      <point x="78.75" y="43.0" />
+    </edge>
+    <edge source="com.libraryman_api.email.EmailService" target="com.libraryman_api.notification.NotificationStatus" relationship="DEPENDENCY">
+      <point x="116.33333333333334" y="-44.0" />
+      <point x="2220.5833333333335" y="2176.0" />
+      <point x="2220.0" y="2176.0" />
+      <point x="2220.0" y="1516.0" />
+      <point x="2300.0" y="1516.0" />
+      <point x="2300.0" y="796.0" />
+      <point x="2285.75" y="796.0" />
+      <point x="61.5" y="55.5" />
+    </edge>
+    <edge source="com.libraryman_api.member.MemberService" target="com.libraryman_api.member.Members" relationship="DEPENDENCY">
+      <point x="119.66666666666666" y="-91.0" />
+      <point x="2303.9166666666665" y="2836.0" />
+      <point x="2340.0" y="2836.0" />
+      <point x="2340.0" y="776.0" />
+      <point x="1704.25" y="776.0" />
+      <point x="0.0" y="183.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.6723453891707604" showDependencies="true" x="598.4939278337947" y="1467.4673738829251" />
+  <SelectedNodes>
+    <node>com.libraryman_api.member.MemberService</node>
+    <node>com.libraryman_api.fine.FineRepository</node>
+    <node>com.libraryman_api.borrowing.BorrowingRepository</node>
+    <node>com.libraryman_api.LibrarymanApiApplication</node>
+    <node>com.libraryman_api.book.BookController</node>
+    <node>com.libraryman_api.notification.Notifications</node>
+    <node>com.libraryman_api.member.Role</node>
+    <node>com.libraryman_api.member.MemberRepository</node>
+    <node>com.libraryman_api.exception.GlobalExceptionHandler</node>
+    <node>com.libraryman_api.notification.NotificationRepository</node>
+    <node>com.libraryman_api.member.MemberController</node>
+    <node>com.libraryman_api.notification.NotificationStatus</node>
+    <node>com.libraryman_api.fine.Fines</node>
+    <node>com.libraryman_api.borrowing.BorrowingController</node>
+    <node>com.libraryman_api.exception.ResourceNotFoundException</node>
+    <node>com.libraryman_api.book.BookRepository</node>
+    <node>com.libraryman_api.email.EmailSender</node>
+    <node>com.libraryman_api.notification.NotificationService</node>
+    <node>com.libraryman_api.borrowing.BorrowingService</node>
+    <node>com.libraryman_api.borrowing.Borrowings</node>
+    <node>com.libraryman_api.notification.NotificationType</node>
+    <node>com.libraryman_api.exception.ErrorDetails</node>
+    <node>com.libraryman_api.email.EmailService</node>
+    <node>com.libraryman_api.book.BookService</node>
+    <node>com.libraryman_api.member.Members</node>
+    <node>com.libraryman_api.book.Book</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

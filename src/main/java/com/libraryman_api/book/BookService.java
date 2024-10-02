@@ -1,10 +1,12 @@
 package com.libraryman_api.book;
 
-import com.libraryman_api.exception.ResourceNotFoundException;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.libraryman_api.exception.ResourceNotFoundException;
 
 /**
  * Service class for managing books in the LibraryMan system.
@@ -40,8 +42,8 @@ public class BookService {
      *
      * @return a list of all books
      */
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public Page<Book> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     /**
