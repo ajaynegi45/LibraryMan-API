@@ -3,24 +3,24 @@ package com.libraryman_api.member;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.notification.NotificationService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service class responsible for managing member-related operations in the LibraryMan system.
+ * Service class responsible for handling operations related to library members,
+ * including retrieving, adding, updating, and deleting member records.
  *
- * <p>This service provides methods for retrieving, adding, updating, and deleting member records.
- * It integrates with the {@link NotificationService} to send notifications related to member
- * activities such as account creation, updates, and deletions.</p>
+ * <p>Integrates with {@link NotificationService} to manage notifications for
+ * various member-related actions such as account creation, updates, and deletions.</p>
  *
- * <p>Each method interacts with the {@link MemberRepository} to perform database operations, ensuring
- * proper transactional behavior and consistency.</p>
+ * <p>Uses {@link MemberRepository} for database interactions. In cases where a 
+ * member is not found, a {@link ResourceNotFoundException} is thrown.</p>
  *
- * <p>In cases where a member record is not found, the service throws a
- * {@link ResourceNotFoundException} to indicate the error.</p>
+ * <p>This service ensures consistency and proper transaction management 
+ * while interacting with the database.</p>
  *
- * @author Ajay Negi
+ * @see MemberRepository
+ * @see NotificationService
  */
 @Service
 public class MemberService {
@@ -29,10 +29,10 @@ public class MemberService {
     private final NotificationService notificationService;
 
     /**
-     * Constructs a new {@code MemberService} with the specified repositories and services.
+     * Constructs a {@code MemberService} with the necessary dependencies.
      *
-     * @param memberRepository the repository for managing member records
-     * @param notificationService the service for sending notifications related to member activities
+     * @param memberRepository the repository used for managing member records
+     * @param notificationService the service used for sending notifications related to member activities
      */
     public MemberService(MemberRepository memberRepository, NotificationService notificationService) {
         this.memberRepository = memberRepository;
@@ -40,92 +40,72 @@ public class MemberService {
     }
 
     /**
-     * Retrieves all members from the database.
+     * Retrieves all members from the system.
      *
-     * @return a list of all members
+     * @return a list of all members present in the library database
      */
     public List<Members> getAllMembers() {
         return memberRepository.findAll();
     }
 
     /**
-     * Retrieves a member record by its ID.
+     * Retrieves a member by their ID.
      *
      * @param memberId the ID of the member to retrieve
-     * @return an {@code Optional} containing the found member, or {@code Optional.empty()} if no member was found
-     * @throws ResourceNotFoundException if no member with the specified ID is found
+     * @return an {@code Optional} containing the member if found, otherwise {@code Optional.empty()}
      */
-    public Members getMemberById(int memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+    public Optional<Members> getMemberById(int memberId) {
+        return memberRepository.findById(memberId);
     }
 
     /**
-     * Adds a new member to the library system.
+     * Adds a new member to the system and sends an account creation notification.
      *
-     * <p>This method saves the new member record in the database and sends a notification
-     * about the account creation.</p>
-     *
-     * @param member the member details to be added
-     * @return the saved member record
+     * @param member the new member to add to the system
+     * @return the saved member entity
      */
     public Members addMember(Members member) {
-        Members savedMember = memberRepository.save(member);
-        notificationService.accountCreatedNotification(savedMember);
-        return savedMember;
+        Members currentMember = memberRepository.save(member);
+        notificationService.accountCreatedNotification(currentMember);
+        return currentMember;
     }
 
     /**
-     * Updates an existing member's details.
-     *
-     * <p>This method updates the member's details in the database. It throws a
-     * {@link ResourceNotFoundException} if the member is not found. After updating,
-     * a notification about the account details update is sent.</p>
+     * Updates an existing member's details. Throws a {@link ResourceNotFoundException} if the member
+     * is not found. After updating, an account details update notification is sent.
      *
      * @param memberId the ID of the member to update
      * @param memberDetails the updated member details
-     * @return the updated member record
+     * @return the updated member entity
      * @throws ResourceNotFoundException if the member is not found
      */
     public Members updateMember(int memberId, Members memberDetails) {
-        Members existingMember = getMemberById(memberId);
-        updateMemberDetails(existingMember, memberDetails);
-        Members updatedMember = memberRepository.save(existingMember);
-        notificationService.accountDetailsUpdateNotification(updatedMember);
-        return updatedMember;
+        Members member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+        member.setName(memberDetails.getName());
+        member.setEmail(memberDetails.getEmail());
+        member.setPassword(memberDetails.getPassword());
+        member.setRole(memberDetails.getRole());
+        member.setMembershipDate(memberDetails.getMembershipDate());
+        member = memberRepository.save(member);
+        notificationService.accountDetailsUpdateNotification(member);
+        return member;
     }
 
     /**
-     * Deletes a member from the library system.
-     *
-     * <p>This method deletes the member record from the database after ensuring that
-     * the member has no outstanding fines or borrowed books. Before deletion, it
-     * sends a notification about the account deletion.</p>
+     * Deletes a member from the system after ensuring no outstanding fines or borrowed books exist.
+     * Sends an account deletion notification before deletion.
      *
      * @param memberId the ID of the member to delete
      * @throws ResourceNotFoundException if the member is not found
      */
     public void deleteMember(int memberId) {
-        Members member = getMemberById(memberId);
+        Members member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
         // TODO: Implement logic to check if the member has any outstanding fines or borrowed books.
-        // If there are no pending obligations, delete all related notifications, borrowings, and fines.
 
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
-    }
-
-    /**
-     * Updates the details of an existing member.
-     *
-     * @param existingMember the member to update
-     * @param newDetails the new member details to apply
-     */
-    private void updateMemberDetails(Members existingMember, Members newDetails) {
-        existingMember.setName(newDetails.getName());
-        existingMember.setEmail(newDetails.getEmail());
-        existingMember.setPassword(newDetails.getPassword());
-        existingMember.setRole(newDetails.getRole());
-        existingMember.setMembershipDate(newDetails.getMembershipDate());
     }
 }
