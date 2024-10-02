@@ -48,7 +48,7 @@ Feel free to explore and use these project. If you encounter any issues or have 
 
 Contributions are always welcome! ✨
 
-See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/contributing.md) for ways to get started.
+See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/Contributing.md) for ways to get started.
 
 Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
 
