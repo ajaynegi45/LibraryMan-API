@@ -8,13 +8,15 @@ import com.libraryman_api.fine.FineRepository;
 import com.libraryman_api.member.MemberService;
 import com.libraryman_api.member.Members;
 import com.libraryman_api.notification.NotificationService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,12 +62,13 @@ public class BorrowingService {
     }
 
     /**
-     * Retrieves all borrowings from the database.
+     * Retrieves a paginated list of all borrowing records from the database.
      *
-     * @return a list of all borrowings
+     * @param pageable the pagination information, including the page number and size
+     * @return a {@link Page} of {@link Borrowings} representing all borrowings
      */
-    public List<Borrowings> getAllBorrowings() {
-        return borrowingRepository.findAll();
+    public Page<Borrowings> getAllBorrowings(Pageable pageable) {
+        return borrowingRepository.findAll(pageable);
     }
 
     /**
@@ -256,13 +259,19 @@ public class BorrowingService {
     }
 
     /**
-     * Retrieves all borrowings associated with a specific member.
+     * Retrieves a paginated list of all borrowing associated with a specific member.
      *
      * @param memberId the ID of the member whose borrowings are to be retrieved
-     * @return a list of borrowings associated with the specified member
+     * @param pageable the pagination information, including the page number and size
      * @throws ResourceNotFoundException if the member has not borrowed any books
+     * @return a {@link Page} of {@link Borrowings} representing all borrowing associated with a specific member
      */
-    public List<Borrowings> getAllBorrowingsOfMember(int memberId) {
-        return borrowingRepository.findByMember_memberId(memberId).orElseThrow(() -> new ResourceNotFoundException("Member didn't borrow any book"));
+    public Page<Borrowings> getAllBorrowingsOfMember(int memberId, Pageable pageable) {        
+        Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
+        
+        if (borrowings.isEmpty()) {
+            throw new ResourceNotFoundException("Member didn't borrow any book");
+        }
+        return borrowings;
     }
 }

@@ -1,9 +1,13 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing borrowings in the LibraryMan application.
@@ -26,13 +30,31 @@ public class BorrowingController {
     }
 
     /**
-     * Retrieves a list of all borrowing records in the library.
+     * Retrieves a paginated and sorted list of all borrowing records in the library.
      *
-     * @return a list of {@link Borrowings} objects representing all borrowings.
+     * @param pageable contains pagination information (page number, size, and sorting).
+     * @param sortBy (optional) the field by which to sort the results.
+     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @return a {@link Page} of {@link Borrowings} representing all borrowings.
+     *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping
-    public List<Borrowings> getAllBorrowings() {
-        return borrowingService.getAllBorrowings();
+    public Page<Borrowings> getAllBorrowings(@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
+												@RequestParam(required = false) String sortBy,
+												@RequestParam(required = false) String sortDir) {
+    	
+    	// Adjust the pageable based on dynamic sorting parameters
+    	if(sortBy!=null && !sortBy.isEmpty()) {
+    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+
+    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
+    			direction = Sort.Direction.DESC;
+    		}
+
+    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
+    	}
+
+        return borrowingService.getAllBorrowings(pageable);
     }
 
     /**
@@ -69,14 +91,33 @@ public class BorrowingController {
     }
 
     /**
-     * Retrieves all borrowing records for a specific member.
+     * Retrieves a paginated and sorted list of all borrowing records for a specific member.
      *
      * @param memberId the ID of the member whose borrowing records are to be retrieved.
-     * @return a list of {@link Borrowings} objects representing the member's borrowings.
+     * @param pageable contains pagination information (page number, size, and sorting).
+     * @param sortBy (optional) the field by which to sort the results.
+     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @return a {@link Page} of {@link Borrowings} representing all borrowings for a specific member.
+     *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping("member/{memberId}")
-    public List<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId) {
-        return borrowingService.getAllBorrowingsOfMember(memberId);
+    public Page<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId, 
+    													@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
+    													@RequestParam(required = false) String sortBy,
+    													@RequestParam(required = false) String sortDir) {
+    	
+    	// Adjust the pageable based on dynamic sorting parameters
+    	if(sortBy!=null && !sortBy.isEmpty()) {
+    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+
+    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
+    			direction = Sort.Direction.DESC;
+    		}
+
+    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
+    	}
+
+        return borrowingService.getAllBorrowingsOfMember(memberId, pageable);
     }
 
     /**

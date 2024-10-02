@@ -2,10 +2,13 @@ package com.libraryman_api.book;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * REST controller for managing books in the LibraryMan application.
@@ -21,13 +24,30 @@ public class BookController {
     private BookService bookService;
 
     /**
-     * Retrieves a list of all books in the library.
+     * Retrieves a paginated and sorted list of all books in the library.
      *
-     * @return a list of {@link Book} objects representing all the books in the library.
+     * @param pageable contains pagination information (page number, size, and sorting).
+     * @param sortBy (optional) the field by which to sort the results.
+     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @return a {@link Page} of {@link Book} objects representing the books in the library.
+     *         The results are sorted by title by default and limited to 5 books per page.
      */
     @GetMapping
-    public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
+    public Page<Book> getAllBooks(@PageableDefault(page=0, size=5, sort="title") Pageable pageable,
+    								@RequestParam(required = false) String sortBy,
+    								@RequestParam(required = false) String sortDir) {
+    	
+        // Adjust the pageable based on dynamic sorting parameters
+    	if(sortBy!=null && !sortBy.isEmpty()) {
+    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+    		
+    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
+    			direction = Sort.Direction.DESC;
+    		}
+    		
+    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
+    	}
+        return bookService.getAllBooks(pageable);
     }
 
     /**
