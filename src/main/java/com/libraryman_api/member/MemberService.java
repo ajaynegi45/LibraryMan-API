@@ -4,8 +4,10 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
+import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.notification.NotificationService;
 
@@ -46,9 +48,14 @@ public class MemberService {
      *
      * @param pageable the pagination information, including the page number and size
      * @return a {@link Page} of {@link Members} representing all members
+     * @throws InvalidSortFieldException if an invalid sortBy field is specified
      */
     public Page<Members> getAllMembers(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+        try {
+            return memberRepository.findAll(pageable);
+        } catch (PropertyReferenceException ex) {
+            throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
+        }
     }
 
     /**
