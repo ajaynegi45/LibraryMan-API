@@ -3,6 +3,7 @@ package com.libraryman_api.borrowing;
 import com.libraryman_api.book.BookService;
 import com.libraryman_api.book.Book;
 import com.libraryman_api.fine.Fines;
+import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
 import com.libraryman_api.member.MemberService;
@@ -11,6 +12,7 @@ import com.libraryman_api.notification.NotificationService;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -66,9 +68,14 @@ public class BorrowingService {
      *
      * @param pageable the pagination information, including the page number and size
      * @return a {@link Page} of {@link Borrowings} representing all borrowings
+     * @throws InvalidSortFieldException if an invalid sortBy field is specified
      */
     public Page<Borrowings> getAllBorrowings(Pageable pageable) {
-        return borrowingRepository.findAll(pageable);
+        try {
+            return borrowingRepository.findAll(pageable);
+        } catch (PropertyReferenceException ex) {
+            throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
+        }
     }
 
     /**
@@ -264,14 +271,19 @@ public class BorrowingService {
      * @param memberId the ID of the member whose borrowings are to be retrieved
      * @param pageable the pagination information, including the page number and size
      * @throws ResourceNotFoundException if the member has not borrowed any books
+     * @throws InvalidSortFieldException if an invalid sortBy field is specified
      * @return a {@link Page} of {@link Borrowings} representing all borrowing associated with a specific member
      */
-    public Page<Borrowings> getAllBorrowingsOfMember(int memberId, Pageable pageable) {        
-        Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
-        
-        if (borrowings.isEmpty()) {
-            throw new ResourceNotFoundException("Member didn't borrow any book");
+    public Page<Borrowings> getAllBorrowingsOfMember(int memberId, Pageable pageable) {                
+        try {
+            Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
+            
+            if (borrowings.isEmpty()) {
+                throw new ResourceNotFoundException("Member didn't borrow any book");
+            }
+            return borrowings;
+        } catch (PropertyReferenceException ex) {
+            throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
         }
-        return borrowings;
     }
 }
