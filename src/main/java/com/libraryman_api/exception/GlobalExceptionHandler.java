@@ -31,4 +31,20 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+    
+    /**
+     * Handles {@link InvalidSortFieldException} exceptions.
+     * This method is triggered when an {@code InvalidSortFieldException} is thrown in the application.
+     * It constructs an {@link ErrorDetails} object containing the exception details and returns
+     * a {@link ResponseEntity} with an HTTP status of {@code 400 Bad Request}.
+     *
+     * @param ex      the exception that was thrown.
+     * @param request the current web request in which the exception was thrown.
+     * @return a {@link ResponseEntity} containing the {@link ErrorDetails} and an HTTP status of {@code 400 Bad Request}.
+     */
+    @ExceptionHandler(InvalidSortFieldException.class)
+    public ResponseEntity<?> invalidSortFieldException(InvalidSortFieldException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
 }
