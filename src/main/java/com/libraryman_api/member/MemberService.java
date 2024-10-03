@@ -117,7 +117,7 @@ public class MemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
        // Check for outstanding fines
-        List<Fine> outstandingFines = fineRepository.findByMemberIdAndIsPaidFalse(memberId);
+        List<Fines> outstandingFines = fineRepository.findByMemberIdAndIsPaidFalse(memberId);
         if (!outstandingFines.isEmpty()) {
             throw new MemberDeletionException("Cannot delete member with outstanding fines.");
         }
