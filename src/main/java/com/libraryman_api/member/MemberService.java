@@ -116,10 +116,29 @@ public class MemberService {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
-        // TODO: Implement logic to check if the member has any outstanding fines or borrowed books.
-        // If there are no pending obligations, delete all related notifications, borrowings, and fines.
+       // Check for outstanding fines
+        List<Fine> outstandingFines = fineRepository.findByMemberIdAndIsPaidFalse(memberId);
+        if (!outstandingFines.isEmpty()) {
+            throw new MemberDeletionException("Cannot delete member with outstanding fines.");
+        }
 
+        // Check for borrowed books
+        List<Borrowings> borrowedBooks = borrowingRepository.getAllBorrowingsOfAMember(memberId);
+        if (!borrowedBooks.isEmpty()) {
+            throw new MemberDeletionException("Cannot delete member with borrowed books.");
+        }
+
+        // Delete related notifications
+        notificationRepository.deleteByMemberId(memberId);
+
+        // Delete related borrowings and fines
+        borrowingRepository.deleteByMemberId(memberId);
+        fineRepository.deleteByMemberId(memberId);
+
+        // Send account deletion notification
         notificationService.accountDeletionNotification(member);
+
+        // Delete the member
         memberRepository.delete(member);
     }
 }
