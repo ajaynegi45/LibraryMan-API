@@ -177,7 +177,7 @@ The Book API provides a set of endpoints to manage the library's book collection
 **Description:** Retrieves the details of a book by its ID.
 
 **Path Parameters:**
-- `id` (int) : The unique identifier of the book.
+- `id` (Integer) : The unique identifier of the book.
 
 **Success Response:**
 - **Code:** `200 OK`
@@ -264,7 +264,7 @@ None
 **Description:** Updates the details of an existing book by its ID.
 
 **Path Parameters:**
-- `id` (int) : The unique identifier of the book.
+- `id` (Integer) : The unique identifier of the book.
 
 **Request Body:**
 ```json
@@ -320,7 +320,7 @@ None
 **Description:** Deletes a book from the library by its ID.
 
 **Path Parameters:**
-- `id` (int) : The unique identifier of the book.
+- `id` (Integer) : The unique identifier of the book.
 
 **Success Response:**
 - **Code:** `204 NO CONTENT`

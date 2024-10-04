@@ -86,7 +86,7 @@ The Borrowings API provides a set of endpoints to manage the borrowing and retur
 **Description:** Returns a borrowed book to the library.
 
 **Path Parameters:**
-- `id` (int) : The unique identifier of the borrowing.
+- `id` (Integer) : The unique identifier of the borrowing.
 
 **Success Response:**
 - **Code:** `200 OK`
@@ -148,7 +148,7 @@ The Borrowings API provides a set of endpoints to manage the borrowing and retur
 **Description:** Pays the fine associated with a borrowing.
 
 **Path Parameters:**
-- `id` (int) : The unique identifier of the borrowing.
+- `id` (Integer) : The unique identifier of the borrowing.
 
 **Success Response:**
 - **Code:** `200 OK`
