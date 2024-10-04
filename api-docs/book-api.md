@@ -67,15 +67,18 @@ The Book API provides a set of endpoints to manage the library's book collection
 
    Retrieves books sorted by the `author` field in ascending order.
 
-	**Fields supported for sorting books:**
-	
-	- title ( default ) - `String`
-	- author - `String`
-	- isbn  - `String`
-	- publisher - `String`
-	- genre - `String`
-	- copiesAvailable - `Integer`
-	- publishedYear - `Integer`
+	**Supported Values for sortBy Query Parameter:**
+
+	| **Value**                  | **Description**                                   |
+	|----------------------------|---------------------------------------------------|
+	| `bookId`                   | Unique identifier for the book.      		 |
+	| `title`                    | Title of the book.               	         |
+	| `author`                   | Author of the book.              	         |
+	| `isbn`                     | ISBN number of the book.           	         |
+	| `publisher`                | Publisher of the book.         	          	 |
+	| `publishedYear`            | Year the book was published.             	 |
+	| `genre`                    | Genre of the book.                       	 |
+	| `copiesAvailable`          | Number of copies available of the book.  	 |
 
 4. **Pagination + Sorting:**
    ```
@@ -154,13 +157,13 @@ The Book API provides a set of endpoints to manage the library's book collection
 - **Message:** `The specified 'sortBy' value is invalid.`
 - **Content:**
   ```json
-	{
-    "timestamp": "2024-10-03T07:37:08.364+00:00",
-    "message": "The specified 'sortBy' value is invalid.",
-    "details": "/api/books"
-	}
+  {
+      "timestamp": "2024-10-03T07:37:08.364+00:00",
+      "message": "The specified 'sortBy' value is invalid.",
+      "details": "/api/books"
+  }
   ```
-
+  
 <br/>
 
 ---
