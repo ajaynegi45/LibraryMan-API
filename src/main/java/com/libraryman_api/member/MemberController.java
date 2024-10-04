@@ -31,7 +31,7 @@ public class MemberController {
      * @return a list of {@link Members} representing all members in the library
      */
     @GetMapping
-    public List<Members> getAllMembers() {
+    public List<MembersDto> getAllMembers() {
         return memberService.getAllMembers();
     }
 
@@ -43,7 +43,7 @@ public class MemberController {
      * @return a {@link ResponseEntity} containing the found {@link Members} object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Members> getMemberById(@PathVariable int id) {
+    public ResponseEntity<MembersDto> getMemberById(@PathVariable int id) {
         return memberService.getMemberById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
@@ -52,12 +52,13 @@ public class MemberController {
     /**
      * Adds a new library member.
      *
-     * @param member the {@link Members} object representing the new member
+     * @param memberDto the {@link Members} object representing the new member
      * @return the added {@link Members} object
      */
     @PostMapping
-    public Members addMember(@RequestBody Members member) {
-        return memberService.addMember(member);
+    public MembersDto addMember(@RequestBody MembersDto memberDto) {
+
+        return memberService.addMember(memberDto);
     }
 
     /**
@@ -65,12 +66,12 @@ public class MemberController {
      * If the member is not found, a {@link ResourceNotFoundException} is thrown.
      *
      * @param id the ID of the member to update
-     * @param memberDetails the {@link Members} object containing the updated details
+     * @param memberDtoDetails the {@link Members} object containing the updated details
      * @return the updated {@link Members} object
      */
     @PutMapping("/{id}")
-    public Members updateMember(@PathVariable int id, @RequestBody Members memberDetails) {
-        return memberService.updateMember(id, memberDetails);
+    public MembersDto updateMember(@PathVariable int id, @RequestBody MembersDto memberDtoDetails) {
+        return memberService.updateMember(id, memberDtoDetails);
     }
 
     /**

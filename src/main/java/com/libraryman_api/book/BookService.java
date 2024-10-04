@@ -1,6 +1,8 @@
 package com.libraryman_api.book;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     /**
      * Constructs a new {@code BookService} with the specified {@code BookRepository}.
@@ -32,6 +36,7 @@ public class BookService {
      * @param bookRepository the repository to be used by this service to interact with the database
      */
     public BookService(BookRepository bookRepository) {
+
         this.bookRepository = bookRepository;
     }
 
@@ -40,8 +45,9 @@ public class BookService {
      *
      * @return a list of all books
      */
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<BookDto> getAllBooks() {
+        List<Book> allBooks = bookRepository.findAll();
+         return allBooks.stream().map(this::EntityToDto).toList();
     }
 
     /**
@@ -50,39 +56,44 @@ public class BookService {
      * @param bookId the ID of the book to retrieve
      * @return an {@code Optional} containing the found book, or {@code Optional.empty()} if no book was found
      */
-    public Optional<Book> getBookById(int bookId) {
-        return bookRepository.findById(bookId);
+    public Optional<BookDto> getBookById(int bookId) {
+
+        Optional<Book> getBook = bookRepository.findById(bookId);
+        return getBook.map(this::EntityToDto);
     }
 
     /**
      * Adds a new book to the database.
      *
-     * @param book the book to be added
+     * @param bookDto the book to be added
      * @return the saved book
      */
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookDto addBook(BookDto bookDto) {
+        Book book = DtoToEntity(bookDto);
+        Book savedBook = bookRepository.save(book);
+        return EntityToDto(savedBook);
     }
 
     /**
      * Updates an existing book with the given details.
      *
      * @param bookId the ID of the book to update
-     * @param bookDetails the new details for the book
+     * @param bookDtoDetails the new details for the book
      * @return the updated book
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
-    public Book updateBook(int bookId, Book bookDetails) {
+    public BookDto updateBook(int bookId, BookDto bookDtoDetails) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        book.setTitle(bookDetails.getTitle());
-        book.setAuthor(bookDetails.getAuthor());
-        book.setIsbn(bookDetails.getIsbn());
-        book.setPublisher(bookDetails.getPublisher());
-        book.setPublishedYear(bookDetails.getPublishedYear());
-        book.setGenre(bookDetails.getGenre());
-        book.setCopiesAvailable(bookDetails.getCopiesAvailable());
-        return bookRepository.save(book);
+        book.setTitle(bookDtoDetails.getTitle());
+        book.setAuthor(bookDtoDetails.getAuthor());
+        book.setIsbn(bookDtoDetails.getIsbn());
+        book.setPublisher(bookDtoDetails.getPublisher());
+        book.setPublishedYear(bookDtoDetails.getPublishedYear());
+        book.setGenre(bookDtoDetails.getGenre());
+        book.setCopiesAvailable(bookDtoDetails.getCopiesAvailable());
+        Book updatedBook = bookRepository.save(book);
+        return EntityToDto(updatedBook);
     }
 
     /**
@@ -95,6 +106,15 @@ public class BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         bookRepository.delete(book);
+    }
+
+
+
+    public BookDto EntityToDto(Book book){
+        return mapper.map(book,BookDto.class);
+    }
+    public Book DtoToEntity(BookDto bookDto){
+        return mapper.map(bookDto,Book.class);
     }
 
 }

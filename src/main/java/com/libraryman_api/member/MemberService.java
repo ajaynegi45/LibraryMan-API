@@ -2,6 +2,9 @@ package com.libraryman_api.member;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.notification.NotificationService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final NotificationService notificationService;
+    @Autowired
+    private ModelMapper mapper;
 
     /**
      * Constructs a new {@code MemberService} with the specified repositories and services.
@@ -43,8 +48,10 @@ public class MemberService {
      *
      * @return a list of all members
      */
-    public List<Members> getAllMembers() {
-        return memberRepository.findAll();
+    public List<MembersDto> getAllMembers() {
+
+        List<Members> membersList = memberRepository.findAll();
+        return  membersList.stream().map(members -> mapper.map(members,MembersDto.class)).toList();
     }
 
     /**
@@ -53,8 +60,10 @@ public class MemberService {
      * @param memberId the ID of the member to retrieve
      * @return an {@code Optional} containing the found member, or {@code Optional.empty()} if no member was found
      */
-    public Optional<Members> getMemberById(int memberId) {
-        return memberRepository.findById(memberId);
+    public Optional<MembersDto> getMemberById(int memberId) {
+
+        Optional<Members> member = memberRepository.findById(memberId);
+        return  member.map(member1 -> mapper.map(member1,MembersDto.class));
     }
 
     /**
@@ -63,14 +72,15 @@ public class MemberService {
      * <p>This method saves the new member record in the database and sends a notification
      * about the account creation.</p>
      *
-     * @param member the member details to be added
+     * @param memberDto the member details to be added
      * @return the saved member record
      */
-    public Members addMember(Members member) {
+    public MembersDto addMember(MembersDto memberDto) {
+        Members member = mapper.map(memberDto, Members.class);
         Members currentMember = memberRepository.save(member);
         notificationService.accountCreatedNotification(currentMember);
+        return mapper.map(currentMember, MembersDto.class);
 
-        return currentMember;
     }
 
     /**
@@ -81,21 +91,21 @@ public class MemberService {
      * a notification about the account details update is sent.</p>
      *
      * @param memberId the ID of the member to update
-     * @param memberDetails the updated member details
+     * @param memberDtoDetails the updated member details
      * @return the updated member record
      * @throws ResourceNotFoundException if the member is not found
      */
-    public Members updateMember(int memberId, Members memberDetails) {
+    public MembersDto updateMember(int memberId, MembersDto memberDtoDetails) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-        member.setName(memberDetails.getName());
-        member.setEmail(memberDetails.getEmail());
-        member.setPassword(memberDetails.getPassword());
-        member.setRole(memberDetails.getRole());
-        member.setMembershipDate(memberDetails.getMembershipDate());
-        member = memberRepository.save(member);
-        notificationService.accountDetailsUpdateNotification(member);
-        return member;
+        member.setName(memberDtoDetails.getName());
+        member.setEmail(memberDtoDetails.getEmail());
+        member.setPassword(memberDtoDetails.getPassword());
+        member.setRole(memberDtoDetails.getRole());
+        member.setMembershipDate(memberDtoDetails.getMembershipDate());
+        Members updateMember = memberRepository.save(member);
+        notificationService.accountDetailsUpdateNotification(updateMember);
+        return mapper.map(updateMember,MembersDto.class);
     }
 
     /**

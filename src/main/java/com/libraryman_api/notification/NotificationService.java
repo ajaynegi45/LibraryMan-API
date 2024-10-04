@@ -1,10 +1,13 @@
 package com.libraryman_api.notification;
 
 import com.libraryman_api.borrowing.Borrowings;
+import com.libraryman_api.borrowing.BorrowingsDto;
 import com.libraryman_api.email.EmailSender;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.member.MemberRepository;
 import com.libraryman_api.member.Members;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,6 +28,8 @@ public class NotificationService {
     private final EmailSender emailSender;
     private final NotificationRepository notificationRepository;
     private final MemberRepository memberRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     /**
      * Constructs a new {@code NotificationService} with the specified {@link EmailSender},
@@ -137,17 +142,17 @@ public class NotificationService {
     /**
      * Sends a notification to a member when a fine is imposed for the late return of a borrowed book.
      *
-     * @param borrowing the borrowing instance containing information about the overdue book and the fine imposed.
+     * @param borrowingsDto the borrowing instance containing information about the overdue book and the fine imposed.
      */
-    public void fineImposedNotification(Borrowings borrowing) {
+    public void fineImposedNotification(BorrowingsDto borrowingsDto) {
         Notifications notification = new Notifications();
-        notification.setMember(borrowing.getMember());
+        notification.setMember(mapper.map(borrowingsDto.getMember(),Members.class));
         notification.setMessage("We hope you enjoyed reading '" +
-                borrowing.getBook().getTitle() +
+                borrowingsDto.getBook().getTitle() +
                 "'. Unfortunately, our records show that the book was returned after the due date of " +
-                LocalDateTime.ofInstant(borrowing.getDueDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")) +
+                LocalDateTime.ofInstant(borrowingsDto.getDueDate().toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")) +
                 ". As a result, a fine of ₹10 per day has been imposed for the late return.<br><br>The total fine amount for this overdue return is ₹" +
-                borrowing.getFine().getAmount() +
+                borrowingsDto.getFine().getAmount() +
                 ".<br><br>If you have any questions or would like to discuss this matter further, please don't hesitate to contact us.<br><br>Thank you for your understanding and for being a valued member of our library.");
         notification.setNotificationType(NotificationType.FINE);
         notification.setSentDate(new Timestamp(System.currentTimeMillis()));

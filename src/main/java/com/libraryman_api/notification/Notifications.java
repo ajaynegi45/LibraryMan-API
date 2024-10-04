@@ -2,9 +2,17 @@ package com.libraryman_api.notification;
 
 import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.sql.Timestamp;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 public class Notifications {
 
     @Id
@@ -32,58 +40,4 @@ public class Notifications {
 
 
 
-    public Notifications() {
-    }
-
-    public Notifications(Members member, String message, NotificationType notificationType, Timestamp sentDate, NotificationStatus notificationStatus) {
-        this.member = member;
-        this.message = message;
-        this.notificationType = notificationType;
-        this.sentDate = sentDate;
-        this.notificationStatus = notificationStatus;
-    }
-
-    public int getNotificationId() {
-        return notificationId;
-    }
-
-    public Members getMember() {
-        return member;
-    }
-
-    public void setMember(Members member) {
-        this.member = member;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public NotificationType getNotificationType() {
-        return notificationType;
-    }
-
-    public void setNotificationType(NotificationType notificationType) {
-        this.notificationType = notificationType;
-    }
-
-    public Timestamp getSentDate() {
-        return sentDate;
-    }
-
-    public void setSentDate(Timestamp sentDate) {
-        this.sentDate = sentDate;
-    }
-
-    public NotificationStatus getNotificationStatus() {
-        return notificationStatus;
-    }
-
-    public void setNotificationStatus(NotificationStatus notificationStatus) {
-        this.notificationStatus = notificationStatus;
-    }
 }

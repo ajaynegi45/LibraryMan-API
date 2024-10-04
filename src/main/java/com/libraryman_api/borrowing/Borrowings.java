@@ -4,10 +4,17 @@ import com.libraryman_api.book.Book;
 import com.libraryman_api.fine.Fines;
 import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Borrowings {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -30,7 +37,7 @@ public class Borrowings {
     @JoinColumn(name = "member_id", nullable = false)
     private Members member;
 
-    @Column(name = "borrow_date",nullable = false)
+    @Column(name = "borrow_date", nullable = false)
     private Date borrowDate;
 
     @Column(name = "due_date", nullable = false)
@@ -40,66 +47,4 @@ public class Borrowings {
     private Date returnDate;
 
 
-    public Borrowings() {
-    }
-
-    public Borrowings(Book book, Members member, Date borrowDate, Date dueDate, Date returnDate) {
-        this.book = book;
-        this.member = member;
-        this.borrowDate = borrowDate;
-        this.dueDate = dueDate;
-        this.returnDate = returnDate;
-    }
-
-    public Fines getFine() {
-        return fine;
-    }
-
-    public void setFine(Fines fine) {
-        this.fine = fine;
-    }
-
-    public int getBorrowingId() {
-        return borrowingId;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public Members getMember() {
-        return member;
-    }
-
-    public void setMember(Members member) {
-        this.member = member;
-    }
-
-    public Date getBorrowDate() {
-        return borrowDate;
-    }
-
-    public void setBorrowDate(Date borrowDate) {
-        this.borrowDate = borrowDate;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
-    }
 }

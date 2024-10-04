@@ -1,10 +1,16 @@
 package com.libraryman_api.fine;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Fines {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -26,33 +32,4 @@ public class Fines {
     @Column(nullable = false)
     private boolean paid = false;
 
-    public Fines() {
-    }
-
-
-    public Fines( BigDecimal amount, boolean paid) {
-
-        this.amount = amount;
-        this.paid = paid;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
-    }
-
-    public int getFineId() {
-        return fineId;
-    }
 }

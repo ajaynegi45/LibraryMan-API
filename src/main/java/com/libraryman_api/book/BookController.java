@@ -23,10 +23,11 @@ public class BookController {
     /**
      * Retrieves a list of all books in the library.
      *
-     * @return a list of {@link Book} objects representing all the books in the library.
+     * @return a list of {@link BookDto} objects representing all the books in the library.
      */
     @GetMapping
-    public List<Book> getAllBooks() {
+    public List<BookDto> getAllBooks() {
+
         return bookService.getAllBooks();
     }
 
@@ -34,11 +35,11 @@ public class BookController {
      * Retrieves a book by its ID.
      *
      * @param id the ID of the book to retrieve.
-     * @return a {@link ResponseEntity} containing the {@link Book} object, if found.
+     * @return a {@link ResponseEntity} containing the {@link BookDto} object, if found.
      * @throws ResourceNotFoundException if the book with the specified ID is not found.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable int id) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable int id) {
         return bookService.getBookById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
@@ -47,24 +48,24 @@ public class BookController {
     /**
      * Adds a new book to the library.
      *
-     * @param book the {@link Book} object representing the new book to add.
+     * @param bookDto the {@link Book} object representing the new book to add.
      * @return the added {@link Book} object.
      */
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
-        return bookService.addBook(book);
+    public BookDto addBook(@RequestBody BookDto bookDto) {
+        return bookService.addBook(bookDto);
     }
 
     /**
      * Updates an existing book in the library.
      *
      * @param id          the ID of the book to update.
-     * @param bookDetails the {@link Book} object containing the updated book details.
+     * @param bookDtoDetails the {@link Book} object containing the updated book details.
      * @return the updated {@link Book} object.
      */
     @PutMapping("/{id}")
-    public Book updateBook(@PathVariable int id, @RequestBody Book bookDetails) {
-        return bookService.updateBook(id, bookDetails);
+    public BookDto updateBook(@PathVariable int id, @RequestBody BookDto bookDtoDetails) {
+        return bookService.updateBook(id, bookDtoDetails);
     }
 
     /**

@@ -31,19 +31,20 @@ public class BorrowingController {
      * @return a list of {@link Borrowings} objects representing all borrowings.
      */
     @GetMapping
-    public List<Borrowings> getAllBorrowings() {
+    public List<BorrowingsDto> getAllBorrowings() {
+
         return borrowingService.getAllBorrowings();
     }
 
     /**
      * Records a new book borrowing.
      *
-     * @param borrowing the {@link Borrowings} object containing borrowing details.
+     * @param borrowingDto the {@link Borrowings} object containing borrowing details.
      * @return the saved {@link Borrowings} object representing the borrowing record.
      */
     @PostMapping
-    public Borrowings borrowBook(@RequestBody Borrowings borrowing) {
-        return borrowingService.borrowBook(borrowing);
+    public BorrowingsDto borrowBook(@RequestBody BorrowingsDto borrowingDto) {
+        return borrowingService.borrowBook(borrowingDto);
     }
 
     /**
@@ -52,8 +53,8 @@ public class BorrowingController {
      * @param id the ID of the borrowing record to update.
      */
     @PutMapping("/{id}/return")
-    public void returnBook(@PathVariable int id) {
-        borrowingService.returnBook(id);
+    public BorrowingsDto returnBook(@PathVariable int id) {
+        return borrowingService.returnBook(id);
     }
 
     /**
@@ -75,7 +76,7 @@ public class BorrowingController {
      * @return a list of {@link Borrowings} objects representing the member's borrowings.
      */
     @GetMapping("member/{memberId}")
-    public List<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId) {
+    public List<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId) {
         return borrowingService.getAllBorrowingsOfMember(memberId);
     }
 
@@ -87,7 +88,7 @@ public class BorrowingController {
      * @throws ResourceNotFoundException if the borrowing record with the specified ID is not found.
      */
     @GetMapping("{borrowingId}")
-    public Borrowings getBorrowingById(@PathVariable int borrowingId) {
+    public BorrowingsDto getBorrowingById(@PathVariable int borrowingId) {
         return borrowingService.getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
     }

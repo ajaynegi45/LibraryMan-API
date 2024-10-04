@@ -1,11 +1,17 @@
 package com.libraryman_api.borrowing;
 
+import com.libraryman_api.book.BookDto;
 import com.libraryman_api.book.BookService;
 import com.libraryman_api.book.Book;
 import com.libraryman_api.fine.Fines;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
+import com.libraryman_api.member.MemberService;
+import com.libraryman_api.member.Members;
+import com.libraryman_api.member.MembersDto;
 import com.libraryman_api.notification.NotificationService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -39,20 +45,24 @@ public class BorrowingService {
     private final FineRepository fineRepository;
     private final NotificationService notificationService;
     private final BookService bookService;
+    private final MemberService memberService;
+    @Autowired
+    private ModelMapper mapper;
 
     /**
      * Constructs a new {@code BorrowingService} with the specified repositories and services.
      *
      * @param borrowingRepository the repository for managing borrowing records
-     * @param fineRepository the repository for managing fine records
+     * @param fineRepository      the repository for managing fine records
      * @param notificationService the service for sending notifications
-     * @param bookService the service for managing book records
+     * @param bookService         the service for managing book records
      */
-    public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService) {
+    public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService, MemberService memberService) {
         this.borrowingRepository = borrowingRepository;
         this.fineRepository = fineRepository;
         this.notificationService = notificationService;
         this.bookService = bookService;
+        this.memberService = memberService;
     }
 
     /**
@@ -60,8 +70,10 @@ public class BorrowingService {
      *
      * @return a list of all borrowings
      */
-    public List<Borrowings> getAllBorrowings() {
-        return borrowingRepository.findAll();
+    public List<BorrowingsDto> getAllBorrowings() {
+
+        List<Borrowings> borrowings = borrowingRepository.findAll();
+        return borrowings.stream().map(borrowing -> mapper.map(borrowing, BorrowingsDto.class)).toList();
     }
 
     /**
@@ -70,8 +82,9 @@ public class BorrowingService {
      * @param borrowingId the ID of the borrowing to retrieve
      * @return an {@code Optional} containing the found borrowing, or {@code Optional.empty()} if no borrowing was found
      */
-    public Optional<Borrowings> getBorrowingById(int borrowingId) {
-        return borrowingRepository.findById(borrowingId);
+    public Optional<BorrowingsDto> getBorrowingById(int borrowingId) {
+        Optional<Borrowings> borrowingOptional = borrowingRepository.findById(borrowingId);
+        return borrowingOptional.map(borrowing -> mapper.map(borrowing, BorrowingsDto.class));
     }
 
     /**
@@ -82,34 +95,101 @@ public class BorrowingService {
      * or roll back in case of any errors. It updates the book's availability, sets the
      * borrowing and due dates, and sends notifications related to the borrowing.</p>
      *
-     * @param borrowing the borrowing details provided by the user
+     * @param borrowingDto the borrowing details provided by the user
      * @return the saved borrowing record
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies available
      */
+//    @Transactional
+//    public synchronized BorrowingsDto borrowBook(BorrowingsDto borrowingDto) {
+//        Optional<BookDto> bookDtoOptional = bookService.getBookById(borrowingDto.getBook().getBookId());
+//
+//        if (bookDtoOptional.isPresent()) {
+////            Book bookEntity = mapper.map(bookDtoOptional.get(), Book.class);
+//            BookDto bookDto = bookDtoOptional.get();
+//            if (bookDto.getCopiesAvailable() > 0) {
+//                updateBookCopies(borrowingDto.getBook().getBookId(), "REMOVE", 1);
+//                borrowingDto.setBorrowDate(new Date());
+//                borrowingDto.setDueDate(calculateDueDate());
+//                Borrowings borrowing = mapper.map(borrowingDto, Borrowings.class);
+//                Borrowings savedBorrowing = borrowingRepository.save(borrowing);
+//
+//                notificationService.borrowBookNotification(savedBorrowing); // Null Book problem
+//                notificationService.reminderNotification(savedBorrowing); // send this notification two days before the due date // Null Book problem
+//                return mapper.map(savedBorrowing,BorrowingsDto.class);
+//            } else {
+//                throw new ResourceNotFoundException("Not enough copies available");
+//            }
+//        } else {
+//            throw new ResourceNotFoundException("Book not found");
+//        }
+//    }   // previous one
     @Transactional
-    public synchronized Borrowings borrowBook(Borrowings borrowing) {
-        Optional<Book> book = bookService.getBookById(borrowing.getBook().getBookId());
+    public synchronized BorrowingsDto borrowBook(BorrowingsDto borrowingDto) {
+        // Retrieve the book by its ID from the borrowingDto
+        Optional<BookDto> bookDtoOptional = bookService.getBookById(borrowingDto.getBook().getBookId());
 
-        if (book.isPresent()) {
-            Book bookEntity = book.get();
+        if (bookDtoOptional.isPresent()) {
+            BookDto bookDto = bookDtoOptional.get(); // Fetch the BookDto
 
-            if (bookEntity.getCopiesAvailable() > 0) {
-                updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
-                borrowing.setBorrowDate(new Date());
-                borrowing.setDueDate(calculateDueDate());
+            Optional<MembersDto> membersDtoOptional = memberService.getMemberById(borrowingDto.getMember().getMemberId());
+            if (membersDtoOptional.isPresent()) {
+                MembersDto membersDto = membersDtoOptional.get();
 
-                Borrowings savedBorrowing = borrowingRepository.save(borrowing);
+                // Check if copies are available
+                if (bookDto.getCopiesAvailable() > 0) {
+                    // Update the book copies
+                    updateBookCopies(borrowingDto.getBook().getBookId(), "REMOVE", 1);
 
-                notificationService.borrowBookNotification(savedBorrowing); // Null Book problem
-                notificationService.reminderNotification(savedBorrowing); // send this notification two days before the due date // Null Book problem
-                return savedBorrowing;
+                    // Set borrow date and due date in borrowingDto
+                    borrowingDto.setBorrowDate(new Date());
+                    borrowingDto.setDueDate(calculateDueDate());
+
+                    // Directly create Borrowings and populate its fields
+                    Borrowings borrowing = new Borrowings();
+                    borrowing.setBook(mapper.map(bookDto, Book.class));// Map BookDto to Book entity
+                    Members members = mapper.map(membersDto, Members.class);
+                    borrowing.setMember(members); // Map MembersDto to Members entity
+                    borrowing.setBorrowDate(borrowingDto.getBorrowDate());
+                    borrowing.setDueDate(borrowingDto.getDueDate());
+                    borrowing.setReturnDate(null); // Set return date if applicable
+
+                    // Save the borrowing record
+                    Borrowings savedBorrowing = borrowingRepository.save(borrowing);
+
+                    // Log saved borrowing for debugging
+                    System.out.println("Saved Borrowing: " + savedBorrowing);
+
+                    // Send notifications
+                    notificationService.borrowBookNotification(savedBorrowing);
+                    notificationService.reminderNotification(savedBorrowing);
+
+                    // Map and return the saved borrowing as BorrowingsDto
+                    BorrowingsDto resultDto = mapper.map(savedBorrowing, BorrowingsDto.class);
+                    System.out.println("Mapped BorrowingsDto: " + resultDto); // Debugging log
+                    return resultDto;
+                } else {
+                    throw new ResourceNotFoundException("Not enough copies available");
+                }
             } else {
-                throw new ResourceNotFoundException("Not enough copies available");
+                throw new ResourceNotFoundException("Member not found");
             }
-        } else {
+        }
+         else {
             throw new ResourceNotFoundException("Book not found");
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Manages the return process for a borrowed book.
@@ -122,8 +202,8 @@ public class BorrowingService {
      * @param borrowingId the ID of the borrowing record
      * @throws ResourceNotFoundException if the borrowing record is not found, if the book has already been returned, or if there are outstanding fines
      */
-    public synchronized void returnBook(int borrowingId) {
-        Borrowings borrowing = getBorrowingById(borrowingId)
+    public synchronized BorrowingsDto returnBook(int borrowingId) {
+        BorrowingsDto borrowing = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
 
         if (borrowing.getReturnDate() != null) {
@@ -131,8 +211,9 @@ public class BorrowingService {
         }
         if (borrowing.getDueDate().before(new Date())) {
             if (borrowing.getFine() == null) {
-                borrowing.setFine(imposeFine(borrowing));
-                borrowingRepository.save(borrowing);
+                Borrowings borrowings = mapper.map(borrowing, Borrowings.class);
+                borrowing.setFine(imposeFine(borrowings));
+                borrowingRepository.save(borrowings);
                 notificationService.fineImposedNotification(borrowing);
                 throw new ResourceNotFoundException("Due date passed. Fine imposed, pay fine first to return the book");
             } else if (!borrowing.getFine().isPaid()) {
@@ -143,8 +224,10 @@ public class BorrowingService {
 
         borrowing.setReturnDate(new Date());
         updateBookCopies(borrowing.getBook().getBookId(), "ADD", 1);
-        notificationService.bookReturnedNotification(borrowing);
-        borrowingRepository.save(borrowing);
+        Borrowings borrowings = mapper.map(borrowing, Borrowings.class);
+        notificationService.bookReturnedNotification(borrowings);
+        Borrowings returnedBookRecord = borrowingRepository.save(borrowings);
+        return mapper.map(returnedBookRecord,BorrowingsDto.class);
     }
 
     /**
@@ -170,15 +253,16 @@ public class BorrowingService {
      * @throws ResourceNotFoundException if the borrowing record is not found or if there is no outstanding fine
      */
     public String payFine(int borrowingId) {
-        Borrowings borrowing = getBorrowingById(borrowingId)
+        BorrowingsDto borrowingsDto = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
-        Fines fine = borrowing.getFine();
+        Fines fine = borrowingsDto.getFine();
 
         if (fine != null && !fine.isPaid()) {
             fine.setPaid(true);
-            notificationService.finePaidNotification(borrowing);
+            Borrowings borrowings = mapper.map(borrowingsDto, Borrowings.class);
+            notificationService.finePaidNotification(borrowings);
             fineRepository.save(fine);  // Save the updated fine
-            borrowingRepository.save(borrowing);  // Save borrowing with updated fine
+            borrowingRepository.save(borrowings);  // Save borrowing with updated fine
         } else {
             throw new ResourceNotFoundException("No outstanding fine found or fine already paid");
         }
@@ -198,10 +282,10 @@ public class BorrowingService {
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies to remove
      */
     public void updateBookCopies(int bookId, String operation, int numberOfCopies) {
-        Optional<Book> book = bookService.getBookById(bookId);
+        Optional<BookDto> book = bookService.getBookById(bookId);
 
         if (book.isPresent()) {
-            Book bookEntity = book.get();
+            BookDto bookEntity = book.get();
             if (operation.equals("ADD")) {
                 bookEntity.setCopiesAvailable(bookEntity.getCopiesAvailable() + numberOfCopies);
             } else if (operation.equals("REMOVE")) {
@@ -252,7 +336,8 @@ public class BorrowingService {
      * @return a list of borrowings associated with the specified member
      * @throws ResourceNotFoundException if the member has not borrowed any books
      */
-    public List<Borrowings> getAllBorrowingsOfMember(int memberId) {
-        return borrowingRepository.findByMember_memberId(memberId).orElseThrow(() -> new ResourceNotFoundException("Member didn't borrow any book"));
+    public List<BorrowingsDto> getAllBorrowingsOfMember(int memberId) {
+        List<Borrowings> borrowingsList = borrowingRepository.findByMember_memberId(memberId).orElseThrow(() -> new ResourceNotFoundException("Member didn't borrow any book"));
+         return borrowingsList.stream().map(borrowings -> mapper.map(borrowings,BorrowingsDto.class)).toList();
     }
 }
