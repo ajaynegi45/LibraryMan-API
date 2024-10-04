@@ -99,30 +99,7 @@ public class BorrowingService {
      * @return the saved borrowing record
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies available
      */
-//    @Transactional
-//    public synchronized BorrowingsDto borrowBook(BorrowingsDto borrowingDto) {
-//        Optional<BookDto> bookDtoOptional = bookService.getBookById(borrowingDto.getBook().getBookId());
-//
-//        if (bookDtoOptional.isPresent()) {
-////            Book bookEntity = mapper.map(bookDtoOptional.get(), Book.class);
-//            BookDto bookDto = bookDtoOptional.get();
-//            if (bookDto.getCopiesAvailable() > 0) {
-//                updateBookCopies(borrowingDto.getBook().getBookId(), "REMOVE", 1);
-//                borrowingDto.setBorrowDate(new Date());
-//                borrowingDto.setDueDate(calculateDueDate());
-//                Borrowings borrowing = mapper.map(borrowingDto, Borrowings.class);
-//                Borrowings savedBorrowing = borrowingRepository.save(borrowing);
-//
-//                notificationService.borrowBookNotification(savedBorrowing); // Null Book problem
-//                notificationService.reminderNotification(savedBorrowing); // send this notification two days before the due date // Null Book problem
-//                return mapper.map(savedBorrowing,BorrowingsDto.class);
-//            } else {
-//                throw new ResourceNotFoundException("Not enough copies available");
-//            }
-//        } else {
-//            throw new ResourceNotFoundException("Book not found");
-//        }
-//    }   // previous one
+
     @Transactional
     public synchronized BorrowingsDto borrowBook(BorrowingsDto borrowingDto) {
         // Retrieve the book by its ID from the borrowingDto
@@ -178,17 +155,6 @@ public class BorrowingService {
             throw new ResourceNotFoundException("Book not found");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
