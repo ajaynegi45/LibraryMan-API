@@ -62,10 +62,8 @@ If you have any questions or would like to connect, please don't hesitate to rea
 <br><br>
 
 ## Contributors
+<img src="https://contrib.rocks/image?repo=ajaynegi45/LibraryMan-API" />
 
-<a href = "https://github.com/ajaynegi45/LibraryMan-API/graphs/contributors">
-  <img src = "https://contrib.rocks/image?repo=ajaynegi45/LibraryMan-API"/>
-</a>
 
 ### Stargazers
 
