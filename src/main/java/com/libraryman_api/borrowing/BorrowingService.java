@@ -109,7 +109,7 @@ public class BorrowingService {
             Members memberEntity = member.get();
 
             if (bookEntity.getCopiesAvailable() > 0) {
-                updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
+                updateBookCopies(book, "REMOVE", 1);
                 borrowing.setBorrowDate(new Date());
                 borrowing.setBook(bookEntity);
                 borrowing.setMember(memberEntity);
@@ -146,6 +146,11 @@ public class BorrowingService {
         Borrowings borrowing = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
 
+        Optional<Members> member = memberService.getMemberById(borrowing.getMember().getMemberId());
+            if(!member.isPresent()){
+                    throw new ResourceNotFoundException("Member not found");
+        }
+
         if (borrowing.getReturnDate() != null) {
             throw new ResourceNotFoundException("Book has already been returned");
         }
@@ -162,7 +167,8 @@ public class BorrowingService {
         }
 
         borrowing.setReturnDate(new Date());
-        updateBookCopies(borrowing.getBook().getBookId(), "ADD", 1);
+        Optional<Book> book = bookService.getBookById(borrowing.getBook().getBookId());
+        updateBookCopies(book, "ADD", 1);
         notificationService.bookReturnedNotification(borrowing);
         borrowingRepository.save(borrowing);
     }
@@ -192,6 +198,10 @@ public class BorrowingService {
     public String payFine(int borrowingId) {
         Borrowings borrowing = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
+        Optional<Members> member = memberService.getMemberById(borrowing.getMember().getMemberId());
+        if(!member.isPresent()){
+                throw new ResourceNotFoundException("Member not found");
+        }
         Fines fine = borrowing.getFine();
 
         if (fine != null && !fine.isPaid()) {
@@ -217,8 +227,7 @@ public class BorrowingService {
      * @param numberOfCopies the number of copies to add or remove
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies to remove
      */
-    public void updateBookCopies(int bookId, String operation, int numberOfCopies) {
-        Optional<Book> book = bookService.getBookById(bookId);
+    public void updateBookCopies(Optional<Book> book, String operation, int numberOfCopies) {
 
         if (book.isPresent()) {
             Book bookEntity = book.get();

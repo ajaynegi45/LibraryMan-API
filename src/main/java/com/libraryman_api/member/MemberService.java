@@ -79,7 +79,8 @@ public class MemberService {
      */
     public Members addMember(Members member) {
         Members currentMember = memberRepository.save(member);
-        notificationService.accountCreatedNotification(currentMember);
+        if(currentMember!=null)
+            notificationService.accountCreatedNotification(currentMember);
 
         return currentMember;
     }
@@ -105,7 +106,8 @@ public class MemberService {
         member.setRole(memberDetails.getRole());
         member.setMembershipDate(memberDetails.getMembershipDate());
         member = memberRepository.save(member);
-        notificationService.accountDetailsUpdateNotification(member);
+        if(member!=null)
+            notificationService.accountDetailsUpdateNotification(member);
         return member;
     }
 
