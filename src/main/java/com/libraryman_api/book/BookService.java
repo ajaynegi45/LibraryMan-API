@@ -112,6 +112,17 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         bookRepository.delete(book);
     }
+    /**
+     * Converts a Book entity to a BookDto object.
+     *
+     * <p>This method takes a Book entity and transforms it into a BookDto object for
+     * data transfer between application layers. It maps all relevant book details,
+     * including book ID, publisher, published year, title, author, genre, ISBN,
+     * and copies available, from the entity to the DTO.</p>
+     *
+     * @param book the entity object containing book information
+     * @return a BookDto object with data populated from the entity
+     */
 
     public BookDto EntityToDto(Book book){
         BookDto bookDto= new BookDto();
@@ -125,6 +136,18 @@ public class BookService {
         bookDto.setCopiesAvailable(book.getCopiesAvailable());
         return bookDto;
     }
+    /**
+     * Converts a BookDto object to a Book entity.
+     *
+     * <p>This method takes a BookDto object and converts it into a Book entity for
+     * use in database operations. It maps all relevant book details, including
+     * book ID, author, genre, publisher, published year, title, ISBN, and copies
+     * available, from the DTO to the entity.</p>
+     *
+     * @param bookDto the DTO object containing book information
+     * @return a Book entity with data populated from the DTO
+     */
+
 
     public Book DtoToEntity(BookDto bookDto){
          Book book= new Book();

@@ -135,6 +135,17 @@ public class MemberService {
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
     }
+    /**
+     * Converts a MembersDto object to a Members entity.
+     *
+     * <p>This method takes a MembersDto object and transforms it into a Members entity
+     * to be used in database operations. It maps all relevant member details from
+     * the DTO, including member ID, role, name, email, password, and membership date.</p>
+     *
+     * @param membersDto the DTO object containing member information
+     * @return a Members entity with data populated from the DTO
+     */
+
 
     public Members DtoEntity(MembersDto membersDto){
         Members members= new Members();
@@ -146,6 +157,18 @@ public class MemberService {
         members.setMembershipDate(membersDto.getMembershipDate());
         return members;
     }
+    /**
+     * Converts a Members entity to a MembersDto object.
+     *
+     * <p>This method takes a Members entity object and converts it into a MembersDto
+     * object to be used for data transfer between layers. It maps all necessary
+     * member details, including member ID, name, role, email, password, and membership
+     * date, from the entity to the DTO.</p>
+     *
+     * @param members the entity object containing member information
+     * @return a MembersDto object with data populated from the entity
+     */
+
 
     public MembersDto EntityToDto(Members members){
         MembersDto  membersDto= new MembersDto();

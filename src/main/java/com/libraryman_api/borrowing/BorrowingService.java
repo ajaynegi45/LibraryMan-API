@@ -291,6 +291,19 @@ public class BorrowingService {
             throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
         }
     }
+    /**
+     * Converts a BorrowingsDto object to a Borrowings entity.
+     *
+     * <p>This method takes a BorrowingsDto object and transforms it into a Borrowings
+     * entity for use in database operations. It maps all relevant borrowing details
+     * from the DTO, including borrow date, member information, fine, return date,
+     * due date, and book details. It also retrieves and converts related entities
+     * such as Member and Book using respective service methods.</p>
+     *
+     * @param borrowingsDto the DTO object containing borrowing information
+     * @return a Borrowings entity with data populated from the DTO
+     */
+
 
     public Borrowings DtoToEntity(BorrowingsDto borrowingsDto){
         Borrowings borrowings = new Borrowings();
@@ -303,6 +316,19 @@ public class BorrowingService {
         borrowings.setBorrowingId(borrowingsDto.getBorrowingId());
         return borrowings;
     }
+    /**
+     * Converts a Borrowings entity to a BorrowingsDto object.
+     *
+     * <p>This method takes a Borrowings entity and converts it into a BorrowingsDto
+     * object for data transfer between application layers. It maps all necessary
+     * borrowing details from the entity, including borrowing ID, fine, borrow date,
+     * return date, due date, and related Member and Book entities, converting them
+     * into DTOs using respective service methods.</p>
+     *
+     * @param borrowings the entity object containing borrowing information
+     * @return a BorrowingsDto object with data populated from the entity
+     */
+
 
     public BorrowingsDto EntityToDto(Borrowings borrowings){
         BorrowingsDto borrowingsDto = new BorrowingsDto();
