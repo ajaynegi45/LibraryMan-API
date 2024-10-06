@@ -78,6 +78,7 @@ public class Book {
         return copiesAvailable;
     }
 
+    public void setBookId(int bookId) {this.bookId = bookId;}
 
     public void setTitle(String title) {
         this.title = title;

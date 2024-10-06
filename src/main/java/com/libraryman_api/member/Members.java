@@ -70,6 +70,8 @@ public class Members {
         return password;
     }
 
+    public void setMemberId(int memberId) {this.memberId = memberId;}
+
     public void setPassword(String password) {
         this.password = password;
     }
