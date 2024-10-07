@@ -38,8 +38,7 @@ public class WebConfiguration {
                 .formLogin(withDefaults());
         return http.build();
     }
-<<<<<<< Updated upstream
-=======
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration builder) throws Exception {
         return builder.getAuthenticationManager();
@@ -68,5 +67,5 @@ public class WebConfiguration {
     public CorsFilter corsFilter() {
         return new CorsFilter(corsConfigurationSource());
     }
->>>>>>> Stashed changes
+
 }

@@ -33,6 +33,8 @@ public class Members {
     @Column(name = "membership_date")
     private Date membershipDate;
 
+    @Column(name = "username")
+    private String username;
 
 
     public Members() {
@@ -89,4 +91,13 @@ public class Members {
     public void setMembershipDate(Date membershipDate) {
         this.membershipDate = membershipDate;
     }
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+    
 }
