@@ -85,7 +85,8 @@ public class MemberService {
     public MembersDto addMember(MembersDto membersDto) {
         Members member = DtoEntity(membersDto);
         Members currentMember = memberRepository.save(member);
-        notificationService.accountCreatedNotification(currentMember);
+        if(currentMember!=null)
+            notificationService.accountCreatedNotification(currentMember);
 
         return EntityToDto(currentMember);
     }
@@ -111,7 +112,8 @@ public class MemberService {
         member.setRole(membersDtoDetails.getRole());
         member.setMembershipDate(membersDtoDetails.getMembershipDate());
         member = memberRepository.save(member);
-        notificationService.accountDetailsUpdateNotification(member);
+        if(member!=null)
+            notificationService.accountDetailsUpdateNotification(member);
         return EntityToDto(member);
     }
 

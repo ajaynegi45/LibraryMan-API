@@ -143,7 +143,7 @@ The Borrowings API provides a set of endpoints to manage the borrowing and retur
 
 ### 3. **Pay Fine**
 
-**Endpoint:** `/borrowings/{id}/pay-fine`  
+**Endpoint:** `/borrowings/{id}/pay`  
 **Method:** `PUT`  
 **Description:** Pays the fine associated with a borrowing.
 
