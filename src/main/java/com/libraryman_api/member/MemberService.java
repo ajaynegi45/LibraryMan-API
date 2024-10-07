@@ -11,6 +11,8 @@ import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.notification.NotificationService;
 
+
+
 /**
  * Service class responsible for managing member-related operations in the LibraryMan system.
  *
@@ -50,9 +52,10 @@ public class MemberService {
      * @return a {@link Page} of {@link Members} representing all members
      * @throws InvalidSortFieldException if an invalid sortBy field is specified
      */
-    public Page<Members> getAllMembers(Pageable pageable) {
+    public Page<MembersDto> getAllMembers(Pageable pageable) {
         try {
-            return memberRepository.findAll(pageable);
+            Page<Members> pagedMembers = memberRepository.findAll(pageable);
+            return pagedMembers.map(this::EntityToDto);
         } catch (PropertyReferenceException ex) {
             throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
         }
@@ -64,8 +67,10 @@ public class MemberService {
      * @param memberId the ID of the member to retrieve
      * @return an {@code Optional} containing the found member, or {@code Optional.empty()} if no member was found
      */
-    public Optional<Members> getMemberById(int memberId) {
-        return memberRepository.findById(memberId);
+    public Optional<MembersDto> getMemberById(int memberId) {
+
+        Optional<Members> memberById = memberRepository.findById(memberId);
+        return memberById.map(this::EntityToDto);
     }
 
     /**
@@ -74,15 +79,16 @@ public class MemberService {
      * <p>This method saves the new member record in the database and sends a notification
      * about the account creation.</p>
      *
-     * @param member the member details to be added
+     * @param membersDto the member details to be added
      * @return the saved member record
      */
-    public Members addMember(Members member) {
+    public MembersDto addMember(MembersDto membersDto) {
+        Members member = DtoEntity(membersDto);
         Members currentMember = memberRepository.save(member);
         if(currentMember!=null)
             notificationService.accountCreatedNotification(currentMember);
 
-        return currentMember;
+        return EntityToDto(currentMember);
     }
 
     /**
@@ -93,22 +99,22 @@ public class MemberService {
      * a notification about the account details update is sent.</p>
      *
      * @param memberId the ID of the member to update
-     * @param memberDetails the updated member details
+     * @param membersDtoDetails the updated member details
      * @return the updated member record
      * @throws ResourceNotFoundException if the member is not found
      */
-    public Members updateMember(int memberId, Members memberDetails) {
+    public MembersDto updateMember(int memberId, MembersDto membersDtoDetails) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-        member.setName(memberDetails.getName());
-        member.setEmail(memberDetails.getEmail());
-        member.setPassword(memberDetails.getPassword());
-        member.setRole(memberDetails.getRole());
-        member.setMembershipDate(memberDetails.getMembershipDate());
+        member.setName(membersDtoDetails.getName());
+        member.setEmail(membersDtoDetails.getEmail());
+        member.setPassword(membersDtoDetails.getPassword());
+        member.setRole(membersDtoDetails.getRole());
+        member.setMembershipDate(membersDtoDetails.getMembershipDate());
         member = memberRepository.save(member);
         if(member!=null)
             notificationService.accountDetailsUpdateNotification(member);
-        return member;
+        return EntityToDto(member);
     }
 
     /**
@@ -130,5 +136,50 @@ public class MemberService {
 
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
+    }
+    /**
+     * Converts a MembersDto object to a Members entity.
+     *
+     * <p>This method takes a MembersDto object and transforms it into a Members entity
+     * to be used in database operations. It maps all relevant member details from
+     * the DTO, including member ID, role, name, email, password, and membership date.</p>
+     *
+     * @param membersDto the DTO object containing member information
+     * @return a Members entity with data populated from the DTO
+     */
+
+
+    public Members DtoEntity(MembersDto membersDto){
+        Members members= new Members();
+        members.setMemberId(membersDto.getMemberId());
+        members.setRole(membersDto.getRole());
+        members.setName(membersDto.getName());
+        members.setEmail(membersDto.getEmail());
+        members.setPassword(membersDto.getPassword());
+        members.setMembershipDate(membersDto.getMembershipDate());
+        return members;
+    }
+    /**
+     * Converts a Members entity to a MembersDto object.
+     *
+     * <p>This method takes a Members entity object and converts it into a MembersDto
+     * object to be used for data transfer between layers. It maps all necessary
+     * member details, including member ID, name, role, email, password, and membership
+     * date, from the entity to the DTO.</p>
+     *
+     * @param members the entity object containing member information
+     * @return a MembersDto object with data populated from the entity
+     */
+
+
+    public MembersDto EntityToDto(Members members){
+        MembersDto  membersDto= new MembersDto();
+        membersDto.setMemberId(members.getMemberId());
+        membersDto.setName(members.getName());
+        membersDto.setRole(members.getRole());
+        membersDto.setEmail(members.getEmail());
+        membersDto.setPassword(members.getPassword());
+        membersDto.setMembershipDate(members.getMembershipDate());
+        return  membersDto;
     }
 }

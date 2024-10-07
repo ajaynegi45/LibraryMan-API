@@ -39,7 +39,7 @@ public class BorrowingController {
      *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping
-    public Page<Borrowings> getAllBorrowings(@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
+    public Page<BorrowingsDto> getAllBorrowings(@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
 												@RequestParam(required = false) String sortBy,
 												@RequestParam(required = false) String sortDir) {
     	
@@ -60,12 +60,12 @@ public class BorrowingController {
     /**
      * Records a new book borrowing.
      *
-     * @param borrowing the {@link Borrowings} object containing borrowing details.
+     * @param borrowingsDto the {@link Borrowings} object containing borrowing details.
      * @return the saved {@link Borrowings} object representing the borrowing record.
      */
     @PostMapping
-    public Borrowings borrowBook(@RequestBody Borrowings borrowing) {
-        return borrowingService.borrowBook(borrowing);
+    public BorrowingsDto borrowBook(@RequestBody BorrowingsDto borrowingsDto) {
+        return borrowingService.borrowBook(borrowingsDto);
     }
 
     /**
@@ -74,8 +74,8 @@ public class BorrowingController {
      * @param id the ID of the borrowing record to update.
      */
     @PutMapping("/{id}/return")
-    public void returnBook(@PathVariable int id) {
-        borrowingService.returnBook(id);
+    public BorrowingsDto returnBook(@PathVariable int id) {
+        return borrowingService.returnBook(id);
     }
 
     /**
@@ -101,7 +101,7 @@ public class BorrowingController {
      *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping("member/{memberId}")
-    public Page<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId, 
+    public Page<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId,
     													@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
     													@RequestParam(required = false) String sortBy,
     													@RequestParam(required = false) String sortDir) {
@@ -128,7 +128,7 @@ public class BorrowingController {
      * @throws ResourceNotFoundException if the borrowing record with the specified ID is not found.
      */
     @GetMapping("{borrowingId}")
-    public Borrowings getBorrowingById(@PathVariable int borrowingId) {
+    public BorrowingsDto getBorrowingById(@PathVariable int borrowingId) {
         return borrowingService.getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
     }
