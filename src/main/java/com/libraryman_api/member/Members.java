@@ -2,11 +2,17 @@ package com.libraryman_api.member;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
-public class Members {
+public class Members implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -98,6 +104,12 @@ public class Members {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
 	}
     
 }
