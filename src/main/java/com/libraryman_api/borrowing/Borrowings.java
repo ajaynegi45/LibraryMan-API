@@ -75,6 +75,8 @@ public class Borrowings {
         return member;
     }
 
+    public void setBorrowingId(int borrowingId) {this.borrowingId = borrowingId;}
+
     public void setMember(Members member) {
         this.member = member;
     }

@@ -46,9 +46,10 @@ public class BookService {
      * @return a {@link Page} of {@link Book} representing all books
      * @throws InvalidSortFieldException if an invalid sortBy field is specified
      */
-    public Page<Book> getAllBooks(Pageable pageable) {
+    public Page<BookDto> getAllBooks(Pageable pageable) {
     	try {
-            return bookRepository.findAll(pageable);
+            Page<Book> pagedBooks = bookRepository.findAll(pageable);
+            return pagedBooks.map(this::EntityToDto);
         } catch (PropertyReferenceException ex) {
             throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
         }
@@ -60,39 +61,44 @@ public class BookService {
      * @param bookId the ID of the book to retrieve
      * @return an {@code Optional} containing the found book, or {@code Optional.empty()} if no book was found
      */
-    public Optional<Book> getBookById(int bookId) {
-        return bookRepository.findById(bookId);
+    public Optional<BookDto> getBookById(int bookId) {
+
+        Optional<Book> bookById = bookRepository.findById(bookId);
+        return bookById.map(this::EntityToDto);
     }
 
     /**
      * Adds a new book to the database.
      *
-     * @param book the book to be added
+     * @param bookDto the book to be added
      * @return the saved book
      */
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookDto addBook(BookDto bookDto) {
+        Book book = DtoToEntity(bookDto);
+        Book savedBook = bookRepository.save(book);
+        return EntityToDto(savedBook);
     }
 
     /**
      * Updates an existing book with the given details.
      *
      * @param bookId the ID of the book to update
-     * @param bookDetails the new details for the book
+     * @param bookDtoDetails the new details for the book
      * @return the updated book
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
-    public Book updateBook(int bookId, Book bookDetails) {
+    public BookDto updateBook(int bookId, BookDto bookDtoDetails) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        book.setTitle(bookDetails.getTitle());
-        book.setAuthor(bookDetails.getAuthor());
-        book.setIsbn(bookDetails.getIsbn());
-        book.setPublisher(bookDetails.getPublisher());
-        book.setPublishedYear(bookDetails.getPublishedYear());
-        book.setGenre(bookDetails.getGenre());
-        book.setCopiesAvailable(bookDetails.getCopiesAvailable());
-        return bookRepository.save(book);
+        book.setTitle(bookDtoDetails.getTitle());
+        book.setAuthor(bookDtoDetails.getAuthor());
+        book.setIsbn(bookDtoDetails.getIsbn());
+        book.setPublisher(bookDtoDetails.getPublisher());
+        book.setPublishedYear(bookDtoDetails.getPublishedYear());
+        book.setGenre(bookDtoDetails.getGenre());
+        book.setCopiesAvailable(bookDtoDetails.getCopiesAvailable());
+        Book updatedBook = bookRepository.save(book);
+        return EntityToDto(updatedBook);
     }
 
     /**
@@ -106,5 +112,53 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         bookRepository.delete(book);
     }
+    /**
+     * Converts a Book entity to a BookDto object.
+     *
+     * <p>This method takes a Book entity and transforms it into a BookDto object for
+     * data transfer between application layers. It maps all relevant book details,
+     * including book ID, publisher, published year, title, author, genre, ISBN,
+     * and copies available, from the entity to the DTO.</p>
+     *
+     * @param book the entity object containing book information
+     * @return a BookDto object with data populated from the entity
+     */
 
+    public BookDto EntityToDto(Book book){
+        BookDto bookDto= new BookDto();
+        bookDto.setBookId(book.getBookId());
+        bookDto.setPublisher(book.getPublisher());
+        bookDto.setPublishedYear(book.getPublishedYear());
+        bookDto.setTitle(book.getTitle());
+        bookDto.setAuthor(book.getAuthor());
+        bookDto.setGenre(book.getGenre());
+        bookDto.setIsbn(book.getIsbn());
+        bookDto.setCopiesAvailable(book.getCopiesAvailable());
+        return bookDto;
+    }
+    /**
+     * Converts a BookDto object to a Book entity.
+     *
+     * <p>This method takes a BookDto object and converts it into a Book entity for
+     * use in database operations. It maps all relevant book details, including
+     * book ID, author, genre, publisher, published year, title, ISBN, and copies
+     * available, from the DTO to the entity.</p>
+     *
+     * @param bookDto the DTO object containing book information
+     * @return a Book entity with data populated from the DTO
+     */
+
+
+    public Book DtoToEntity(BookDto bookDto){
+         Book book= new Book();
+         book.setBookId(bookDto.getBookId());
+         book.setAuthor(bookDto.getAuthor());
+         book.setGenre(bookDto.getGenre());
+         book.setPublisher(bookDto.getPublisher());
+         book.setPublishedYear(bookDto.getPublishedYear());
+         book.setTitle(bookDto.getTitle());
+         book.setCopiesAvailable(bookDto.getCopiesAvailable());
+         book.setIsbn(bookDto.getIsbn());
+         return book;
+    }
 }
