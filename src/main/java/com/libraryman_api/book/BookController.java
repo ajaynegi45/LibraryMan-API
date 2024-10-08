@@ -3,6 +3,7 @@ package com.libraryman_api.book;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public class BookController {
      * @return the added {@link Book} object.
      */
     @PostMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Book addBook(@RequestBody Book book) {
         return bookService.addBook(book);
     }
@@ -63,6 +65,7 @@ public class BookController {
      * @return the updated {@link Book} object.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Book updateBook(@PathVariable int id, @RequestBody Book bookDetails) {
         return bookService.updateBook(id, bookDetails);
     }
@@ -73,6 +76,7 @@ public class BookController {
      * @param id the ID of the book to delete.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
     }

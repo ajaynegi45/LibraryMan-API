@@ -1,6 +1,8 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class BorrowingController {
      * @return a list of {@link Borrowings} objects representing all borrowings.
      */
     @GetMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public List<Borrowings> getAllBorrowings() {
         return borrowingService.getAllBorrowings();
     }
@@ -75,6 +78,7 @@ public class BorrowingController {
      * @return a list of {@link Borrowings} objects representing the member's borrowings.
      */
     @GetMapping("member/{memberId}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public List<Borrowings> getAllBorrowingsOfAMember(@PathVariable int memberId) {
         return borrowingService.getAllBorrowingsOfMember(memberId);
     }
@@ -87,6 +91,7 @@ public class BorrowingController {
      * @throws ResourceNotFoundException if the borrowing record with the specified ID is not found.
      */
     @GetMapping("{borrowingId}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Borrowings getBorrowingById(@PathVariable int borrowingId) {
         return borrowingService.getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));

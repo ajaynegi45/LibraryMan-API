@@ -2,6 +2,7 @@ package com.libraryman_api.member;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class MemberController {
      * @return a list of {@link Members} representing all members in the library
      */
     @GetMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public List<Members> getAllMembers() {
         return memberService.getAllMembers();
     }
@@ -43,6 +45,7 @@ public class MemberController {
      * @return a {@link ResponseEntity} containing the found {@link Members} object
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public ResponseEntity<Members> getMemberById(@PathVariable int id) {
         return memberService.getMemberById(id)
                 .map(ResponseEntity::ok)
@@ -80,6 +83,7 @@ public class MemberController {
      * @param id the ID of the member to delete
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteMember(@PathVariable int id) {
         memberService.deleteMember(id);
     }
