@@ -19,12 +19,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-	@Autowired
-	JwtAuthenticationHelper jwtHelper;
 	
-	@Autowired
-	UserDetailsService userDetailsService;
+	private JwtAuthenticationHelper jwtHelper;
+	
+	private UserDetailsService userDetailsService;
+	
+	public JwtAuthenticationFilter(JwtAuthenticationHelper jwtHelper,UserDetailsService userDetailsService) {
+		this.jwtHelper=jwtHelper;
+		this.userDetailsService=userDetailsService;
+	}
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

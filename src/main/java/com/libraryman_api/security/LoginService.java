@@ -1,7 +1,5 @@
 package com.libraryman_api.security;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,17 +13,20 @@ import com.libraryman_api.member.MemberRepository;
 @Service
 public class LoginService {
 
-	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 	
-	@Autowired
-	UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
 	
-	@Autowired
-	JwtAuthenticationHelper jwtHelper;
+	private JwtAuthenticationHelper jwtHelper;
 	
-	@Autowired
-	MemberRepository memberRepository;
+	private MemberRepository memberRepository;
+	
+	public LoginService(AuthenticationManager authenticationManager,UserDetailsService userDetailsService,JwtAuthenticationHelper jwtHelper,MemberRepository memberRepository) {
+		this.authenticationManager=authenticationManager;
+		this.userDetailsService=userDetailsService;
+		this.jwtHelper=jwtHelper;
+		this.memberRepository=memberRepository;
+	}
 	
 	public LoginResponse login(LoginRequest loginRequest) {
 		Authenticate(loginRequest.getUsername(), loginRequest.getPassword());

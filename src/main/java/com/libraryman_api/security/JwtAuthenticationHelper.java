@@ -17,7 +17,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtAuthenticationHelper {
 
 	private static final long JWT_TOKEN_VALIDITY=60*60;
-	private String secret="thisisacodingninjasdemonstrationforsecretkeyinspringsecurityjsonwebtokenauthentication";
+	private String secret="thisisalibrarymanapisecuritysignatureforsecretkeyinspringsecurityjsonwebtokenauthentication";
 	public String getUsernameFromToken(String token) {
 		String username=getClaimsFromToken(token).getSubject();
 		return username;

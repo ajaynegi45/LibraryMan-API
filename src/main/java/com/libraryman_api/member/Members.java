@@ -26,6 +26,9 @@ public class Members implements UserDetails{
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "username")
+    private String username;
+    
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -39,8 +42,7 @@ public class Members implements UserDetails{
     @Column(name = "membership_date")
     private Date membershipDate;
 
-    @Column(name = "username")
-    private String username;
+    
 
 
     public Members() {
@@ -109,7 +111,7 @@ public class Members implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+role.name()));
 	}
     
 }

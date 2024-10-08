@@ -1,20 +1,39 @@
 package com.libraryman_api.security;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class LoginController {
 
-    @GetMapping("/api/ajay")
-    public String login(Principal principal) {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("Principal Name: " + principal.getName());
-        System.out.println("Principal: " + principal);
+    private final LoginService loginService;
 
-        return "Hello World";
+    public LoginController(LoginService loginService) {
+        this.loginService = loginService;
     }
 
+    @PostMapping("/api/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        LoginResponse loginResponse = loginService.login(loginRequest);
+
+        if (loginResponse != null) { 
+            setAuthCookie(response);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    private void setAuthCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("LibraryManCookie", "libraryman_cookie");
+        cookie.setMaxAge(3600); // (3600 seconds)
+        cookie.setPath("/"); 
+        response.addCookie(cookie);
+    }
 }

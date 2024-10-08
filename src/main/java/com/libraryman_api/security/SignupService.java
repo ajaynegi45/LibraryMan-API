@@ -3,7 +3,7 @@ package com.libraryman_api.security;
 import java.util.Date;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 
@@ -14,11 +14,14 @@ import com.libraryman_api.member.Members;
 @Service
 public class SignupService {
 
-	@Autowired
-	MemberRepository memberRepository;
+	private MemberRepository memberRepository;
+
+	private PasswordEncoder passwordEncoder;
 	
-	@Autowired
-	PasswordEncoder passwordEncoder;
+	public SignupService(MemberRepository memberRepository,PasswordEncoder passwordEncoder) {
+		this.memberRepository=memberRepository;
+		this.passwordEncoder=passwordEncoder;
+	}
 	public void signup(Members members) {
 		Optional<Members> memberOptId=memberRepository.findById(members.getMemberId());
 		Optional<Members> memberOptUsername=memberRepository.findByUsername(members.getUsername());
