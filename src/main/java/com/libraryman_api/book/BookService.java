@@ -2,6 +2,9 @@ package com.libraryman_api.book;
 
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -46,6 +49,8 @@ public class BookService {
      * @return a {@link Page} of {@link Book} representing all books
      * @throws InvalidSortFieldException if an invalid sortBy field is specified
      */
+
+    @Cacheable(value = "books")
     public Page<BookDto> getAllBooks(Pageable pageable) {
     	try {
             Page<Book> pagedBooks = bookRepository.findAll(pageable);
@@ -61,6 +66,8 @@ public class BookService {
      * @param bookId the ID of the book to retrieve
      * @return an {@code Optional} containing the found book, or {@code Optional.empty()} if no book was found
      */
+
+    @Cacheable(value = "books", key ="#bookId")
     public Optional<BookDto> getBookById(int bookId) {
 
         Optional<Book> bookById = bookRepository.findById(bookId);
@@ -73,6 +80,8 @@ public class BookService {
      * @param bookDto the book to be added
      * @return the saved book
      */
+
+    @CacheEvict(value = "books", allEntries = true)
     public BookDto addBook(BookDto bookDto) {
         Book book = DtoToEntity(bookDto);
         Book savedBook = bookRepository.save(book);
@@ -87,6 +96,11 @@ public class BookService {
      * @return the updated book
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
+
+    @Caching(evict = {
+            @CacheEvict(value = "books", key = "#bookId"), // Evict the specific book cache
+            @CacheEvict(value = "books", allEntries = true) // Evict the list cache
+    })
     public BookDto updateBook(int bookId, BookDto bookDtoDetails) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
@@ -107,6 +121,11 @@ public class BookService {
      * @param bookId the ID of the book to delete
      * @throws ResourceNotFoundException if the book with the specified ID is not found
      */
+
+    @Caching(evict = {
+            @CacheEvict(value = "books", key = "#bookId"), // Evict the specific book cache
+            @CacheEvict(value = "books", allEntries = true) // Evict the list cache
+    })
     public void deleteBook(int bookId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
