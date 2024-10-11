@@ -1,4 +1,4 @@
-package com.libraryman_api.security;
+package com.libraryman_api.security.jwt;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtAuthenticationHelper {
 
 	private static final long JWT_TOKEN_VALIDITY=60*60;
-	private String secret="thisisalibrarymanapisecuritysignatureforsecretkeyinspringsecurityjsonwebtokenauthentication";
+	@Value("${jwt.secretKey}")
+	private String secret;
 	public String getUsernameFromToken(String token) {
 		String username=getClaimsFromToken(token).getSubject();
 		return username;

@@ -1,4 +1,4 @@
-package com.libraryman_api.security;
+package com.libraryman_api.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +15,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
+import com.libraryman_api.security.jwt.JwtAuthenticationFilter;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -36,6 +39,8 @@ public class WebConfiguration {
                                 // make sure it is in order to access the proper Url
 
                                 .requestMatchers("/api/signup").permitAll()
+                                .requestMatchers("/api/signup/admin").permitAll()
+                                .requestMatchers("/api/signup/librarian").permitAll()
                                 .requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/logout").permitAll()
                                 .anyRequest().authenticated()

@@ -1,4 +1,4 @@
-package com.libraryman_api.security;
+package com.libraryman_api.security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

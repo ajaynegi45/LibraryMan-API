@@ -1,4 +1,4 @@
-package com.libraryman_api.security;
+package com.libraryman_api.security.services;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.libraryman_api.member.MemberRepository;
+import com.libraryman_api.security.jwt.JwtAuthenticationHelper;
+import com.libraryman_api.security.model.LoginRequest;
+import com.libraryman_api.security.model.LoginResponse;
 
 
 @Service

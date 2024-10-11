@@ -1,10 +1,14 @@
-package com.libraryman_api.security;
+package com.libraryman_api.security.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.libraryman_api.security.model.LoginRequest;
+import com.libraryman_api.security.model.LoginResponse;
+import com.libraryman_api.security.services.LoginService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
