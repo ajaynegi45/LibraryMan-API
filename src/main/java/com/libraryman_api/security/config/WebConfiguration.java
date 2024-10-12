@@ -39,8 +39,6 @@ public class WebConfiguration {
                                 // make sure it is in order to access the proper Url
 
                                 .requestMatchers("/api/signup").permitAll()
-                                .requestMatchers("/api/signup/admin/{secretKey}").permitAll()
-                                .requestMatchers("/api/signup/librarian/{secretKey}").permitAll()
                                 .requestMatchers("/api/login").permitAll()
                                 .requestMatchers("/api/logout").permitAll()
                                 .anyRequest().authenticated()

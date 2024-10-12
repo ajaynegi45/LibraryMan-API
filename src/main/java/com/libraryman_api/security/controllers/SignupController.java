@@ -1,5 +1,6 @@
 package com.libraryman_api.security.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,14 @@ public class SignupController {
 		this.signupService.signup(members);
 		
 	}
-	@PostMapping("/api/signup/admin/{secretKey}")
-	public void signupAdmin(@RequestBody Members members,@PathVariable String secretKey) {
-		this.signupService.signupAdmin(members,secretKey);
+	@PostMapping("/api/signup/admin")
+	@PreAuthorize("hasRole('ADMIN')")
+	public void signupAdmin(@RequestBody Members members) {
+		this.signupService.signupAdmin(members);
 	}
-	@PostMapping("/api/signup/librarian/{secretKey}")
-	public void signupLibrarian(@RequestBody Members members,@PathVariable String secretKey) {
-		this.signupService.signupLibrarian(members,secretKey);
+	@PostMapping("/api/signup/librarian")
+	@PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
+	public void signupLibrarian(@RequestBody Members members) {
+		this.signupService.signupLibrarian(members);
 	}
 }
