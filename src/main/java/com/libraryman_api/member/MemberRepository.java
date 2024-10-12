@@ -10,6 +10,7 @@ public interface MemberRepository extends JpaRepository<Members, Integer> {
 
     Optional<Members> findByMemberId(int memberId);
 
+    Optional<Members> findByUsername(String username);
 
 /**
  * SELECT SUM(amount) AS totalFines
