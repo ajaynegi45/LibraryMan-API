@@ -1,7 +1,6 @@
 package com.libraryman_api.security.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,12 +22,12 @@ public class SignupController {
 		this.signupService.signup(members);
 		
 	}
-	@PostMapping("/api/signup/admin")
-	public void signupAdmin(@RequestBody Members members) {
-		this.signupService.signupAdmin(members);
+	@PostMapping("/api/signup/admin/{secretKey}")
+	public void signupAdmin(@RequestBody Members members,@PathVariable String secretKey) {
+		this.signupService.signupAdmin(members,secretKey);
 	}
-	@PostMapping("/api/signup/librarian")
-	public void signupLibrarian(@RequestBody Members members) {
-		this.signupService.signupLibrarian(members);
+	@PostMapping("/api/signup/librarian/{secretKey}")
+	public void signupLibrarian(@RequestBody Members members,@PathVariable String secretKey) {
+		this.signupService.signupLibrarian(members,secretKey);
 	}
 }

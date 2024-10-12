@@ -3,7 +3,7 @@ package com.libraryman_api.security.services;
 import java.util.Date;
 import java.util.Optional;
 
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
@@ -19,6 +19,12 @@ public class SignupService {
 	private MemberRepository memberRepository;
 
 	private PasswordEncoder passwordEncoder;
+	
+	@Value("${admin.secretKey}")
+	private String adminSecretKey;
+	
+	@Value("${librarian.secretKey}")
+	private String librarianSecretKey;
 	
 	public SignupService(MemberRepository memberRepository,PasswordEncoder passwordEncoder) {
 		this.memberRepository=memberRepository;
@@ -44,7 +50,7 @@ public class SignupService {
 		memberRepository.save(new_members);
 	}
 	
-	public void signupAdmin(Members members) {
+	public void signupAdmin(Members members,String secretKey) {
 		Optional<Members> memberOptId=memberRepository.findById(members.getMemberId());
 		Optional<Members> memberOptUsername=memberRepository.findByUsername(members.getUsername());
 		if(memberOptId.isPresent()) {
@@ -52,6 +58,9 @@ public class SignupService {
 		}
 		if(memberOptUsername.isPresent()) {
 			throw new ResourceNotFoundException("User already Exists"); 
+		}
+		if(!adminSecretKey.equals(secretKey)) {
+			throw new ResourceNotFoundException("Secret Key does not match");
 		}
 		String encoded_password=passwordEncoder.bCryptPasswordEncoder().encode(members.getPassword());
 		Members new_members=new Members();
@@ -64,7 +73,7 @@ public class SignupService {
 		memberRepository.save(new_members);
 	
 	}
-	public void signupLibrarian(Members members) {
+	public void signupLibrarian(Members members,String secretKey) {
 		Optional<Members> memberOptId=memberRepository.findById(members.getMemberId());
 		Optional<Members> memberOptUsername=memberRepository.findByUsername(members.getUsername());
 		if(memberOptId.isPresent()) {
@@ -72,6 +81,9 @@ public class SignupService {
 		}
 		if(memberOptUsername.isPresent()) {
 			throw new ResourceNotFoundException("User already Exists"); 
+		}
+		if(!librarianSecretKey.equals(secretKey)) {
+			throw new ResourceNotFoundException("secret key does not match");
 		}
 		String encoded_password=passwordEncoder.bCryptPasswordEncoder().encode(members.getPassword());
 		Members new_members=new Members();
