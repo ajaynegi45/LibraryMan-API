@@ -4,7 +4,7 @@ LibraryMan is a user-friendly software solution for schools, companies, and libr
 
 #### Checkout [Frontend](https://github.com/ajaynegi45/LibraryMan) Repository
 
-## Project Structure 📂
+## Project Structure 📂 
 Checkout [Project Structure](https://github.com/ajaynegi45/LibraryMan-API/tree/main/project-structure) Diagram
 
 ## API Endpoints 🔗
