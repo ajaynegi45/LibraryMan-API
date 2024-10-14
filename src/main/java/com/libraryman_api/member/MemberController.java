@@ -1,11 +1,15 @@
 package com.libraryman_api.member;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * REST controller for managing library members.
@@ -27,14 +31,32 @@ public class MemberController {
     }
 
     /**
-     * Retrieves a list of all library members.
+     * Retrieves a paginated and sorted list of all library members.
      *
-     * @return a list of {@link Members} representing all members in the library
+     * @param pageable contains pagination information (page number, size, and sorting).
+     * @param sortBy (optional) the field by which to sort the results.
+     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @return a {@link Page} of {@link Members} representing all members in the library.
+     *         The results are sorted by name by default and limited to 5 members per page.
      */
     @GetMapping
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public List<Members> getAllMembers() {
-        return memberService.getAllMembers();
+    public Page<MembersDto> getAllMembers(@PageableDefault(page=0, size=5, sort="name") Pageable pageable,
+										@RequestParam(required = false) String sortBy,
+										@RequestParam(required = false) String sortDir) {
+    	
+    	// Adjust the pageable based on dynamic sorting parameters
+    	if(sortBy!=null && !sortBy.isEmpty()) {
+    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+    		
+    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
+    			direction = Sort.Direction.DESC;
+    		}
+
+    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
+    	}
+    	
+        return memberService.getAllMembers(pageable);
     }
 
     /**
@@ -46,7 +68,7 @@ public class MemberController {
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public ResponseEntity<Members> getMemberById(@PathVariable int id) {
+    public ResponseEntity<MembersDto> getMemberById(@PathVariable int id) {
         return memberService.getMemberById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
@@ -55,12 +77,12 @@ public class MemberController {
     /**
      * Adds a new library member.
      *
-     * @param member the {@link Members} object representing the new member
+     * @param membersDto the {@link Members} object representing the new member
      * @return the added {@link Members} object
      */
     @PostMapping
-    public Members addMember(@RequestBody Members member) {
-        return memberService.addMember(member);
+    public MembersDto addMember(@RequestBody MembersDto membersDto) {
+        return memberService.addMember(membersDto);
     }
 
     /**
@@ -68,12 +90,12 @@ public class MemberController {
      * If the member is not found, a {@link ResourceNotFoundException} is thrown.
      *
      * @param id the ID of the member to update
-     * @param memberDetails the {@link Members} object containing the updated details
+     * @param membersDtoDetails the {@link Members} object containing the updated details
      * @return the updated {@link Members} object
      */
     @PutMapping("/{id}")
-    public Members updateMember(@PathVariable int id, @RequestBody Members memberDetails) {
-        return memberService.updateMember(id, memberDetails);
+    public MembersDto updateMember(@PathVariable int id, @RequestBody MembersDto membersDtoDetails) {
+        return memberService.updateMember(id, membersDtoDetails);
     }
 
     /**

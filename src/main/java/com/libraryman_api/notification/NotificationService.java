@@ -5,12 +5,16 @@ import com.libraryman_api.email.EmailSender;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.member.MemberRepository;
 import com.libraryman_api.member.Members;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -210,6 +214,28 @@ public class NotificationService {
                 subject(notification.getNotificationType()),
                 notification
         );
+    }
+
+    // Scheduled method to send reminders for books due in 2 days
+    @Scheduled(cron = "0 0 10 * * ?")  // Runs every day at 10 AM
+
+    public void sendDueDateReminders(){
+        Calendar calendar = Calendar.getInstance();
+
+        // Get today's date
+        Date today = calendar.getTime();
+
+        // Move to two days from now
+        calendar.add(Calendar.DAY_OF_YEAR, 2);
+        Date twoDaysFromNow = calendar.getTime();
+
+        // Fetch borrowings due soon
+        List<Borrowings> borrowingsDueSoon = notificationRepository.findBorrowingsDueInDays(today, twoDaysFromNow);
+
+        // Send reminders for each borrowing
+        for (Borrowings borrowing : borrowingsDueSoon) {
+            reminderNotification(borrowing);
+        }
     }
 
     /**
