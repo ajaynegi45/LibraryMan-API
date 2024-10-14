@@ -75,17 +75,6 @@ public class MemberController {
     }
 
     /**
-     * Adds a new library member.
-     *
-     * @param membersDto the {@link Members} object representing the new member
-     * @return the added {@link Members} object
-     */
-    @PostMapping
-    public MembersDto addMember(@RequestBody MembersDto membersDto) {
-        return memberService.addMember(membersDto);
-    }
-
-    /**
      * Updates an existing library member.
      * If the member is not found, a {@link ResourceNotFoundException} is thrown.
      *
