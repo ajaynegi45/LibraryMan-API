@@ -15,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,6 +32,7 @@ public class NotificationService {
     private final EmailSender emailSender;
     private final NotificationRepository notificationRepository;
     private final MemberRepository memberRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationService.class);
 
     /**
      * Constructs a new {@code NotificationService} with the specified {@link EmailSender},
@@ -201,14 +205,11 @@ public class NotificationService {
      * @param notification the notification instance containing information about the notification.
      */
     private void sendNotification(Notifications notification) {
-        Members member = memberRepository.findByMemberId(notification.getMember().getMemberId())
-                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-
         emailSender.send(
-                member.getEmail(),
+            notification.getMember().getEmail(),
                 buildEmail(
                         subject(notification.getNotificationType()),
-                        member.getName(),
+                        notification.getMember().getName(),
                         notification.getMessage()
                 ),
                 subject(notification.getNotificationType()),
@@ -234,7 +235,13 @@ public class NotificationService {
 
         // Send reminders for each borrowing
         for (Borrowings borrowing : borrowingsDueSoon) {
-            reminderNotification(borrowing);
+            try {
+                Optional<Members> member = memberRepository.findByMemberId(borrowing.getMember().getMemberId());
+                if(member.isPresent())
+                reminderNotification(borrowing);
+            } catch (ResourceNotFoundException e) {
+                LOGGER.error("Member not found for memberId: " + borrowing.getMember().getMemberId(), e);            
+            }
         }
     }
 

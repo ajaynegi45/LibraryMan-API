@@ -107,13 +107,13 @@ public class BorrowingService {
     @Transactional
     public synchronized BorrowingsDto borrowBook(BorrowingsDto borrowing) {
         Optional<BookDto> bookDto = bookService.getBookById(borrowing.getBook().getBookId());
-        Optional<MembersDto> member = memberService.getMemberById(borrowing.getMember().getMemberId());
-        if (bookDto.isPresent() && member.isPresent()) {
+        Optional<MembersDto> memberDto = memberService.getMemberById(borrowing.getMember().getMemberId());
+        if (bookDto.isPresent() && memberDto.isPresent()) {
             Book bookEntity = bookService.DtoToEntity(bookDto.get());
-            Members memberEntity = memberService.DtoEntity(member.get());
+            Members memberEntity = memberService.DtoEntity(memberDto.get());
 
             if (bookEntity.getCopiesAvailable() > 0) {
-                updateBookCopies(borrowing.getBook().getBookId(), "REMOVE", 1);
+                updateBookCopies(bookDto, "REMOVE", 1);
                 borrowing.setBorrowDate(new Date());
                 borrowing.setBook(bookService.EntityToDto(bookEntity));
                 borrowing.setMember(memberService.EntityToDto(memberEntity));
@@ -149,7 +149,10 @@ public class BorrowingService {
     public synchronized BorrowingsDto returnBook(int borrowingId) {
         BorrowingsDto borrowingsDto = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
-
+        Optional<MembersDto> memberDto = memberService.getMemberById(borrowingsDto.getMember().getMemberId());
+        if(!memberDto.isPresent()){
+                throw new ResourceNotFoundException("Member not found");
+        }
         if (borrowingsDto.getReturnDate() != null) {
             throw new ResourceNotFoundException("Book has already been returned");
         }
@@ -166,7 +169,8 @@ public class BorrowingService {
         }
 
         borrowingsDto.setReturnDate(new Date());
-        updateBookCopies(borrowingsDto.getBook().getBookId(), "ADD", 1);
+        Optional<BookDto> bookDto = bookService.getBookById(borrowingsDto.getBook().getBookId());
+        updateBookCopies(bookDto, "ADD", 1);
         notificationService.bookReturnedNotification(DtoToEntity(borrowingsDto));
         borrowingRepository.save(DtoToEntity(borrowingsDto));
         return borrowingsDto;
@@ -197,6 +201,10 @@ public class BorrowingService {
     public String payFine(int borrowingId) {
         BorrowingsDto borrowingsDto = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
+        Optional<MembersDto> memberDto = memberService.getMemberById(borrowingsDto.getMember().getMemberId());
+        if(!memberDto.isPresent()){
+            throw new ResourceNotFoundException("Member not found");
+        }
         Fines fine = borrowingsDto.getFine();
 
         if (fine != null && !fine.isPaid()) {
@@ -222,9 +230,7 @@ public class BorrowingService {
      * @param numberOfCopies the number of copies to add or remove
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies to remove
      */
-    public void updateBookCopies(int bookId, String operation, int numberOfCopies) {
-        Optional<BookDto> bookDto = bookService.getBookById(bookId);
-
+    public void updateBookCopies(Optional<BookDto> bookDto, String operation, int numberOfCopies) {
         if (bookDto.isPresent()) {
             Book bookEntity = bookService.DtoToEntity(bookDto.get());
             if (operation.equals("ADD")) {

@@ -2,6 +2,8 @@ package com.libraryman_api.member;
 
 import java.util.Optional;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -67,6 +69,8 @@ public class MemberService {
      * @param memberId the ID of the member to retrieve
      * @return an {@code Optional} containing the found member, or {@code Optional.empty()} if no member was found
      */
+
+    @Cacheable(value = "members", key = "#memberId")
     public Optional<MembersDto> getMemberById(int memberId) {
 
         Optional<Members> memberById = memberRepository.findById(memberId);
@@ -85,7 +89,8 @@ public class MemberService {
     public MembersDto addMember(MembersDto membersDto) {
         Members member = DtoEntity(membersDto);
         Members currentMember = memberRepository.save(member);
-        notificationService.accountCreatedNotification(currentMember);
+        if(currentMember!=null)
+            notificationService.accountCreatedNotification(currentMember);
 
         return EntityToDto(currentMember);
     }
@@ -102,6 +107,8 @@ public class MemberService {
      * @return the updated member record
      * @throws ResourceNotFoundException if the member is not found
      */
+
+    @CacheEvict(value = "members", key = "#memberId")
     public MembersDto updateMember(int memberId, MembersDto membersDtoDetails) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
@@ -111,7 +118,8 @@ public class MemberService {
         member.setRole(membersDtoDetails.getRole());
         member.setMembershipDate(membersDtoDetails.getMembershipDate());
         member = memberRepository.save(member);
-        notificationService.accountDetailsUpdateNotification(member);
+        if(member!=null)
+            notificationService.accountDetailsUpdateNotification(member);
         return EntityToDto(member);
     }
 
@@ -125,6 +133,8 @@ public class MemberService {
      * @param memberId the ID of the member to delete
      * @throws ResourceNotFoundException if the member is not found
      */
+
+    @CacheEvict(value = "members", key = "#memberId")
     public void deleteMember(int memberId) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
