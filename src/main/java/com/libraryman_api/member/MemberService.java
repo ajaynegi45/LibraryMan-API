@@ -113,6 +113,7 @@ public class MemberService {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
         member.setName(membersDtoDetails.getName());
+        member.setUsername(membersDtoDetails.getUsername());
         member.setEmail(membersDtoDetails.getEmail());
         member.setPassword(membersDtoDetails.getPassword());
         member.setRole(membersDtoDetails.getRole());
@@ -133,7 +134,6 @@ public class MemberService {
      * @param memberId the ID of the member to delete
      * @throws ResourceNotFoundException if the member is not found
      */
-
     @CacheEvict(value = "members", key = "#memberId")
     public void deleteMember(int memberId) {
         Members member = memberRepository.findById(memberId)
@@ -145,45 +145,45 @@ public class MemberService {
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
     }
+    
     /**
      * Converts a MembersDto object to a Members entity.
      *
      * <p>This method takes a MembersDto object and transforms it into a Members entity
      * to be used in database operations. It maps all relevant member details from
-     * the DTO, including member ID, role, name, email, password, and membership date.</p>
+     * the DTO, including member ID, role, name, username, email, password, and membership date.</p>
      *
      * @param membersDto the DTO object containing member information
      * @return a Members entity with data populated from the DTO
      */
-
-
     public Members DtoEntity(MembersDto membersDto){
         Members members= new Members();
         members.setMemberId(membersDto.getMemberId());
         members.setRole(membersDto.getRole());
         members.setName(membersDto.getName());
+        members.setUsername(membersDto.getUsername());
         members.setEmail(membersDto.getEmail());
         members.setPassword(membersDto.getPassword());
         members.setMembershipDate(membersDto.getMembershipDate());
         return members;
     }
+    
     /**
      * Converts a Members entity to a MembersDto object.
      *
      * <p>This method takes a Members entity object and converts it into a MembersDto
      * object to be used for data transfer between layers. It maps all necessary
-     * member details, including member ID, name, role, email, password, and membership
+     * member details, including member ID, name, username, role, email, password, and membership
      * date, from the entity to the DTO.</p>
      *
      * @param members the entity object containing member information
      * @return a MembersDto object with data populated from the entity
      */
-
-
     public MembersDto EntityToDto(Members members){
         MembersDto  membersDto= new MembersDto();
         membersDto.setMemberId(members.getMemberId());
         membersDto.setName(members.getName());
+        membersDto.setUsername(members.getUsername());
         membersDto.setRole(members.getRole());
         membersDto.setEmail(members.getEmail());
         membersDto.setPassword(members.getPassword());

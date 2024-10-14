@@ -67,6 +67,7 @@ public class BorrowingController {
      * @return the saved {@link Borrowings} object representing the borrowing record.
      */
     @PostMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #borrowingsDto.member.memberId == authentication.principal.memberId)")
     public BorrowingsDto borrowBook(@RequestBody BorrowingsDto borrowingsDto) {
         return borrowingService.borrowBook(borrowingsDto);
     }
@@ -104,7 +105,7 @@ public class BorrowingController {
      *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping("member/{memberId}")
-    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #memberId == authentication.principal.memberId)")
     public Page<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId,
     													@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
     													@RequestParam(required = false) String sortBy,

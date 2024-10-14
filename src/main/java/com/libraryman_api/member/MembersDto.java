@@ -4,10 +4,11 @@ import java.util.Date;
 
 public class MembersDto {
 
-
     private int memberId;
 
     private String name;
+    
+    private String username;
 
     private String email;
 
@@ -19,9 +20,10 @@ public class MembersDto {
 
     private Date membershipDate;
 
-    public MembersDto(int memberId, String name, String email, String password, Role role, Date membershipDate) {
+    public MembersDto(int memberId, String name, String username, String email, String password, Role role, Date membershipDate) {
         this.memberId = memberId;
         this.name = name;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -42,9 +44,17 @@ public class MembersDto {
     public String getName() {
         return name;
     }
+    
+    public String getUsername() {
+        return username;
+    }
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -84,6 +94,7 @@ public class MembersDto {
         return "MembersDto{" +
                 "memberId=" + memberId +
                 ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
