@@ -2,14 +2,10 @@
 
 LibraryMan is a user-friendly software solution for schools, companies, and libraries to efficiently manage book collections, track borrowing, and monitor due dates. It streamlines operations, reduces errors, and enhances the lending experience, making it easy to maintain a well-organized library.
 
-Checkout [Frontend](https://github.com/ajaynegi45/LibraryMan) Repository
+#### Checkout [Frontend](https://github.com/ajaynegi45/LibraryMan) Repository
 
-<br>
-
-## Project Structure 📂
+## Project Structure 📂 
 Checkout [Project Structure](https://github.com/ajaynegi45/LibraryMan-API/tree/main/project-structure) Diagram
-
-<br>
 
 ## API Endpoints 🔗
 
@@ -19,8 +15,6 @@ Want to know more about our API endpoints? Check out our [API Documentation](htt
 #### Test Endpoints
 Ready to try out our API endpoints? Use [Postman Documentation](https://documenter.getpostman.com/view/28691426/2sAXjJ6D7L) to test and explore our APIs.
 
-<br>
-
 ## How to Run the Project 💨
 
 1. Ensure you have Java and MySQL installed on your system.
@@ -29,18 +23,12 @@ Ready to try out our API endpoints? Use [Postman Documentation](https://document
 4. Set up the MySQL database and update the database configurations in the `application-development.properties` file.
 5. Build and run the project using the IDE or by running `mvn spring-boot:run` command from the project root directory.
 
-<br>
-
 ## ‼️ Important Note ‼️
 
 - You need to set up the database and make sure the application properties are correctly configured to run the project successfully.
 
-<br>
-
 ## Upcoming Update
 Adding more features, error handling, authentication, and security measures.
-
-<br>
 
 ## Contributing 🤗
 
@@ -52,8 +40,6 @@ See [`contributing.md`](https://github.com/ajaynegi45/Library-API/blob/main/Cont
 
 Please adhere to this project's [`code_of_conduct.md`](https://github.com/ajaynegi45/Library-API/blob/main/code_of_conduct.md).
 
-<br>
-
 ## Contact Information 📧
 
 If you have any questions or would like to connect, please don't hesitate to reach out. I'd be more than happy to chat and learn from your experiences too.
@@ -63,6 +49,29 @@ If you have any questions or would like to connect, please don't hesitate to rea
 
 ## Contributors
 <img src="https://contrib.rocks/image?repo=ajaynegi45/LibraryMan-API" />
+
+---
+
+<table>
+    <thead align="center">
+        <tr border: 2px;>
+            <td><b>🌟 Stars</b></td>
+            <td><b>🍴 Forks</b></td>
+            <td><b>🐛 Issues</b></td>
+            <td><b>🔔 Open PRs</b></td>
+            <td><b>🔕 Close PRs</b></td>
+        </tr>
+     </thead>
+    <tbody>
+         <tr>
+            <td><img alt="Stars" src="https://img.shields.io/github/stars/ajaynegi45/LibraryMan-API?style=flat&logo=github"/></td>
+             <td><img alt="Forks" src="https://img.shields.io/github/forks/ajaynegi45/LibraryMan-API?style=flat&logo=github"/></td>
+            <td><img alt="Issues" src="https://img.shields.io/github/issues/ajaynegi45/LibraryMan-API?style=flat&logo=github"/></td>
+            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/ajaynegi45/LibraryMan-API?style=flat&logo=github"/></td>
+           <td><img alt="Close Pull Requests" src="https://img.shields.io/github/issues-pr-closed/ajaynegi45/LibraryMan-API?style=flat&color=green&logo=github"/></td>
+        </tr>
+    </tbody>
+</table>
 
 
 ### Stargazers
