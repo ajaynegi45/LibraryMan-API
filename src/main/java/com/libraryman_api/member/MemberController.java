@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -39,6 +40,7 @@ public class MemberController {
      *         The results are sorted by name by default and limited to 5 members per page.
      */
     @GetMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Page<MembersDto> getAllMembers(@PageableDefault(page=0, size=5, sort="name") Pageable pageable,
 										@RequestParam(required = false) String sortBy,
 										@RequestParam(required = false) String sortDir) {
@@ -65,21 +67,11 @@ public class MemberController {
      * @return a {@link ResponseEntity} containing the found {@link Members} object
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public ResponseEntity<MembersDto> getMemberById(@PathVariable int id) {
         return memberService.getMemberById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-    }
-
-    /**
-     * Adds a new library member.
-     *
-     * @param membersDto the {@link Members} object representing the new member
-     * @return the added {@link Members} object
-     */
-    @PostMapping
-    public MembersDto addMember(@RequestBody MembersDto membersDto) {
-        return memberService.addMember(membersDto);
     }
 
     /**
@@ -102,6 +94,7 @@ public class MemberController {
      * @param id the ID of the member to delete
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteMember(@PathVariable int id) {
         memberService.deleteMember(id);
     }

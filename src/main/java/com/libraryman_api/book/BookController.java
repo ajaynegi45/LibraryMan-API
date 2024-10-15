@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -71,6 +72,7 @@ public class BookController {
      * @return the added {@link Book} object.
      */
     @PostMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BookDto addBook(@RequestBody BookDto bookDto) {
         return bookService.addBook(bookDto);
     }
@@ -83,6 +85,7 @@ public class BookController {
      * @return the updated {@link Book} object.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BookDto updateBook(@PathVariable int id, @RequestBody BookDto bookDtoDetails) {
         return bookService.updateBook(id, bookDtoDetails);
     }
@@ -93,6 +96,7 @@ public class BookController {
      * @param id the ID of the book to delete.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
     }
