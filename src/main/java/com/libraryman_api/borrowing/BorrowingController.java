@@ -2,6 +2,8 @@ package com.libraryman_api.borrowing;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +41,7 @@ public class BorrowingController {
      *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Page<BorrowingsDto> getAllBorrowings(@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
 												@RequestParam(required = false) String sortBy,
 												@RequestParam(required = false) String sortDir) {
@@ -64,6 +67,7 @@ public class BorrowingController {
      * @return the saved {@link Borrowings} object representing the borrowing record.
      */
     @PostMapping
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #borrowingsDto.member.memberId == authentication.principal.memberId)")
     public BorrowingsDto borrowBook(@RequestBody BorrowingsDto borrowingsDto) {
         return borrowingService.borrowBook(borrowingsDto);
     }
@@ -101,6 +105,7 @@ public class BorrowingController {
      *         The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping("member/{memberId}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #memberId == authentication.principal.memberId)")
     public Page<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId,
     													@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
     													@RequestParam(required = false) String sortBy,
@@ -128,6 +133,7 @@ public class BorrowingController {
      * @throws ResourceNotFoundException if the borrowing record with the specified ID is not found.
      */
     @GetMapping("{borrowingId}")
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BorrowingsDto getBorrowingById(@PathVariable int borrowingId) {
         return borrowingService.getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
