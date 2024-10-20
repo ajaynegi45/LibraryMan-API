@@ -1,4 +1,4 @@
-package com.libraryman_api.member;
+package com.libraryman_api.member.dto;
 
 public class UpdatePasswordDto {
 

@@ -1,6 +1,8 @@
-package com.libraryman_api.member;
+package com.libraryman_api.member.dto;
 
 import java.util.Date;
+
+import com.libraryman_api.member.Role;
 
 public class MembersDto {
 
