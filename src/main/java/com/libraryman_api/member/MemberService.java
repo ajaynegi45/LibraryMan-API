@@ -109,15 +109,12 @@ public class MemberService {
      */
 
     @CacheEvict(value = "members", key = "#memberId")
-    public MembersDto updateMember(int memberId, MembersDto membersDtoDetails) {
+    public MembersDto updateMember(int memberId, UpdateMembersDto membersDtoDetails) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
         member.setName(membersDtoDetails.getName());
         member.setUsername(membersDtoDetails.getUsername());
         member.setEmail(membersDtoDetails.getEmail());
-        member.setPassword(membersDtoDetails.getPassword());
-        member.setRole(membersDtoDetails.getRole());
-        member.setMembershipDate(membersDtoDetails.getMembershipDate());
         member = memberRepository.save(member);
         if(member!=null)
             notificationService.accountDetailsUpdateNotification(member);

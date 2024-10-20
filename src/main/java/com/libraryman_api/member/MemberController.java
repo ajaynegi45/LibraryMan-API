@@ -83,7 +83,8 @@ public class MemberController {
      * @return the updated {@link Members} object
      */
     @PutMapping("/{id}")
-    public MembersDto updateMember(@PathVariable int id, @RequestBody MembersDto membersDtoDetails) {
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.memberId)")
+    public MembersDto updateMember(@PathVariable int id, @RequestBody UpdateMembersDto membersDtoDetails) {
         return memberService.updateMember(id, membersDtoDetails);
     }
 
