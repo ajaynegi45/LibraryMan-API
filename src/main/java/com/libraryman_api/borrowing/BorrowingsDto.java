@@ -2,7 +2,7 @@ package com.libraryman_api.borrowing;
 
 import com.libraryman_api.book.BookDto;
 import com.libraryman_api.fine.Fines;
-import com.libraryman_api.member.MembersDto;
+import com.libraryman_api.member.dto.MembersDto;
 
 import java.util.Date;
 

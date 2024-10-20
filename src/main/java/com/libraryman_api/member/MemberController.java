@@ -1,7 +1,5 @@
 package com.libraryman_api.member;
 
-import com.libraryman_api.exception.ResourceNotFoundException;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +7,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.libraryman_api.exception.ResourceNotFoundException;
+import com.libraryman_api.member.dto.MembersDto;
+import com.libraryman_api.member.dto.UpdateMembersDto;
+import com.libraryman_api.member.dto.UpdatePasswordDto;
 
 /**
  * REST controller for managing library members.
@@ -83,7 +93,8 @@ public class MemberController {
      * @return the updated {@link Members} object
      */
     @PutMapping("/{id}")
-    public MembersDto updateMember(@PathVariable int id, @RequestBody MembersDto membersDtoDetails) {
+    @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.memberId)")
+    public MembersDto updateMember(@PathVariable int id, @RequestBody UpdateMembersDto membersDtoDetails) {
         return memberService.updateMember(id, membersDtoDetails);
     }
 
@@ -98,4 +109,21 @@ public class MemberController {
     public void deleteMember(@PathVariable int id) {
         memberService.deleteMember(id);
     }
+    
+    /**
+     * Updates the password for a library member.
+     * If the member is not found or the update fails, an appropriate exception will be thrown.
+     *
+     * @param id the ID of the member whose password is to be updated
+     * @param updatePasswordDto the {@link UpdatePasswordDto} object containing the password details
+     * @return a {@link ResponseEntity} containing a success message indicating the password was updated successfully
+     */
+    @PutMapping("/{id}/password")
+    @PreAuthorize("#id == authentication.principal.memberId")
+    public ResponseEntity<?> updatePassword(@PathVariable int id, 
+                                             @RequestBody UpdatePasswordDto updatePasswordDto) {
+        memberService.updatePassword(id, updatePasswordDto);
+        return ResponseEntity.ok("Password updated successfully.");
+    }
+
 }

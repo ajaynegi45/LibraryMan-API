@@ -9,7 +9,7 @@ import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
 import com.libraryman_api.member.MemberService;
 import com.libraryman_api.member.Members;
-import com.libraryman_api.member.MembersDto;
+import com.libraryman_api.member.dto.MembersDto;
 import com.libraryman_api.notification.NotificationService;
 
 import org.springframework.data.domain.Page;
