@@ -9,9 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
+import com.libraryman_api.exception.InvalidPasswordException;
 import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
+import com.libraryman_api.member.dto.MembersDto;
+import com.libraryman_api.member.dto.UpdateMembersDto;
+import com.libraryman_api.member.dto.UpdatePasswordDto;
 import com.libraryman_api.notification.NotificationService;
+import com.libraryman_api.security.config.PasswordEncoder;
 
 
 
@@ -35,6 +40,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final NotificationService notificationService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructs a new {@code MemberService} with the specified repositories and services.
@@ -42,9 +48,10 @@ public class MemberService {
      * @param memberRepository the repository for managing member records
      * @param notificationService the service for sending notifications related to member activities
      */
-    public MemberService(MemberRepository memberRepository, NotificationService notificationService) {
+    public MemberService(MemberRepository memberRepository, NotificationService notificationService, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.notificationService = notificationService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -109,15 +116,12 @@ public class MemberService {
      */
 
     @CacheEvict(value = "members", key = "#memberId")
-    public MembersDto updateMember(int memberId, MembersDto membersDtoDetails) {
+    public MembersDto updateMember(int memberId, UpdateMembersDto membersDtoDetails) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
         member.setName(membersDtoDetails.getName());
         member.setUsername(membersDtoDetails.getUsername());
         member.setEmail(membersDtoDetails.getEmail());
-        member.setPassword(membersDtoDetails.getPassword());
-        member.setRole(membersDtoDetails.getRole());
-        member.setMembershipDate(membersDtoDetails.getMembershipDate());
         member = memberRepository.save(member);
         if(member!=null)
             notificationService.accountDetailsUpdateNotification(member);
@@ -144,6 +148,39 @@ public class MemberService {
 
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
+    }
+    
+    /**
+     * Updates the password for a library member.
+     *
+     * <p>This method verifies the current password provided by the member, checks if the 
+     * new password is different, and then updates the member's password in the database. 
+     * If the current password is incorrect or the new password is the same as the current 
+     * password, an {@link InvalidPasswordException} is thrown.</p>
+     *
+     * @param memberId the ID of the member whose password is to be updated
+     * @param updatePasswordDto the {@link UpdatePasswordDto} object containing the password details
+     * @throws ResourceNotFoundException if the member with the specified ID is not found
+     * @throws InvalidPasswordException if the current password is incorrect or the new password is the same as the current password
+     */
+    public void updatePassword(int memberId, UpdatePasswordDto updatePasswordDto) {
+        Members member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+
+        // Check the current password
+        String currentAuthPassword = member.getPassword(); 
+
+        if (!passwordEncoder.bCryptPasswordEncoder().matches(updatePasswordDto.getCurrentPassword(), currentAuthPassword)) {
+            throw new InvalidPasswordException("Current password is incorrect");
+        }
+         
+        // Check if new password is different from old password
+        if (updatePasswordDto.getCurrentPassword().equals(updatePasswordDto.getNewPassword())) {
+            throw new InvalidPasswordException("New password must be different from the old password");
+        }
+
+        member.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(updatePasswordDto.getNewPassword()));
+        memberRepository.save(member);
     }
     
     /**
