@@ -14,15 +14,15 @@ public class InvalidSortFieldException extends RuntimeException {
      * The {@code serialVersionUID} is a unique identifier for each version of a serializable class.
      * It is used during the deserialization process to verify that the sender and receiver of a
      * serialized object have loaded classes for that object that are compatible with each other.
-     *
+     * <p>
      * The {@code serialVersionUID} field is important for ensuring that a serialized class
      * (especially when transmitted over a network or saved to disk) can be successfully deserialized,
      * even if the class definition changes in later versions. If the {@code serialVersionUID} does not
      * match during deserialization, an {@code InvalidClassException} is thrown.
-     *
+     * <p>
      * This field is optional, but it is good practice to explicitly declare it to prevent
      * automatic generation, which could lead to compatibility issues when the class structure changes.
-     *
+     * <p>
      * The {@code @Serial} annotation is used here to indicate that this field is related to
      * serialization. This annotation is available starting from Java 14 and helps improve clarity
      * regarding the purpose of this field.

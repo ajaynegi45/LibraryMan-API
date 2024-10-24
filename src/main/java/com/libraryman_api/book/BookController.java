@@ -28,26 +28,26 @@ public class BookController {
      * Retrieves a paginated and sorted list of all books in the library.
      *
      * @param pageable contains pagination information (page number, size, and sorting).
-     * @param sortBy (optional) the field by which to sort the results.
-     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @param sortBy   (optional) the field by which to sort the results.
+     * @param sortDir  (optional) the direction of sorting (asc or desc). Defaults to ascending.
      * @return a {@link Page} of {@link BookDto} objects representing the books in the library.
-     *         The results are sorted by title by default and limited to 5 books per page.
+     * The results are sorted by title by default and limited to 5 books per page.
      */
     @GetMapping
-    public Page<BookDto> getAllBooks(@PageableDefault(page=0, size=5, sort="title") Pageable pageable,
-    								@RequestParam(required = false) String sortBy,
-    								@RequestParam(required = false) String sortDir) {
-    	
+    public Page<BookDto> getAllBooks(@PageableDefault(page = 0, size = 5, sort = "title") Pageable pageable,
+                                     @RequestParam(required = false) String sortBy,
+                                     @RequestParam(required = false) String sortDir) {
+
         // Adjust the pageable based on dynamic sorting parameters
-    	if(sortBy!=null && !sortBy.isEmpty()) {
-    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
-    		
-    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
-    			direction = Sort.Direction.DESC;
-    		}
-    		
-    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
-    	}
+        if (sortBy != null && !sortBy.isEmpty()) {
+            Sort.Direction direction = Sort.Direction.ASC; // Default direction
+
+            if (sortDir != null && sortDir.equalsIgnoreCase("desc")) {
+                direction = Sort.Direction.DESC;
+            }
+
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy));
+        }
         return bookService.getAllBooks(pageable);
     }
 
@@ -80,7 +80,7 @@ public class BookController {
     /**
      * Updates an existing book in the library.
      *
-     * @param id          the ID of the book to update.
+     * @param id             the ID of the book to update.
      * @param bookDtoDetails the {@link Book} object containing the updated book details.
      * @return the updated {@link Book} object.
      */

@@ -1,6 +1,7 @@
 package com.libraryman_api.newsletter;
 
 import jakarta.persistence.*;
+
 import java.util.UUID;
 
 @Entity

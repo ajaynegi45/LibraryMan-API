@@ -1,7 +1,7 @@
 package com.libraryman_api.book;
 
-import java.util.Optional;
-
+import com.libraryman_api.exception.InvalidSortFieldException;
+import com.libraryman_api.exception.ResourceNotFoundException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -10,8 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
-import com.libraryman_api.exception.InvalidSortFieldException;
-import com.libraryman_api.exception.ResourceNotFoundException;
+import java.util.Optional;
 
 /**
  * Service class for managing books in the LibraryMan system.
@@ -52,7 +51,7 @@ public class BookService {
 
     @Cacheable(value = "books")
     public Page<BookDto> getAllBooks(Pageable pageable) {
-    	try {
+        try {
             Page<Book> pagedBooks = bookRepository.findAll(pageable);
             return pagedBooks.map(this::EntityToDto);
         } catch (PropertyReferenceException ex) {
@@ -67,7 +66,7 @@ public class BookService {
      * @return an {@code Optional} containing the found book, or {@code Optional.empty()} if no book was found
      */
 
-    @Cacheable(value = "books", key ="#bookId")
+    @Cacheable(value = "books", key = "#bookId")
     public Optional<BookDto> getBookById(int bookId) {
 
         Optional<Book> bookById = bookRepository.findById(bookId);
@@ -91,7 +90,7 @@ public class BookService {
     /**
      * Updates an existing book with the given details.
      *
-     * @param bookId the ID of the book to update
+     * @param bookId         the ID of the book to update
      * @param bookDtoDetails the new details for the book
      * @return the updated book
      * @throws ResourceNotFoundException if the book with the specified ID is not found
@@ -131,6 +130,7 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         bookRepository.delete(book);
     }
+
     /**
      * Converts a Book entity to a BookDto object.
      *
@@ -143,8 +143,8 @@ public class BookService {
      * @return a BookDto object with data populated from the entity
      */
 
-    public BookDto EntityToDto(Book book){
-        BookDto bookDto= new BookDto();
+    public BookDto EntityToDto(Book book) {
+        BookDto bookDto = new BookDto();
         bookDto.setBookId(book.getBookId());
         bookDto.setPublisher(book.getPublisher());
         bookDto.setPublishedYear(book.getPublishedYear());
@@ -155,6 +155,7 @@ public class BookService {
         bookDto.setCopiesAvailable(book.getCopiesAvailable());
         return bookDto;
     }
+
     /**
      * Converts a BookDto object to a Book entity.
      *
@@ -168,16 +169,16 @@ public class BookService {
      */
 
 
-    public Book DtoToEntity(BookDto bookDto){
-         Book book= new Book();
-         book.setBookId(bookDto.getBookId());
-         book.setAuthor(bookDto.getAuthor());
-         book.setGenre(bookDto.getGenre());
-         book.setPublisher(bookDto.getPublisher());
-         book.setPublishedYear(bookDto.getPublishedYear());
-         book.setTitle(bookDto.getTitle());
-         book.setCopiesAvailable(bookDto.getCopiesAvailable());
-         book.setIsbn(bookDto.getIsbn());
-         return book;
+    public Book DtoToEntity(BookDto bookDto) {
+        Book book = new Book();
+        book.setBookId(bookDto.getBookId());
+        book.setAuthor(bookDto.getAuthor());
+        book.setGenre(bookDto.getGenre());
+        book.setPublisher(bookDto.getPublisher());
+        book.setPublishedYear(bookDto.getPublishedYear());
+        book.setTitle(bookDto.getTitle());
+        book.setCopiesAvailable(bookDto.getCopiesAvailable());
+        book.setIsbn(bookDto.getIsbn());
+        return book;
     }
 }

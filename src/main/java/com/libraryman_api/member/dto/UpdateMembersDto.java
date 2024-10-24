@@ -3,9 +3,7 @@ package com.libraryman_api.member.dto;
 public class UpdateMembersDto {
 
     private String name;
-    
     private String username;
-
     private String email;
 
     public UpdateMembersDto(String name, String username, String email) {
@@ -20,15 +18,15 @@ public class UpdateMembersDto {
     public String getName() {
         return name;
     }
-    
-    public String getUsername() {
-        return username;
-    }
 
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

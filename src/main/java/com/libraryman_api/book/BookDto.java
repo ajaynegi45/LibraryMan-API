@@ -5,17 +5,11 @@ public class BookDto {
 
     private int bookId;
     private String title;
-
     private String author;
-
     private String isbn;
-
     private String publisher;
-
-
     private int publishedYear;
     private String genre;
-
     private int copiesAvailable;
 
     public BookDto(int bookId, String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable) {

@@ -12,8 +12,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 public class LibrarymanApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LibrarymanApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LibrarymanApiApplication.class, args);
+    }
 
 }

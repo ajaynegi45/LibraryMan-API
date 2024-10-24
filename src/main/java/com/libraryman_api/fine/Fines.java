@@ -15,11 +15,12 @@ public class Fines {
     @Column(name = "fine_id")
     private int fineId;
 
-/**
- * precision = 10 means the total number of digits (including decimal places) is 10.
- * scale = 2 means the number of decimal places is 2.
- * @Column(nullable = false, precision = 10, scale = 2)
- * */
+    /**
+     * precision = 10 means the total number of digits (including decimal places) is 10.
+     * scale = 2 means the number of decimal places is 2.
+     *
+     * @Column(nullable = false, precision = 10, scale = 2)
+     */
     @Column(nullable = false, scale = 2)
     private BigDecimal amount;
 
@@ -29,9 +30,7 @@ public class Fines {
     public Fines() {
     }
 
-
-    public Fines( BigDecimal amount, boolean paid) {
-
+    public Fines(BigDecimal amount, boolean paid) {
         this.amount = amount;
         this.paid = paid;
     }

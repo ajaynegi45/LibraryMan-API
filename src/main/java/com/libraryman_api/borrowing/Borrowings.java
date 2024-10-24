@@ -30,7 +30,7 @@ public class Borrowings {
     @JoinColumn(name = "member_id", nullable = false)
     private Members member;
 
-    @Column(name = "borrow_date",nullable = false)
+    @Column(name = "borrow_date", nullable = false)
     private Date borrowDate;
 
     @Column(name = "due_date", nullable = false)
@@ -63,6 +63,10 @@ public class Borrowings {
         return borrowingId;
     }
 
+    public void setBorrowingId(int borrowingId) {
+        this.borrowingId = borrowingId;
+    }
+
     public Book getBook() {
         return book;
     }
@@ -74,8 +78,6 @@ public class Borrowings {
     public Members getMember() {
         return member;
     }
-
-    public void setBorrowingId(int borrowingId) {this.borrowingId = borrowingId;}
 
     public void setMember(Members member) {
         this.member = member;

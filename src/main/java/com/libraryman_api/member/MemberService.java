@@ -1,14 +1,5 @@
 package com.libraryman_api.member;
 
-import java.util.Optional;
-
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.stereotype.Service;
-
 import com.libraryman_api.exception.InvalidPasswordException;
 import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
@@ -17,7 +8,14 @@ import com.libraryman_api.member.dto.UpdateMembersDto;
 import com.libraryman_api.member.dto.UpdatePasswordDto;
 import com.libraryman_api.notification.NotificationService;
 import com.libraryman_api.security.config.PasswordEncoder;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mapping.PropertyReferenceException;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 /**
@@ -45,7 +43,7 @@ public class MemberService {
     /**
      * Constructs a new {@code MemberService} with the specified repositories and services.
      *
-     * @param memberRepository the repository for managing member records
+     * @param memberRepository    the repository for managing member records
      * @param notificationService the service for sending notifications related to member activities
      */
     public MemberService(MemberRepository memberRepository, NotificationService notificationService, PasswordEncoder passwordEncoder) {
@@ -96,7 +94,7 @@ public class MemberService {
     public MembersDto addMember(MembersDto membersDto) {
         Members member = DtoEntity(membersDto);
         Members currentMember = memberRepository.save(member);
-        if(currentMember!=null)
+        if (currentMember != null)
             notificationService.accountCreatedNotification(currentMember);
 
         return EntityToDto(currentMember);
@@ -109,7 +107,7 @@ public class MemberService {
      * {@link ResourceNotFoundException} if the member is not found. After updating,
      * a notification about the account details update is sent.</p>
      *
-     * @param memberId the ID of the member to update
+     * @param memberId          the ID of the member to update
      * @param membersDtoDetails the updated member details
      * @return the updated member record
      * @throws ResourceNotFoundException if the member is not found
@@ -123,7 +121,7 @@ public class MemberService {
         member.setUsername(membersDtoDetails.getUsername());
         member.setEmail(membersDtoDetails.getEmail());
         member = memberRepository.save(member);
-        if(member!=null)
+        if (member != null)
             notificationService.accountDetailsUpdateNotification(member);
         return EntityToDto(member);
     }
@@ -149,31 +147,31 @@ public class MemberService {
         notificationService.accountDeletionNotification(member);
         memberRepository.delete(member);
     }
-    
+
     /**
      * Updates the password for a library member.
      *
-     * <p>This method verifies the current password provided by the member, checks if the 
-     * new password is different, and then updates the member's password in the database. 
-     * If the current password is incorrect or the new password is the same as the current 
+     * <p>This method verifies the current password provided by the member, checks if the
+     * new password is different, and then updates the member's password in the database.
+     * If the current password is incorrect or the new password is the same as the current
      * password, an {@link InvalidPasswordException} is thrown.</p>
      *
-     * @param memberId the ID of the member whose password is to be updated
+     * @param memberId          the ID of the member whose password is to be updated
      * @param updatePasswordDto the {@link UpdatePasswordDto} object containing the password details
      * @throws ResourceNotFoundException if the member with the specified ID is not found
-     * @throws InvalidPasswordException if the current password is incorrect or the new password is the same as the current password
+     * @throws InvalidPasswordException  if the current password is incorrect or the new password is the same as the current password
      */
     public void updatePassword(int memberId, UpdatePasswordDto updatePasswordDto) {
         Members member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
         // Check the current password
-        String currentAuthPassword = member.getPassword(); 
+        String currentAuthPassword = member.getPassword();
 
         if (!passwordEncoder.bCryptPasswordEncoder().matches(updatePasswordDto.getCurrentPassword(), currentAuthPassword)) {
             throw new InvalidPasswordException("Current password is incorrect");
         }
-         
+
         // Check if new password is different from old password
         if (updatePasswordDto.getCurrentPassword().equals(updatePasswordDto.getNewPassword())) {
             throw new InvalidPasswordException("New password must be different from the old password");
@@ -182,7 +180,7 @@ public class MemberService {
         member.setPassword(passwordEncoder.bCryptPasswordEncoder().encode(updatePasswordDto.getNewPassword()));
         memberRepository.save(member);
     }
-    
+
     /**
      * Converts a MembersDto object to a Members entity.
      *
@@ -193,8 +191,8 @@ public class MemberService {
      * @param membersDto the DTO object containing member information
      * @return a Members entity with data populated from the DTO
      */
-    public Members DtoEntity(MembersDto membersDto){
-        Members members= new Members();
+    public Members DtoEntity(MembersDto membersDto) {
+        Members members = new Members();
         members.setMemberId(membersDto.getMemberId());
         members.setRole(membersDto.getRole());
         members.setName(membersDto.getName());
@@ -204,7 +202,7 @@ public class MemberService {
         members.setMembershipDate(membersDto.getMembershipDate());
         return members;
     }
-    
+
     /**
      * Converts a Members entity to a MembersDto object.
      *
@@ -216,8 +214,8 @@ public class MemberService {
      * @param members the entity object containing member information
      * @return a MembersDto object with data populated from the entity
      */
-    public MembersDto EntityToDto(Members members){
-        MembersDto  membersDto= new MembersDto();
+    public MembersDto EntityToDto(Members members) {
+        MembersDto membersDto = new MembersDto();
         membersDto.setMemberId(members.getMemberId());
         membersDto.setName(members.getName());
         membersDto.setUsername(members.getUsername());
@@ -225,6 +223,6 @@ public class MemberService {
         membersDto.setEmail(members.getEmail());
         membersDto.setPassword(members.getPassword());
         membersDto.setMembershipDate(members.getMembershipDate());
-        return  membersDto;
+        return membersDto;
     }
 }

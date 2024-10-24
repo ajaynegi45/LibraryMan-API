@@ -1,22 +1,22 @@
 package com.libraryman_api.borrowing;
 
+import com.libraryman_api.book.Book;
 import com.libraryman_api.book.BookDto;
 import com.libraryman_api.book.BookService;
-import com.libraryman_api.book.Book;
-import com.libraryman_api.fine.Fines;
 import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
+import com.libraryman_api.fine.Fines;
 import com.libraryman_api.member.MemberService;
 import com.libraryman_api.member.Members;
 import com.libraryman_api.member.dto.MembersDto;
 import com.libraryman_api.notification.NotificationService;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -53,16 +53,16 @@ public class BorrowingService {
      * Constructs a new {@code BorrowingService} with the specified repositories and services.
      *
      * @param borrowingRepository the repository for managing borrowing records
-     * @param fineRepository the repository for managing fine records
+     * @param fineRepository      the repository for managing fine records
      * @param notificationService the service for sending notifications
-     * @param bookService the service for managing book records
+     * @param bookService         the service for managing book records
      */
     public BorrowingService(BorrowingRepository borrowingRepository, FineRepository fineRepository, NotificationService notificationService, BookService bookService, MemberService memberService) {
         this.borrowingRepository = borrowingRepository;
         this.fineRepository = fineRepository;
         this.notificationService = notificationService;
         this.bookService = bookService;
-        this.memberService=memberService;
+        this.memberService = memberService;
     }
 
     /**
@@ -150,8 +150,8 @@ public class BorrowingService {
         BorrowingsDto borrowingsDto = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
         Optional<MembersDto> memberDto = memberService.getMemberById(borrowingsDto.getMember().getMemberId());
-        if(!memberDto.isPresent()){
-                throw new ResourceNotFoundException("Member not found");
+        if (!memberDto.isPresent()) {
+            throw new ResourceNotFoundException("Member not found");
         }
         if (borrowingsDto.getReturnDate() != null) {
             throw new ResourceNotFoundException("Book has already been returned");
@@ -202,7 +202,7 @@ public class BorrowingService {
         BorrowingsDto borrowingsDto = getBorrowingById(borrowingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Borrowing not found"));
         Optional<MembersDto> memberDto = memberService.getMemberById(borrowingsDto.getMember().getMemberId());
-        if(!memberDto.isPresent()){
+        if (!memberDto.isPresent()) {
             throw new ResourceNotFoundException("Member not found");
         }
         Fines fine = borrowingsDto.getFine();
@@ -225,8 +225,8 @@ public class BorrowingService {
      * If there are not enough copies available for a removal operation, or if the book is not found,
      * a {@link ResourceNotFoundException} is thrown.</p>
      *
-     * @param bookId the ID of the book to update
-     * @param operation the operation to perform ("ADD" to increase, "REMOVE" to decrease)
+     * @param bookId         the ID of the book to update
+     * @param operation      the operation to perform ("ADD" to increase, "REMOVE" to decrease)
      * @param numberOfCopies the number of copies to add or remove
      * @throws ResourceNotFoundException if the book is not found or if there are not enough copies to remove
      */
@@ -281,14 +281,14 @@ public class BorrowingService {
      *
      * @param memberId the ID of the member whose borrowings are to be retrieved
      * @param pageable the pagination information, including the page number and size
+     * @return a {@link Page} of {@link Borrowings} representing all borrowing associated with a specific member
      * @throws ResourceNotFoundException if the member has not borrowed any books
      * @throws InvalidSortFieldException if an invalid sortBy field is specified
-     * @return a {@link Page} of {@link Borrowings} representing all borrowing associated with a specific member
      */
     public Page<BorrowingsDto> getAllBorrowingsOfMember(int memberId, Pageable pageable) {
         try {
             Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
-            
+
             if (borrowings.isEmpty()) {
                 throw new ResourceNotFoundException("Member didn't borrow any book");
             }
@@ -297,6 +297,7 @@ public class BorrowingService {
             throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
         }
     }
+
     /**
      * Converts a BorrowingsDto object to a Borrowings entity.
      *
@@ -311,7 +312,7 @@ public class BorrowingService {
      */
 
 
-    public Borrowings DtoToEntity(BorrowingsDto borrowingsDto){
+    public Borrowings DtoToEntity(BorrowingsDto borrowingsDto) {
         Borrowings borrowings = new Borrowings();
         borrowings.setBorrowDate(borrowingsDto.getBorrowDate());
         borrowings.setMember(memberService.DtoEntity(borrowingsDto.getMember()));
@@ -322,6 +323,7 @@ public class BorrowingService {
         borrowings.setBorrowingId(borrowingsDto.getBorrowingId());
         return borrowings;
     }
+
     /**
      * Converts a Borrowings entity to a BorrowingsDto object.
      *
@@ -336,7 +338,7 @@ public class BorrowingService {
      */
 
 
-    public BorrowingsDto EntityToDto(Borrowings borrowings){
+    public BorrowingsDto EntityToDto(Borrowings borrowings) {
         BorrowingsDto borrowingsDto = new BorrowingsDto();
         borrowingsDto.setBorrowingId(borrowings.getBorrowingId());
         borrowingsDto.setFine(borrowings.getFine());

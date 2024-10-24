@@ -1,17 +1,15 @@
 package com.libraryman_api.security.controllers;
 
+import com.libraryman_api.security.model.LoginRequest;
+import com.libraryman_api.security.model.LoginResponse;
+import com.libraryman_api.security.services.LoginService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.libraryman_api.security.model.LoginRequest;
-import com.libraryman_api.security.model.LoginResponse;
-import com.libraryman_api.security.services.LoginService;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 public class LoginController {
@@ -26,7 +24,7 @@ public class LoginController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         LoginResponse loginResponse = loginService.login(loginRequest);
 
-        if (loginResponse != null) { 
+        if (loginResponse != null) {
             setAuthCookie(response);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         } else {
@@ -37,7 +35,7 @@ public class LoginController {
     private void setAuthCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("LibraryManCookie", "libraryman_cookie");
         cookie.setMaxAge(3600); // (3600 seconds)
-        cookie.setPath("/"); 
+        cookie.setPath("/");
         response.addCookie(cookie);
     }
 }

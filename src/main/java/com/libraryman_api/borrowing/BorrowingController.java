@@ -1,14 +1,12 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -35,27 +33,27 @@ public class BorrowingController {
      * Retrieves a paginated and sorted list of all borrowing records in the library.
      *
      * @param pageable contains pagination information (page number, size, and sorting).
-     * @param sortBy (optional) the field by which to sort the results.
-     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @param sortBy   (optional) the field by which to sort the results.
+     * @param sortDir  (optional) the direction of sorting (asc or desc). Defaults to ascending.
      * @return a {@link Page} of {@link Borrowings} representing all borrowings.
-     *         The results are sorted by borrow date by default and limited to 5 members per page.
+     * The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public Page<BorrowingsDto> getAllBorrowings(@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
-												@RequestParam(required = false) String sortBy,
-												@RequestParam(required = false) String sortDir) {
-    	
-    	// Adjust the pageable based on dynamic sorting parameters
-    	if(sortBy!=null && !sortBy.isEmpty()) {
-    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+    public Page<BorrowingsDto> getAllBorrowings(@PageableDefault(page = 0, size = 5, sort = "borrowDate") Pageable pageable,
+                                                @RequestParam(required = false) String sortBy,
+                                                @RequestParam(required = false) String sortDir) {
 
-    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
-    			direction = Sort.Direction.DESC;
-    		}
+        // Adjust the pageable based on dynamic sorting parameters
+        if (sortBy != null && !sortBy.isEmpty()) {
+            Sort.Direction direction = Sort.Direction.ASC; // Default direction
 
-    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
-    	}
+            if (sortDir != null && sortDir.equalsIgnoreCase("desc")) {
+                direction = Sort.Direction.DESC;
+            }
+
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy));
+        }
 
         return borrowingService.getAllBorrowings(pageable);
     }
@@ -99,28 +97,28 @@ public class BorrowingController {
      *
      * @param memberId the ID of the member whose borrowing records are to be retrieved.
      * @param pageable contains pagination information (page number, size, and sorting).
-     * @param sortBy (optional) the field by which to sort the results.
-     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @param sortBy   (optional) the field by which to sort the results.
+     * @param sortDir  (optional) the direction of sorting (asc or desc). Defaults to ascending.
      * @return a {@link Page} of {@link Borrowings} representing all borrowings for a specific member.
-     *         The results are sorted by borrow date by default and limited to 5 members per page.
+     * The results are sorted by borrow date by default and limited to 5 members per page.
      */
     @GetMapping("member/{memberId}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #memberId == authentication.principal.memberId)")
     public Page<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId,
-    													@PageableDefault(page=0, size=5, sort="borrowDate") Pageable pageable,
-    													@RequestParam(required = false) String sortBy,
-    													@RequestParam(required = false) String sortDir) {
-    	
-    	// Adjust the pageable based on dynamic sorting parameters
-    	if(sortBy!=null && !sortBy.isEmpty()) {
-    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
+                                                         @PageableDefault(page = 0, size = 5, sort = "borrowDate") Pageable pageable,
+                                                         @RequestParam(required = false) String sortBy,
+                                                         @RequestParam(required = false) String sortDir) {
 
-    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
-    			direction = Sort.Direction.DESC;
-    		}
+        // Adjust the pageable based on dynamic sorting parameters
+        if (sortBy != null && !sortBy.isEmpty()) {
+            Sort.Direction direction = Sort.Direction.ASC; // Default direction
 
-    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
-    	}
+            if (sortDir != null && sortDir.equalsIgnoreCase("desc")) {
+                direction = Sort.Direction.DESC;
+            }
+
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy));
+        }
 
         return borrowingService.getAllBorrowingsOfMember(memberId, pageable);
     }

@@ -1,25 +1,17 @@
 package com.libraryman_api.member.dto;
 
-import java.util.Date;
-
 import com.libraryman_api.member.Role;
+
+import java.util.Date;
 
 public class MembersDto {
 
     private int memberId;
-
     private String name;
-    
     private String username;
-
     private String email;
-
     private String password;
-
-
     private Role role;
-
-
     private Date membershipDate;
 
     public MembersDto(int memberId, String name, String username, String email, String password, Role role, Date membershipDate) {
@@ -46,15 +38,15 @@ public class MembersDto {
     public String getName() {
         return name;
     }
-    
-    public String getUsername() {
-        return username;
-    }
 
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    public String getUsername() {
+        return username;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

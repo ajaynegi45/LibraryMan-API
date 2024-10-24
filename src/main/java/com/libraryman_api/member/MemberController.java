@@ -1,5 +1,9 @@
 package com.libraryman_api.member;
 
+import com.libraryman_api.exception.ResourceNotFoundException;
+import com.libraryman_api.member.dto.MembersDto;
+import com.libraryman_api.member.dto.UpdateMembersDto;
+import com.libraryman_api.member.dto.UpdatePasswordDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -7,19 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.libraryman_api.exception.ResourceNotFoundException;
-import com.libraryman_api.member.dto.MembersDto;
-import com.libraryman_api.member.dto.UpdateMembersDto;
-import com.libraryman_api.member.dto.UpdatePasswordDto;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing library members.
@@ -44,28 +36,28 @@ public class MemberController {
      * Retrieves a paginated and sorted list of all library members.
      *
      * @param pageable contains pagination information (page number, size, and sorting).
-     * @param sortBy (optional) the field by which to sort the results.
-     * @param sortDir (optional) the direction of sorting (asc or desc). Defaults to ascending.
+     * @param sortBy   (optional) the field by which to sort the results.
+     * @param sortDir  (optional) the direction of sorting (asc or desc). Defaults to ascending.
      * @return a {@link Page} of {@link Members} representing all members in the library.
-     *         The results are sorted by name by default and limited to 5 members per page.
+     * The results are sorted by name by default and limited to 5 members per page.
      */
     @GetMapping
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public Page<MembersDto> getAllMembers(@PageableDefault(page=0, size=5, sort="name") Pageable pageable,
-										@RequestParam(required = false) String sortBy,
-										@RequestParam(required = false) String sortDir) {
-    	
-    	// Adjust the pageable based on dynamic sorting parameters
-    	if(sortBy!=null && !sortBy.isEmpty()) {
-    		Sort.Direction direction= Sort.Direction.ASC; // Default direction
-    		
-    		if(sortDir!=null && sortDir.equalsIgnoreCase("desc")) {
-    			direction = Sort.Direction.DESC;
-    		}
+    public Page<MembersDto> getAllMembers(@PageableDefault(page = 0, size = 5, sort = "name") Pageable pageable,
+                                          @RequestParam(required = false) String sortBy,
+                                          @RequestParam(required = false) String sortDir) {
 
-    		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy)) ;   		
-    	}
-    	
+        // Adjust the pageable based on dynamic sorting parameters
+        if (sortBy != null && !sortBy.isEmpty()) {
+            Sort.Direction direction = Sort.Direction.ASC; // Default direction
+
+            if (sortDir != null && sortDir.equalsIgnoreCase("desc")) {
+                direction = Sort.Direction.DESC;
+            }
+
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortBy));
+        }
+
         return memberService.getAllMembers(pageable);
     }
 
@@ -88,7 +80,7 @@ public class MemberController {
      * Updates an existing library member.
      * If the member is not found, a {@link ResourceNotFoundException} is thrown.
      *
-     * @param id the ID of the member to update
+     * @param id                the ID of the member to update
      * @param membersDtoDetails the {@link Members} object containing the updated details
      * @return the updated {@link Members} object
      */
@@ -109,19 +101,19 @@ public class MemberController {
     public void deleteMember(@PathVariable int id) {
         memberService.deleteMember(id);
     }
-    
+
     /**
      * Updates the password for a library member.
      * If the member is not found or the update fails, an appropriate exception will be thrown.
      *
-     * @param id the ID of the member whose password is to be updated
+     * @param id                the ID of the member whose password is to be updated
      * @param updatePasswordDto the {@link UpdatePasswordDto} object containing the password details
      * @return a {@link ResponseEntity} containing a success message indicating the password was updated successfully
      */
     @PutMapping("/{id}/password")
     @PreAuthorize("#id == authentication.principal.memberId")
-    public ResponseEntity<?> updatePassword(@PathVariable int id, 
-                                             @RequestBody UpdatePasswordDto updatePasswordDto) {
+    public ResponseEntity<?> updatePassword(@PathVariable int id,
+                                            @RequestBody UpdatePasswordDto updatePasswordDto) {
         memberService.updatePassword(id, updatePasswordDto);
         return ResponseEntity.ok("Password updated successfully.");
     }

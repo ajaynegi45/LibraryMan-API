@@ -2,6 +2,7 @@ package com.libraryman_api.notification;
 
 import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -29,7 +30,6 @@ public class Notifications {
 
     @Enumerated(EnumType.STRING)
     private NotificationStatus notificationStatus;
-
 
 
     public Notifications() {

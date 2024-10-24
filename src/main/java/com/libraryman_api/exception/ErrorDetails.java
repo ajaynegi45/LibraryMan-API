@@ -12,7 +12,7 @@ import java.util.Date;
  *     <li>An equals() method that checks for equality based on the components.</li>
  *     <li>A hashCode() method that calculates a hash code based on the components.</li>
  * </ul>
- *
+ * <p>
  * For the ErrorDetails record, the compiler will automatically generate the following members:
  * <p>
  *     <b>Private final fields:</b>

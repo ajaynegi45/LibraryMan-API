@@ -5,6 +5,8 @@ import com.libraryman_api.email.EmailSender;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.member.MemberRepository;
 import com.libraryman_api.member.Members;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -29,10 +29,10 @@ import org.slf4j.LoggerFactory;
  */
 @Service
 public class NotificationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationService.class);
     private final EmailSender emailSender;
     private final NotificationRepository notificationRepository;
     private final MemberRepository memberRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationService.class);
 
     /**
      * Constructs a new {@code NotificationService} with the specified {@link EmailSender},
@@ -206,7 +206,7 @@ public class NotificationService {
      */
     private void sendNotification(Notifications notification) {
         emailSender.send(
-            notification.getMember().getEmail(),
+                notification.getMember().getEmail(),
                 buildEmail(
                         subject(notification.getNotificationType()),
                         notification.getMember().getName(),
@@ -220,7 +220,7 @@ public class NotificationService {
     // Scheduled method to send reminders for books due in 2 days
     @Scheduled(cron = "0 0 10 * * ?")  // Runs every day at 10 AM
 
-    public void sendDueDateReminders(){
+    public void sendDueDateReminders() {
         Calendar calendar = Calendar.getInstance();
 
         // Get today's date
@@ -237,10 +237,10 @@ public class NotificationService {
         for (Borrowings borrowing : borrowingsDueSoon) {
             try {
                 Optional<Members> member = memberRepository.findByMemberId(borrowing.getMember().getMemberId());
-                if(member.isPresent())
-                reminderNotification(borrowing);
+                if (member.isPresent())
+                    reminderNotification(borrowing);
             } catch (ResourceNotFoundException e) {
-                LOGGER.error("Member not found for memberId: " + borrowing.getMember().getMemberId(), e);            
+                LOGGER.error("Member not found for memberId: " + borrowing.getMember().getMemberId(), e);
             }
         }
     }

@@ -9,23 +9,14 @@ import java.util.Date;
 public class BorrowingsDto {
 
     private int borrowingId;
-
-
     private BookDto book;
-
-
     private Fines fine;
-
-
     private MembersDto member;
-
     private Date borrowDate;
-
-
     private Date dueDate;
-
-
     private Date returnDate;
+
+
 
     public BorrowingsDto(int borrowingId, BookDto book, Fines fine, MembersDto member, Date borrowDate, Date dueDate, Date returnDate) {
         this.borrowingId = borrowingId;

@@ -1,18 +1,17 @@
 package com.libraryman_api.member;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 
 @Entity
-public class Members implements UserDetails{
+public class Members implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -28,7 +27,7 @@ public class Members implements UserDetails{
 
     @Column(name = "username")
     private String username;
-    
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -41,8 +40,6 @@ public class Members implements UserDetails{
 
     @Column(name = "membership_date")
     private Date membershipDate;
-
-    
 
 
     public Members() {
@@ -58,6 +55,10 @@ public class Members implements UserDetails{
 
     public int getMemberId() {
         return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
     public String getName() {
@@ -80,8 +81,6 @@ public class Members implements UserDetails{
         return password;
     }
 
-    public void setMemberId(int memberId) {this.memberId = memberId;}
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -102,18 +101,18 @@ public class Members implements UserDetails{
         this.membershipDate = membershipDate;
     }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+role.name()));
-	}
-    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
 }
