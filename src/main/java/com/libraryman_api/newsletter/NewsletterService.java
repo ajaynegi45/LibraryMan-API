@@ -60,14 +60,17 @@ public class NewsletterService {
 
     private void sendSubscriptionEmail(String email, String token) {
         String subject = "Welcome to Our Newsletter!";
-        String body = "Thank you for subscribing! To unsubscribe, click the link:\n" +
-                "http://localhost:8080/newsletter/unsubscribe?token=" + token;
-        emailService.send(email, body, subject, null);
+        String body = "Thank you for subscribing! " +
+                "To unsubscribe, click the link:\n" +
+                "http://localhost:8080/api/newsletter/unsubscribe?token=" + token;
+
+        emailService.sendEmail(email, body, subject); // No need to change this line
     }
 
     private void sendUnsubscribeEmail(String email) {
         String subject = "You have been unsubscribed";
         String body = "You have successfully unsubscribed. If this was a mistake, you can re-subscribe.";
-        emailService.send(email, body, subject, null);
+
+        emailService.sendEmail(email, body, subject); // No need to change this line
     }
 }
