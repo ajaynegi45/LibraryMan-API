@@ -1,7 +1,6 @@
 package com.libraryman_api.newsletter;
 
 import jakarta.persistence.*;
-
 import java.util.UUID;
 
 @Entity
@@ -16,53 +15,28 @@ public class NewsletterSubscriber {
     private String email;
 
     @Column(nullable = false)
-    private boolean active = true; // Manage subscription status
+    private boolean active = true;
 
     @Column(name = "unsubscribe_token", nullable = false, unique = true)
-    private String unsubscribeToken; // Token for unsubscribing
+    private String unsubscribeToken;
 
-    // Default constructor that initializes the token
+    // Default constructor initializing unsubscribe token
     public NewsletterSubscriber() {
-        this.unsubscribeToken = UUID.randomUUID().toString(); // Generate token by default
+        this.unsubscribeToken = UUID.randomUUID().toString();
     }
 
-    // Constructor to initialize with email
+    // Constructor initializing with email
     public NewsletterSubscriber(String email) {
         this();
         this.email = email;
     }
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getUnsubscribeToken() {
-        return unsubscribeToken;
-    }
-
-    // Method to regenerate a new token
-    public void regenerateToken() {
-        this.unsubscribeToken = UUID.randomUUID().toString();
-    }
+    // Getters and Setters
+    public Long getId() { return id; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
+    public String getUnsubscribeToken() { return unsubscribeToken; }
+    public void regenerateToken() { this.unsubscribeToken = UUID.randomUUID().toString(); }
 }
