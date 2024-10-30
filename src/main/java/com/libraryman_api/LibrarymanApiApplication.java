@@ -7,9 +7,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @EnableScheduling
-@EnableCaching
+@EnableCaching(proxyTargetClass = true)
 public class LibrarymanApiApplication {
 
     public static void main(String[] args) {
