@@ -2,11 +2,9 @@ package com.libraryman_api.book;
 
 import jakarta.persistence.*;
 
-
 @Entity
 public class Book {
     @Id
-
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "book_id_generator")
     @SequenceGenerator(name = "book_id_generator",
@@ -27,16 +25,18 @@ public class Book {
 
     @Column(name = "published_year")
     private int publishedYear;
-    private String genre;
 
+    private String genre;
 
     @Column(name = "copies_available", nullable = false)
     private int copiesAvailable;
 
+    private String keyword;
+
     public Book() {
     }
 
-    public Book(String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable) {
+    public Book(String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable, String keyword) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
@@ -44,6 +44,7 @@ public class Book {
         this.publishedYear = publishedYear;
         this.genre = genre;
         this.copiesAvailable = copiesAvailable;
+        this.keyword = keyword;
     }
 
     public int getBookId() {
@@ -110,9 +111,17 @@ public class Book {
         this.copiesAvailable = copiesAvailable;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     @Override
     public String toString() {
-        return "Books{" +
+        return "Book{" +
                 "bookId=" + bookId +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
@@ -121,6 +130,7 @@ public class Book {
                 ", publishedYear=" + publishedYear +
                 ", genre='" + genre + '\'' +
                 ", copiesAvailable=" + copiesAvailable +
+                ", keyword='" + keyword + '\'' +
                 '}';
     }
 }
