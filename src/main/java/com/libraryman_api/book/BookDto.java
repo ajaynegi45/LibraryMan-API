@@ -1,8 +1,6 @@
 package com.libraryman_api.book;
 
 public class BookDto {
-
-
     private int bookId;
     private String title;
     private String author;
@@ -11,8 +9,9 @@ public class BookDto {
     private int publishedYear;
     private String genre;
     private int copiesAvailable;
+    private String keyword;  // Define the keyword variable
 
-    public BookDto(int bookId, String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable) {
+    public BookDto(int bookId, String title, String author, String isbn, String publisher, int publishedYear, String genre, int copiesAvailable, String keyword) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -21,6 +20,7 @@ public class BookDto {
         this.publishedYear = publishedYear;
         this.genre = genre;
         this.copiesAvailable = copiesAvailable;
+        this.keyword = keyword;
     }
 
     public BookDto() {
@@ -90,6 +90,14 @@ public class BookDto {
         this.copiesAvailable = copiesAvailable;
     }
 
+    public String getKeyword() {  // Changed method name to camelCase and corrected return type
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {  // Added a setter for keyword
+        this.keyword = keyword;
+    }
+
     @Override
     public String toString() {
         return "BookDto{" +
@@ -101,6 +109,7 @@ public class BookDto {
                 ", publishedYear=" + publishedYear +
                 ", genre='" + genre + '\'' +
                 ", copiesAvailable=" + copiesAvailable +
+                ", keyword='" + keyword + '\'' +
                 '}';
     }
 }
