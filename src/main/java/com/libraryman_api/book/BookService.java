@@ -110,6 +110,7 @@ public class BookService {
         book.setPublishedYear(bookDtoDetails.getPublishedYear());
         book.setGenre(bookDtoDetails.getGenre());
         book.setCopiesAvailable(bookDtoDetails.getCopiesAvailable());
+        book.setKeyword(bookDtoDetails.getKeyword()); // Update keyword field
         Book updatedBook = bookRepository.save(book);
         return EntityToDto(updatedBook);
     }
@@ -137,7 +138,7 @@ public class BookService {
      * <p>This method takes a Book entity and transforms it into a BookDto object for
      * data transfer between application layers. It maps all relevant book details,
      * including book ID, publisher, published year, title, author, genre, ISBN,
-     * and copies available, from the entity to the DTO.</p>
+     * copies available, and keyword, from the entity to the DTO.</p>
      *
      * @param book the entity object containing book information
      * @return a BookDto object with data populated from the entity
@@ -153,6 +154,7 @@ public class BookService {
         bookDto.setGenre(book.getGenre());
         bookDto.setIsbn(book.getIsbn());
         bookDto.setCopiesAvailable(book.getCopiesAvailable());
+        bookDto.setKeyword(book.getKeyword()); // Map keyword field
         return bookDto;
     }
 
@@ -161,13 +163,12 @@ public class BookService {
      *
      * <p>This method takes a BookDto object and converts it into a Book entity for
      * use in database operations. It maps all relevant book details, including
-     * book ID, author, genre, publisher, published year, title, ISBN, and copies
-     * available, from the DTO to the entity.</p>
+     * book ID, author, genre, publisher, published year, title, ISBN, copies
+     * available, and keyword, from the DTO to the entity.</p>
      *
      * @param bookDto the DTO object containing book information
      * @return a Book entity with data populated from the DTO
      */
-
 
     public Book DtoToEntity(BookDto bookDto) {
         Book book = new Book();
@@ -179,6 +180,7 @@ public class BookService {
         book.setTitle(bookDto.getTitle());
         book.setCopiesAvailable(bookDto.getCopiesAvailable());
         book.setIsbn(bookDto.getIsbn());
+        book.setKeyword(bookDto.getKeyword()); // Map keyword field
         return book;
     }
 }
