@@ -37,10 +37,10 @@ public class WebConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> request
                         // make sure it is in order to access the proper Url
-
                         .requestMatchers("/api/signup").permitAll()
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/logout").permitAll()
+                        .requestMatchers("/api/analytics/**").hasAnyRole("ADMIN", "LIBRARIAN") // New line for analytics
                         .anyRequest().authenticated()
                 )
                 .logout(logout -> logout
@@ -85,5 +85,4 @@ public class WebConfiguration {
     public CorsFilter corsFilter() {
         return new CorsFilter(corsConfigurationSource());
     }
-
 }
