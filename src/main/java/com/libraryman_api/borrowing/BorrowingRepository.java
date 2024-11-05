@@ -11,6 +11,19 @@ import java.util.Map;
 @Repository
 public interface BorrowingRepository extends JpaRepository<Borrowings, Integer> {
 
+public Page<BorrowingsDto> getAllBorrowingsOfMember(int memberId, Pageable pageable) {
+try {
+Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
+
+if (borrowings.isEmpty()) {
+ throw new ResourceNotFoundException("Member didn't borrow any book");
+} 
+return borrowings.map(this::EntityToDto);
+} catch (PropertyReferenceException ex) {
+  throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
+}
+}
+    
     @Query(value = "SELECT b.title AS bookTitle, COUNT(*) AS borrowCount " +
             "FROM borrowings br JOIN books b ON br.book_id = b.book_id " +
             "GROUP BY b.book_id ORDER BY borrowCount DESC LIMIT :limit", nativeQuery = true)
