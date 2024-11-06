@@ -3,15 +3,19 @@ package com.libraryman_api.borrowing;
 import com.libraryman_api.book.BookDto;
 import com.libraryman_api.fine.Fines;
 import com.libraryman_api.member.dto.MembersDto;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
 public class BorrowingsDto {
 
     private int borrowingId;
+    @NotNull(message = "Book is required")
     private BookDto book;
     private Fines fine;
+    @NotNull(message = "Member is required")
     private MembersDto member;
+
     private Date borrowDate;
     private Date dueDate;
     private Date returnDate;
