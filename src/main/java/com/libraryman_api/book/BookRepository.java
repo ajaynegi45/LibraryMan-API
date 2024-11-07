@@ -21,12 +21,12 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 	 */
 	
 	@Query("SELECT b FROM Book b WHERE "
-			+ "b.title LIKE %:keyword% OR "
-			+ "b.author LIKE %:keyword% OR "
-			+ "b.publisher LIKE %:keyword% OR "
-			+ "b.genre LIKE %:keyword% OR "
-			+ "CAST(b.publishedYear As string) LIKE %:keyword% OR "
-			+ "CAST(b.copiesAvailable As string) LIKE %:keyword%")
+	        + "(LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
+	        + "LOWER(b.author) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
+	        + "LOWER(b.publisher) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
+	        + "LOWER(b.genre) LIKE LOWER(CONCAT('%', :keyword, '%')) OR "
+	        + "CAST(b.publishedYear AS string) LIKE %:keyword% OR "
+	        + "CAST(b.copiesAvailable AS string) LIKE %:keyword%)")
 	Page<Book> searchBook(@Param("keyword") String keyword,Pageable pageable);
 }
 
