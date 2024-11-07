@@ -114,7 +114,7 @@ public class MemberController {
     @PutMapping("/{id}/password")
     @PreAuthorize("#id == authentication.principal.memberId")
     public ResponseEntity<?> updatePassword(@PathVariable int id,
-                                            @RequestBody UpdatePasswordDto updatePasswordDto) {
+                                           @Valid @RequestBody UpdatePasswordDto updatePasswordDto) {
         memberService.updatePassword(id, updatePasswordDto);
         return ResponseEntity.ok("Password updated successfully.");
     }
