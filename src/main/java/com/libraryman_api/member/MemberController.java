@@ -4,6 +4,7 @@ import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.member.dto.MembersDto;
 import com.libraryman_api.member.dto.UpdateMembersDto;
 import com.libraryman_api.member.dto.UpdatePasswordDto;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -86,7 +87,7 @@ public class MemberController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.memberId)")
-    public MembersDto updateMember(@PathVariable int id, @RequestBody UpdateMembersDto membersDtoDetails) {
+    public MembersDto updateMember(@PathVariable int id,@Valid @RequestBody UpdateMembersDto membersDtoDetails) {
         return memberService.updateMember(id, membersDtoDetails);
     }
 
@@ -113,7 +114,7 @@ public class MemberController {
     @PutMapping("/{id}/password")
     @PreAuthorize("#id == authentication.principal.memberId")
     public ResponseEntity<?> updatePassword(@PathVariable int id,
-                                            @RequestBody UpdatePasswordDto updatePasswordDto) {
+                                           @Valid @RequestBody UpdatePasswordDto updatePasswordDto) {
         memberService.updatePassword(id, updatePasswordDto);
         return ResponseEntity.ok("Password updated successfully.");
     }

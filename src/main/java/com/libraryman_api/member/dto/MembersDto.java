@@ -1,17 +1,35 @@
 package com.libraryman_api.member.dto;
 
 import com.libraryman_api.member.Role;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 
 public class MembersDto {
 
     private int memberId;
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
+    @NotBlank(message = "Username is required")
+    @Size(min = 4, max = 50, message = "Username must be between 4 and 50 characters")
     private String username;
+
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$", message = "Please enter a valid email address (e.g., user@example.com)")
+    @NotBlank(message = "Email field cannot be empty. Please provide a valid email address.")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).*$",
+            message = "Password must contain at least one letter, one number, and one special character")
     private String password;
+
+
     private Role role;
+
     private Date membershipDate;
 
     public MembersDto(int memberId, String name, String username, String email, String password, Role role, Date membershipDate) {

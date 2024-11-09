@@ -1,6 +1,7 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +67,7 @@ public class BorrowingController {
      */
     @PostMapping
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #borrowingsDto.member.memberId == authentication.principal.memberId)")
-    public BorrowingsDto borrowBook(@RequestBody BorrowingsDto borrowingsDto) {
+    public BorrowingsDto borrowBook(@Valid @RequestBody BorrowingsDto borrowingsDto) {
         return borrowingService.borrowBook(borrowingsDto);
     }
 

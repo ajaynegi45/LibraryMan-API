@@ -1,7 +1,7 @@
 package com.libraryman_api.book;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
-
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,7 +75,7 @@ public class BookController {
      */
     @PostMapping
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public BookDto addBook(@RequestBody BookDto bookDto) {
+    public BookDto addBook(@Valid @RequestBody BookDto bookDto) {
         return bookService.addBook(bookDto);
     }
 
@@ -88,7 +88,7 @@ public class BookController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
-    public BookDto updateBook(@PathVariable int id, @RequestBody BookDto bookDtoDetails) {
+    public BookDto updateBook(@PathVariable int id, @Valid @RequestBody BookDto bookDtoDetails) {
         return bookService.updateBook(id, bookDtoDetails);
     }
 

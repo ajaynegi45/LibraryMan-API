@@ -1,8 +1,16 @@
 package com.libraryman_api.member.dto;
 
-public class UpdatePasswordDto {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
+public class UpdatePasswordDto {
     private String currentPassword;
+
+    @NotBlank(message = "New Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).*$",
+            message = "Password must contain at least one letter, one number, and one special character")
     private String newPassword;
 
     public UpdatePasswordDto(String currentPassword, String newPassword) {
