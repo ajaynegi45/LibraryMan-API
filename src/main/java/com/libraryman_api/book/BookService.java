@@ -181,4 +181,16 @@ public class BookService {
         book.setIsbn(bookDto.getIsbn());
         return book;
     }
+    
+    /**
+     * <p>This method takes String keyword and search book based on 
+     * title, author, genre, publishedYear, etc. from Book Entity. </p>
+     * 
+     * @param keyword
+     * @param pageable
+     * @return
+     */
+    public Page<Book> searchBook(String keyword,Pageable pageable ){
+    	return bookRepository.searchBook(keyword,pageable);
+    }
 }
