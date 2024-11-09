@@ -27,7 +27,7 @@ public class MembersDto {
             message = "Password must contain at least one letter, one number, and one special character")
     private String password;
 
-    @NotBlank(message = "Role is required")
+
     private Role role;
 
     private Date membershipDate;

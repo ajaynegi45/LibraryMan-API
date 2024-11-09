@@ -14,6 +14,7 @@ public class BookDto {
     @Size(min = 1, max = 100, message = "Author name must be between 1 and 100 characters")
     private String author;
 
+    @NotBlank(message = "isbn is required")
     @Pattern(regexp = "^(978|979)-\\d{10}$", message = "Invalid ISBN format. Format must be '978-XXXXXXXXXX' or '979-XXXXXXXXXX'")
     private String isbn;
 
