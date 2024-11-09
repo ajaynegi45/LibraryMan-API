@@ -1,6 +1,8 @@
 package com.libraryman_api.book;
 
 import com.libraryman_api.exception.ResourceNotFoundException;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -99,5 +101,22 @@ public class BookController {
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
+    }
+    
+    /**
+     * Searches book based on title, author, genre, etc.
+     * It uses a keyword parameter to filter the books, and pagination is applied to the search results.
+     * If no book is found it will return 204(No content found) http response.
+     * If keyword is null then it will return all books.
+     * @param keyword the Keyword to search Book
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Page<Book>> searchBook(@RequestParam String keyword, @PageableDefault(page = 0, size = 5, sort = "title") Pageable pageable){
+    	Page<Book> books=bookService.searchBook(keyword,pageable);
+    	if(!books.isEmpty())
+    		return ResponseEntity.ok(books);
+    	return ResponseEntity.noContent().build();
     }
 }
