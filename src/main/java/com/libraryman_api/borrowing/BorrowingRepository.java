@@ -11,7 +11,7 @@ import java.util.Map;
 @Repository
 public interface BorrowingRepository extends JpaRepository<Borrowings, Integer> {
 
-public Page<BorrowingsDto> getAllBorrowingsOfMember(int memberId, Pageable pageable) {
+Page<Borrowings> findByMember_memberId(int memberId, Pageable pageable); {
 try {
 Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
 
