@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Global exception handler for the LibraryMan API. This class provides
@@ -75,16 +77,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> MethodArgumentNotValidException(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, Object>> MethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
-        HashMap<String,Object> map = new HashMap<>();
+        HashMap<String, Object> map = new HashMap<>();
         allErrors.forEach(objectError -> {
-            String message=objectError.getDefaultMessage();
-            String field=((FieldError) objectError).getField();
-            map.put(field,message);
+            String message = objectError.getDefaultMessage();
+            String field = ((FieldError) objectError).getField();
+            map.put(field, message);
         });
 
-        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 
 }

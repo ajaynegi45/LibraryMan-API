@@ -21,7 +21,6 @@ public class BorrowingsDto {
     private Date returnDate;
 
 
-
     public BorrowingsDto(int borrowingId, BookDto book, Fines fine, MembersDto member, Date borrowDate, Date dueDate, Date returnDate) {
         this.borrowingId = borrowingId;
         this.book = book;

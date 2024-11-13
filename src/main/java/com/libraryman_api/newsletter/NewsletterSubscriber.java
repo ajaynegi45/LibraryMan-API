@@ -1,6 +1,7 @@
 package com.libraryman_api.newsletter;
 
 import jakarta.persistence.*;
+
 import java.util.UUID;
 
 @Entity
@@ -32,11 +33,31 @@ public class NewsletterSubscriber {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
-    public String getUnsubscribeToken() { return unsubscribeToken; }
-    public void regenerateToken() { this.unsubscribeToken = UUID.randomUUID().toString(); }
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getUnsubscribeToken() {
+        return unsubscribeToken;
+    }
+
+    public void regenerateToken() {
+        this.unsubscribeToken = UUID.randomUUID().toString();
+    }
 }

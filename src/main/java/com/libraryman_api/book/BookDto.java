@@ -7,7 +7,7 @@ public class BookDto {
 
     private int bookId;
     @NotBlank(message = "Title is required ")
-    @Size(min = 1,max = 255,message = "Title must be between 1 and 255 characters")
+    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     private String title;
 
     @NotBlank(message = "Author is required")

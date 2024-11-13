@@ -87,7 +87,7 @@ public class MemberController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.memberId)")
-    public MembersDto updateMember(@PathVariable int id,@Valid @RequestBody UpdateMembersDto membersDtoDetails) {
+    public MembersDto updateMember(@PathVariable int id, @Valid @RequestBody UpdateMembersDto membersDtoDetails) {
         return memberService.updateMember(id, membersDtoDetails);
     }
 
@@ -114,7 +114,7 @@ public class MemberController {
     @PutMapping("/{id}/password")
     @PreAuthorize("#id == authentication.principal.memberId")
     public ResponseEntity<?> updatePassword(@PathVariable int id,
-                                           @Valid @RequestBody UpdatePasswordDto updatePasswordDto) {
+                                            @Valid @RequestBody UpdatePasswordDto updatePasswordDto) {
         memberService.updatePassword(id, updatePasswordDto);
         return ResponseEntity.ok("Password updated successfully.");
     }

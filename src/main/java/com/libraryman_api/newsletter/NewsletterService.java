@@ -3,6 +3,7 @@ package com.libraryman_api.newsletter;
 import com.libraryman_api.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.regex.Pattern;
 
