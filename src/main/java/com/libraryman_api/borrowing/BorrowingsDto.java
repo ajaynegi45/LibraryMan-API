@@ -1,7 +1,7 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.book.BookDto;
-import com.libraryman_api.fine.Fines;
+import com.libraryman_api.fine.Fine;
 import com.libraryman_api.member.dto.MembersDto;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +12,7 @@ public class BorrowingsDto {
     private int borrowingId;
     @NotNull(message = "Book is required")
     private BookDto book;
-    private Fines fine;
+    private Fine fine;
     @NotNull(message = "Member is required")
     private MembersDto member;
 
@@ -21,7 +21,7 @@ public class BorrowingsDto {
     private Date returnDate;
 
 
-    public BorrowingsDto(int borrowingId, BookDto book, Fines fine, MembersDto member, Date borrowDate, Date dueDate, Date returnDate) {
+    public BorrowingsDto(int borrowingId, BookDto book, Fine fine, MembersDto member, Date borrowDate, Date dueDate, Date returnDate) {
         this.borrowingId = borrowingId;
         this.book = book;
         this.fine = fine;
@@ -50,11 +50,11 @@ public class BorrowingsDto {
         this.book = book;
     }
 
-    public Fines getFine() {
+    public Fine getFine() {
         return fine;
     }
 
-    public void setFine(Fines fine) {
+    public void setFine(Fine fine) {
         this.fine = fine;
     }
 

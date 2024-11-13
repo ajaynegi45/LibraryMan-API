@@ -1,7 +1,13 @@
 package com.libraryman_api.borrowing;
 
+
+import com.libraryman_api.exception.InvalidSortFieldException;
+import com.libraryman_api.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -11,18 +17,18 @@ import java.util.Map;
 @Repository
 public interface BorrowingRepository extends JpaRepository<Borrowings, Integer> {
 
-    {
-        try {
-            Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
-
-            if (borrowings.isEmpty()) {
-                throw new ResourceNotFoundException("Member didn't borrow any book");
-            }
-            return borrowings.map(this::EntityToDto);
-        } catch (PropertyReferenceException ex) {
-            throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
-        }
-    }
+//    {
+//        try {
+//            Page<Borrowings> borrowings = borrowingRepository.findByMember_memberId(memberId, pageable);
+//
+//            if (borrowings.isEmpty()) {
+//                throw new ResourceNotFoundException("Member didn't borrow any book");
+//            }
+//            return borrowings.map(this::EntityToDto);
+//        } catch (PropertyReferenceException ex) {
+//            throw new InvalidSortFieldException("The specified 'sortBy' value is invalid.");
+//        }
+//    }
 
     Page<Borrowings> findByMember_memberId(int memberId, Pageable pageable);
 

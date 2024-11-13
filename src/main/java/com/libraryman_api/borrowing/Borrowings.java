@@ -1,7 +1,7 @@
 package com.libraryman_api.borrowing;
 
 import com.libraryman_api.book.Book;
-import com.libraryman_api.fine.Fines;
+import com.libraryman_api.fine.Fine;
 import com.libraryman_api.member.Members;
 import jakarta.persistence.*;
 
@@ -24,7 +24,7 @@ public class Borrowings {
 
     @OneToOne
     @JoinColumn(name = "fine_id")
-    private Fines fine;
+    private Fine fine;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -51,11 +51,11 @@ public class Borrowings {
         this.returnDate = returnDate;
     }
 
-    public Fines getFine() {
+    public Fine getFine() {
         return fine;
     }
 
-    public void setFine(Fines fine) {
+    public void setFine(Fine fine) {
         this.fine = fine;
     }
 

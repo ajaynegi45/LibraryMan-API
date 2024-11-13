@@ -6,7 +6,7 @@ import com.libraryman_api.book.BookService;
 import com.libraryman_api.exception.InvalidSortFieldException;
 import com.libraryman_api.exception.ResourceNotFoundException;
 import com.libraryman_api.fine.FineRepository;
-import com.libraryman_api.fine.Fines;
+import com.libraryman_api.fine.Fine;
 import com.libraryman_api.member.MemberService;
 import com.libraryman_api.member.Members;
 import com.libraryman_api.member.dto.MembersDto;
@@ -182,8 +182,8 @@ public class BorrowingService {
      * @param borrowing the borrowing record with an overdue return
      * @return the saved fine record
      */
-    private Fines imposeFine(Borrowings borrowing) {
-        Fines fine = new Fines();
+    private Fine imposeFine(Borrowings borrowing) {
+        Fine fine = new Fine();
         fine.setAmount(calculateFineAmount(borrowing));
         return fineRepository.save(fine);
     }
@@ -205,7 +205,7 @@ public class BorrowingService {
         if (!memberDto.isPresent()) {
             throw new ResourceNotFoundException("Member not found");
         }
-        Fines fine = borrowingsDto.getFine();
+        Fine fine = borrowingsDto.getFine();
 
         if (fine != null && !fine.isPaid()) {
             fine.setPaid(true);
