@@ -40,6 +40,7 @@ public class WebConfiguration {
                         .requestMatchers("/api/signup").permitAll()
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/logout").permitAll()
+                        .requestMatchers("/api/books").permitAll()
                         .requestMatchers("/api/analytics/**").hasAnyRole("ADMIN", "LIBRARIAN") // New line for analytics
                         .anyRequest().authenticated()
                 )
