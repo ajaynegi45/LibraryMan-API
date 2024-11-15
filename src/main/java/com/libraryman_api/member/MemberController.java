@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * This controller provides endpoints for performing CRUD operations on members.
  */
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping("/api")
 public class MemberController {
 
     private final MemberService memberService;
@@ -42,7 +42,7 @@ public class MemberController {
      * @return a {@link Page} of {@link Members} representing all members in the library.
      * The results are sorted by name by default and limited to 5 members per page.
      */
-    @GetMapping
+    @GetMapping("/get-all-members")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Page<MembersDto> getAllMembers(@PageableDefault(page = 0, size = 5, sort = "name") Pageable pageable,
                                           @RequestParam(required = false) String sortBy,
@@ -69,7 +69,7 @@ public class MemberController {
      * @param id the ID of the member to retrieve
      * @return a {@link ResponseEntity} containing the found {@link Members} object
      */
-    @GetMapping("/{id}")
+    @GetMapping("/get-member-by-id/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public ResponseEntity<MembersDto> getMemberById(@PathVariable int id) {
         return memberService.getMemberById(id)
@@ -85,7 +85,7 @@ public class MemberController {
      * @param membersDtoDetails the {@link Members} object containing the updated details
      * @return the updated {@link Members} object
      */
-    @PutMapping("/{id}")
+    @PutMapping("/update-member-by-id/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #id == authentication.principal.memberId)")
     public MembersDto updateMember(@PathVariable int id, @Valid @RequestBody UpdateMembersDto membersDtoDetails) {
         return memberService.updateMember(id, membersDtoDetails);
@@ -97,7 +97,7 @@ public class MemberController {
      *
      * @param id the ID of the member to delete
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete-member-by-id/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteMember(@PathVariable int id) {
         memberService.deleteMember(id);
@@ -111,7 +111,7 @@ public class MemberController {
      * @param updatePasswordDto the {@link UpdatePasswordDto} object containing the password details
      * @return a {@link ResponseEntity} containing a success message indicating the password was updated successfully
      */
-    @PutMapping("/{id}/password")
+    @PutMapping("/update-password-by-id/{id}")
     @PreAuthorize("#id == authentication.principal.memberId")
     public ResponseEntity<?> updatePassword(@PathVariable int id,
                                             @Valid @RequestBody UpdatePasswordDto updatePasswordDto) {

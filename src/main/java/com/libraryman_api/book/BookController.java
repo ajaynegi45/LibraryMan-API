@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * updating an existing book, and deleting a book.
  */
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api")
 public class BookController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class BookController {
      * @return a {@link Page} of {@link BookDto} objects representing the books in the library.
      * The results are sorted by title by default and limited to 5 books per page.
      */
-    @GetMapping
+    @GetMapping("/get-all-books")
     public Page<BookDto> getAllBooks(@PageableDefault(page = 0, size = 5, sort = "title") Pageable pageable,
                                      @RequestParam(required = false) String sortBy,
                                      @RequestParam(required = false) String sortDir) {
@@ -59,7 +59,7 @@ public class BookController {
      * @return a {@link ResponseEntity} containing the {@link Book} object, if found.
      * @throws ResourceNotFoundException if the book with the specified ID is not found.
      */
-    @GetMapping("/{id}")
+    @GetMapping("get-book-by-id/{id}")
     public ResponseEntity<BookDto> getBookById(@PathVariable int id) {
         return bookService.getBookById(id)
                 .map(ResponseEntity::ok)
@@ -72,7 +72,7 @@ public class BookController {
      * @param bookDto the {@link Book} object representing the new book to add.
      * @return the added {@link Book} object.
      */
-    @PostMapping
+    @PostMapping("/add-book")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BookDto addBook(@Valid @RequestBody BookDto bookDto) {
         return bookService.addBook(bookDto);
@@ -85,7 +85,7 @@ public class BookController {
      * @param bookDtoDetails the {@link Book} object containing the updated book details.
      * @return the updated {@link Book} object.
      */
-    @PutMapping("/{id}")
+    @PutMapping("update-book/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BookDto updateBook(@PathVariable int id, @Valid @RequestBody BookDto bookDtoDetails) {
         return bookService.updateBook(id, bookDtoDetails);
@@ -96,7 +96,7 @@ public class BookController {
      *
      * @param id the ID of the book to delete.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete-book/{id}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public void deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
@@ -112,7 +112,7 @@ public class BookController {
      * @param pageable
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("book/search")
     public ResponseEntity<Page<Book>> searchBook(@RequestParam String keyword, @PageableDefault(page = 0, size = 5, sort = "title") Pageable pageable) {
         Page<Book> books = bookService.searchBook(keyword, pageable);
         if (!books.isEmpty())

@@ -34,12 +34,18 @@ public class SignupService {
         }
         String encoded_password = passwordEncoder.bCryptPasswordEncoder().encode(members.getPassword());
         Members new_members = new Members();
-        new_members.setEmail(members.getEmail());
+
+//      TODO: check for proper username format
+        new_members.setUsername(members.getUsername());
+
         new_members.setName(members.getName());
-        new_members.setPassword(encoded_password);
+
+//      TODO: check for proper email format
+        new_members.setEmail(members.getEmail());
+
         new_members.setRole(Role.USER);
         new_members.setMembershipDate(new Date());
-        new_members.setUsername(members.getUsername());
+        new_members.setPassword(encoded_password);
         memberRepository.save(new_members);
     }
 

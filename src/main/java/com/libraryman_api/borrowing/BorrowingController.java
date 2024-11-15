@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * paying fines, and retrieving borrowing records.
  */
 @RestController
-@RequestMapping("/api/borrowings")
+@RequestMapping("/api")
 public class BorrowingController {
 
     private final BorrowingService borrowingService;
@@ -39,7 +39,7 @@ public class BorrowingController {
      * @return a {@link Page} of {@link Borrowings} representing all borrowings.
      * The results are sorted by borrow date by default and limited to 5 members per page.
      */
-    @GetMapping
+    @GetMapping("/get-all-borrowings")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public Page<BorrowingsDto> getAllBorrowings(@PageableDefault(page = 0, size = 5, sort = "borrowDate") Pageable pageable,
                                                 @RequestParam(required = false) String sortBy,
@@ -65,7 +65,7 @@ public class BorrowingController {
      * @param borrowingsDto the {@link Borrowings} object containing borrowing details.
      * @return the saved {@link Borrowings} object representing the borrowing record.
      */
-    @PostMapping
+    @PostMapping("/borrow-book")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #borrowingsDto.member.memberId == authentication.principal.memberId)")
     public BorrowingsDto borrowBook(@Valid @RequestBody BorrowingsDto borrowingsDto) {
         return borrowingService.borrowBook(borrowingsDto);
@@ -76,7 +76,7 @@ public class BorrowingController {
      *
      * @param id the ID of the borrowing record to update.
      */
-    @PutMapping("/{id}/return")
+    @PutMapping("/{id}/return-borrow-book")
     public BorrowingsDto returnBook(@PathVariable int id) {
         return borrowingService.returnBook(id);
     }
@@ -87,7 +87,7 @@ public class BorrowingController {
      * @param id the ID of the borrowing record for which the fine is being paid.
      * @return a message indicating the payment status.
      */
-    @PutMapping("/{id}/pay")
+    @PutMapping("/borrowing/{id}/pay-fine")
     public String payFine(@PathVariable int id) {
         System.out.println("Pay Fine Id: " + id);
         return borrowingService.payFine(id);
@@ -103,7 +103,7 @@ public class BorrowingController {
      * @return a {@link Page} of {@link Borrowings} representing all borrowings for a specific member.
      * The results are sorted by borrow date by default and limited to 5 members per page.
      */
-    @GetMapping("member/{memberId}")
+    @GetMapping("/get-all-borrowings-of-a-member/{memberId}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN') or (hasRole('USER') and #memberId == authentication.principal.memberId)")
     public Page<BorrowingsDto> getAllBorrowingsOfAMember(@PathVariable int memberId,
                                                          @PageableDefault(page = 0, size = 5, sort = "borrowDate") Pageable pageable,
@@ -131,7 +131,7 @@ public class BorrowingController {
      * @return the {@link Borrowings} object representing the borrowing record.
      * @throws ResourceNotFoundException if the borrowing record with the specified ID is not found.
      */
-    @GetMapping("{borrowingId}")
+    @GetMapping("/get-borrowing-by-id/{borrowingId}")
     @PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
     public BorrowingsDto getBorrowingById(@PathVariable int borrowingId) {
         return borrowingService.getBorrowingById(borrowingId)

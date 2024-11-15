@@ -14,7 +14,7 @@ public class Fine {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fine_id_generator")
     @SequenceGenerator(name = "fine_id_generator", sequenceName = "fine_id_sequence", allocationSize = 1)
-    @Column(name = "fine_id", updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false)
     private int fineId;
 
     /**
