@@ -16,8 +16,11 @@ import java.util.Map;
 public class JwtAuthenticationHelper {
 
     private static final long JWT_TOKEN_VALIDITY = 60 * 60;
-    @Value("${jwt.secretKey}")
-    private String secret;
+    private final String secret;
+
+    public JwtAuthenticationHelper(@Value("${jwt.secretKey}") String secret) {
+        this.secret = secret;
+    }
 
     public String getUsernameFromToken(String token) {
         String username = getClaimsFromToken(token).getSubject();
